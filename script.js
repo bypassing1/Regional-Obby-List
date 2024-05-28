@@ -136,6 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
         img.src = thumbnailUrl;
         img.classList.add('thumbnail');
         link.appendChild(img);
+        img.appendChild(yt)
         const obby = document.createElement('h1');
         obby.id = 'after-video'
         obby.textContent = item.title

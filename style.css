@@ -82,7 +82,7 @@ header .nav-group{
 }
 
 header .nav-group:hover{
-    background-color: #f6f8fc;
+    background-color: #777777;
 }
 
 header .nav-group a{
@@ -242,7 +242,7 @@ header .info-text .scroll::before{
     border-radius: 20px;
     display: flex;
     gap: 30px;
-    background-color: white;
+    background-image: url(assets/card-bg.svg);
     border: 1px solid transparent;
     transition: all 0.3s ease;
     z-index: 1;
@@ -251,6 +251,7 @@ header .info-text .scroll::before{
 #about .card:hover, #features .card:hover{
     border-color: #fff;
     box-shadow: none;
+    transform: scale(1.1);
 }
 
 #about .card img{
@@ -315,6 +316,7 @@ header .info-text .scroll::before{
     height: 165px; /* Adjust the height as needed */
     object-fit: cover; /* Crop the image */
     transition: .25s;
+    border: dashed 2px grey;
 }
 
 .thumbnail:hover{
