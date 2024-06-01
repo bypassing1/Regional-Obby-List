@@ -94,6 +94,7 @@ header .nav-group a{
     align-items: center;
     flex-direction: column;
     text-decoration: none;
+    color: black;
 }
 
 header .info-text{
@@ -174,6 +175,7 @@ header .info-text .scroll::before{
     border-top: 0px;
     transition: .25s;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    z-index: 2;
 }
 
 .lists div:hover{
@@ -187,6 +189,7 @@ header .info-text .scroll::before{
     height: 100%;
     width: 100%;
     text-decoration: none;
+    color: black;
     align-items: center;
     flex-direction: column;
 }
