@@ -1,0 +1,37 @@
+name: Notify Discord on GitHub Page Access
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Trigger every hour
+  workflow_dispatch: # Trigger manually if needed
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Send Discord Webhook
+        run: |
+          const fetch = require('node-fetch');
+
+          const webhookURL = process.env.DISCORD_WEBHOOK_URL;
+          const message = {
+            content: 'Someone accessed the GitHub page!'
+          };
+
+          fetch(webhookURL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(message),
+          })
+          .then(response => console.log('Webhook sent:', response.ok))
+          .catch(error => console.error('Error sending webhook:', error));
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}

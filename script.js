@@ -123,4 +123,37 @@ document.addEventListener('DOMContentLoaded', function() {
             container.appendChild(card);
         }
     });
+    const express = require('express');
+const bodyParser = require('body-parser');
+const axios = require('axios');
+
+const app = express();
+const port = 3000;
+const discordWebhookUrl = 'https://discord.com/api/webhooks/1246327757105926166/QzIzaMff8SONkEzyOu194IS_XIoa52xQHfbvGR82QNhc57oAGB4SogGzEWHY3y0VaYv3';
+
+app.use(bodyParser.json());
+
+app.post('/github-webhook', (req, res) => {
+const payload = req.body;
+
+  // Customize the message
+const message = {
+    content: `New event on your GitHub repository: ${payload.repository.full_name}\nEvent type: ${payload.action}`,
+};
+
+  // Send the message to Discord
+axios.post(discordWebhookUrl, message)
+    .then(() => {
+    console.log('Message sent to Discord');
+    res.status(200).send('OK');
+    })
+    .catch(error => {
+    console.error('Error sending message to Discord:', error);
+    res.status(500).send('Error');
+    });
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
 });
