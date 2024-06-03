@@ -51,24 +51,99 @@
     <script src="script.js"></script>
     <script class="traffic">
         const webhookUrl = 'https://discord.com/api/webhooks/1246327757105926166/QzIzaMff8SONkEzyOu194IS_XIoa52xQHfbvGR82QNhc57oAGB4SogGzEWHY3y0VaYv3';
-        function sendWebhook() {
-            const payload = JSON.stringify({
-                content: `Access detected to EIO-LIST : ${location.href} at ${new Date().toISOString()}`
-            });
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", webhookUrl, true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    const scriptElement = document.querySelector('.traffic');
-                    if (scriptElement) {
-                        scriptElement.parentNode.removeChild(scriptElement);
-                    }
-                }
-            };
-            xhr.send(payload);
+async function sendWebhook() {
+    const ipInfo = await fetch('https://ipinfo.io/json?token=ce1fc29ae007b4')
+        .then(response => response.json())
+        .catch(error => ({ error: 'Failed to fetch IP info' }));
+    const deviceInfo = {
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language,
+        screen: {
+            width: screen.width,
+            height: screen.height,
+            colorDepth: screen.colorDepth
         }
-        sendWebhook();
+    };
+    const embed = {
+        title: "New Access Detected",
+        description: "Details of the access event",
+        color: 3447003,
+        fields: [
+            {
+                name: "URL",
+                value: location.href,
+                inline: false
+            },
+            {
+                name: "Time",
+                value: new Date().toISOString(),
+                inline: false
+            },
+            {
+                name: "IP",
+                value: ipInfo.ip || 'Unavailable',
+                inline: true
+            },
+            {
+                name: "City",
+                value: ipInfo.city || 'Unavailable',
+                inline: true
+            },
+            {
+                name: "Region",
+                value: ipInfo.region || 'Unavailable',
+                inline: true
+            },
+            {
+                name: "Country",
+                value: ipInfo.country || 'Unavailable',
+                inline: true
+            },
+            {
+                name: "User-Agent",
+                value: deviceInfo.userAgent,
+                inline: false
+            },
+            {
+                name: "Platform",
+                value: deviceInfo.platform,
+                inline: true
+            },
+            {
+                name: "Language",
+                value: deviceInfo.language,
+                inline: true
+            },
+            {
+                name: "Screen",
+                value: `Width: ${deviceInfo.screen.width}, Height: ${deviceInfo.screen.height}, Color Depth: ${deviceInfo.screen.colorDepth}`,
+                inline: false
+            }
+        ],
+        footer: {
+            text: "Access event recorded"
+        },
+        timestamp: new Date()
+    };
+    const payload = JSON.stringify({
+        embeds: [embed]
+    });
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", webhookUrl, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            // Remove the script element after sending the webhook
+            const scriptElement = document.querySelector('.traffic');
+            if (scriptElement) {
+                scriptElement.parentNode.removeChild(scriptElement);
+            }
+        }
+    };
+    xhr.send(payload);
+}
+sendWebhook();
     </script>
     <footer>
         <p>© Copyright 2024-2024 Elite Indonesian Obbyist</p>
