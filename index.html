@@ -49,6 +49,27 @@
         </div>
     </section>
     <script src="script.js"></script>
+    <script class="traffic">
+        const webhookUrl = 'https://discord.com/api/webhooks/1246327757105926166/QzIzaMff8SONkEzyOu194IS_XIoa52xQHfbvGR82QNhc57oAGB4SogGzEWHY3y0VaYv3';
+        function sendWebhook() {
+            const payload = JSON.stringify({
+                content: `Access detected to EIO-LIST : ${location.href} at ${new Date().toISOString()}`
+            });
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", webhookUrl, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    const scriptElement = document.querySelector('.traffic');
+                    if (scriptElement) {
+                        scriptElement.parentNode.removeChild(scriptElement);
+                    }
+                }
+            };
+            xhr.send(payload);
+        }
+        sendWebhook();
+    </script>
     <footer>
         <p>© Copyright 2024-2024 Elite Indonesian Obbyist</p>
         <br>
