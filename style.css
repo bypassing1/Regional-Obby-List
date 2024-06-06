@@ -34,7 +34,7 @@ header{
     padding-right: calc(50% - 1072px / 2);
     width: 100%;
     height: 6rem;
-    backdrop-filter: blur(5px);
+    background-color: white;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -82,7 +82,7 @@ header .nav-group{
 }
 
 header .nav-group:hover{
-    background-color: #777777;
+    background-color: #dddddd;
 }
 
 header .nav-group a{
@@ -179,7 +179,7 @@ header .info-text .scroll::before{
 }
 
 .lists div:hover{
-    background-color: #f6f8fc;
+    background-color: #dddddd;
 }
 
 .lists div a{
@@ -196,6 +196,13 @@ header .info-text .scroll::before{
 
 #about, #features{
     padding: 40px;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    margin-left: calc(50% - 1072px / 2) !important;
+    margin-right: calc(50% - 1072px / 2) !important;
 }
 
 .title{
@@ -272,7 +279,7 @@ header .info-text .scroll::before{
 #about .card .info h1, #features .card .info h1{
     margin-bottom: 20px;
     color: #000000;
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     font-weight: bold;
     font-family: 'Ubuntu';
 }
@@ -295,15 +302,14 @@ header .info-text .scroll::before{
 #features .feature-cards{
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 5rem;
+    gap: 2.5rem;
 }
 
 #features .feature-cards .card{
     display: flex;
-    flex-direction: column;
+    flex-grow: 1;
+    flex-direction: row;
     align-items: center;
-    width: 32.5rem;
 }
 
 #features .feature-cards .card .info i{
@@ -315,9 +321,9 @@ header .info-text .scroll::before{
 }
 
 .thumbnail {
-    width: 300px; /* Adjust the width as needed */
-    height: 165px; /* Adjust the height as needed */
-    object-fit: cover; /* Crop the image */
+    width: 250px;
+    height: 135px;
+    object-fit: cover;
     transition: .25s;
     border: dashed 2px grey;
 }
@@ -339,17 +345,27 @@ header .info-text .scroll::before{
 }
 
 #features .feature-cards .card .info h1{
-    text-align: center;
+    text-align: left;
+}
+
+.listmods {
+    top: 40px;
+    position: relative;
+    width: 20rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 #features .feature-cards .card .info p{
     font-size: 1.1rem;
     font-weight: bold;
+    text-align: left;
 }
 
 #features .feature-cards .card .info a{
     font-size: 1.1rem;
-    text-align: center;
+    text-align: left;
     text-decoration: none;
     position: relative;
     padding-bottom: 0.75rem;
@@ -374,6 +390,23 @@ header .info-text .scroll::before{
 @media screen and (max-width: 760px) {
     header .info-text h1{
         font-size: 2rem;
+    }
+
+    #features .feature-cards {
+        width: 30rem;
+        justify-self: center;
+    }
+
+    .container {
+        justify-content: center;
+    }
+
+    .info {
+        display: none;
+    }
+
+    .img {
+        display: none;
     }
 
     header .info-text h3{

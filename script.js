@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { title: `Hope for Amendment`, verifier: `proprpod`, link: `https://www.youtube.com/watch?v=A1VMxX1QQbk`, gamelink: `https://www.roblox.com/games/5224741716/Hope-For-Amendment` },
         { title: `Forgotten Obby 2`, verifier: `proprpod`, link: `https://www.youtube.com/watch?v=8wnbTzPMVb4`, gamelink: `https://www.roblox.com/games/6508985294/Forgotten-Obby-2` },
         { title: `Dysphoria`, verifier: `galih_funfan`, link: `https://www.youtube.com/watch?v=h0LtkHfy-WY`, gamelink: `https://www.roblox.com/games/6603931766/` },
+        { title: `Tower of Elongated Runs`, verifier: `Ariouss`, link: `https://www.youtube.com/watch?v=lyIn8NU0ZGk`, gamelink: `https://www.roblox.com/games/8562822414/Jukes-Towers-of-Hell-Black-Friday-Sale`},
         { title: `Shinku no Naraku`, verifier: `proprpod`, link: `https://www.youtube.com/watch?v=8Tq4_UXp6s0`, gamelink: `https://www.roblox.com/games/5130666899/Shinku-no-naraku` },
         { title: `Arcrux`, verifier: `galih_funfan`, link: `https://www.youtube.com/watch?v=knmS-MY-oyw`, gamelink: `https://www.roblox.com/games/9432231942/Arcrux` },
         { title: `Tower of Champion's Road`, verifier: `galih_funfan`, link: `https://youtube.com/watch?v=nHPSsPimktE`, gamelink: `https://www.roblox.com/games/8562822414/Jukes-Towers-of-Hell-Black-Friday-Sale` },
@@ -91,20 +92,20 @@ document.addEventListener('DOMContentLoaded', function() {
         total += 1;
         const card = document.createElement('div');
         card.className = 'card';
-        const info = document.createElement('div');
-        info.className = 'info';
-        card.appendChild(info);
-        const videoId = item.link.split('v=')[1].split('&')[0];
-        const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
         const link = document.createElement('a')
         link.href = item.link
         link.target = "_blank"
         link.className = "link-overlay"
         card.appendChild(link)
+        const videoId = item.link.split('v=')[1].split('&')[0];
+        const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
         const img = document.createElement('img');
         img.src = thumbnailUrl;
         img.classList.add('thumbnail');
         link.appendChild(img);
+        const info = document.createElement('div');
+        info.className = 'info';
+        card.appendChild(info);
         const obby = document.createElement('h1');
         obby.id = 'after-video'
         obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
