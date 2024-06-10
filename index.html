@@ -37,22 +37,10 @@
     <div class="title">
         <h1 id="main-list">MAIN LIST</h1>
     </div>
-    <div class="container">
-        <div id="features">
-            <div class="feature-cards" id="cards-container">
-            </div>
+    <section id="features">
+        <div class="feature-cards" id="cards-container">
         </div>
-        <div class="info">
-            <div class="listmods">
-                <div class="underlined">
-                    <h2></h2>
-                </div>
-                <ul>
-                    <li></li>
-                </ul> 
-            </div>
-        </div>
-    </div>
+    </section>
     <div class="title">
         <h1 id="legacy-list">LEGACY LIST</h1>
     </div>
@@ -77,7 +65,6 @@ async function sendWebhook() {
             colorDepth: screen.colorDepth
         }
     };
-    const timeInWIB = new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta", hour12: false });
     const embed = {
         title: "New Access Detected",
         description: "Details of the access event",
@@ -90,7 +77,7 @@ async function sendWebhook() {
             },
             {
                 name: "Time",
-                value: `${timeInWIB} WIB`,
+                value: new Date().toISOString(),
                 inline: false
             },
             {

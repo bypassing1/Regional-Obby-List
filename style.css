@@ -196,13 +196,15 @@ header .info-text .scroll::before{
 
 #about, #features{
     padding: 40px;
+    display: flex;
+    justify-content: center;
 }
 
 .container {
     display: flex;
     flex-direction: row;
-    margin-left: calc(50% - 1072px / 2) !important;
-    margin-right: calc(50% - 1072px / 2) !important;
+    width: 100%;
+    justify-content: center;
 }
 
 .title{
@@ -253,6 +255,7 @@ header .info-text .scroll::before{
     display: flex;
     gap: 30px;
     background-image: url(assets/card-bg.svg);
+    background-size: cover;
     border: 1px solid transparent;
     transition: all 0.3s ease;
     z-index: 1;
@@ -303,11 +306,12 @@ header .info-text .scroll::before{
     display: flex;
     flex-wrap: wrap;
     gap: 2.5rem;
+    width: 70%;
 }
 
 #features .feature-cards .card{
     display: flex;
-    flex-grow: 1;
+    width: 100%;
     flex-direction: row;
     align-items: center;
 }
