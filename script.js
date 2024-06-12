@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { title: `Obbyists Home`, verifier: `Marvel2232`, link: `https://www.youtube.com/watch?v=e8XoSQRGfg4`, gamelink: `https://www.roblox.com/games/4616343089/Obbyists-Home` },
         { title: `Tower of Stigmatism`, verifier: `nahlclea`, link: `https://www.youtube.com/watch?v=muVNijgfjOE`, gamelink: `https://www.roblox.com/games/7593639579/Purist-Towers-of-Hell` }
     ];
-    if (window.location.pathname.endsWith('voc-list.html')) {
+    if (document.getElementById('voc-list')) {
         let total = 0;
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
             info.appendChild(flag);
             const obby = document.createElement('h1');
             obby.id = 'after-video';
-            obby.textContent = total < 46 ? `#${total} - ${item.title}` : `${item.title}`;
+            obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
             info.appendChild(obby);
             const verifier = document.createElement('p');
             verifier.textContent = item.verifier;
@@ -174,14 +174,58 @@ document.addEventListener('DOMContentLoaded', function() {
             gamelink.target = "_blank";
             gamelink.textContent = `Game`;
             info.appendChild(gamelink);
-            if (total > 45) {
+            if (total > 50) {
                 legacycontainer.appendChild(card);
             } else {
                 container.appendChild(card);
             }
         });
-    }
-    if (window.location.pathname.endsWith('eio-list.html')) {
+    }if (document.getElementById('eio-list')) {
+    let total = 0;
+    const container = document.getElementById('cards-container');
+    const legacycontainer = document.getElementById('legacy-container');
+    iddata.forEach(item => {
+        total += 1;
+        const card = document.createElement('div');
+        card.className = 'card';
+        const link = document.createElement('a');
+        link.href = item.link;
+        link.target = "_blank";
+        link.className = "link-overlay";
+        card.appendChild(link);
+        const videoId = item.link.split('v=')[1].split('&')[0];
+        const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+        const img = document.createElement('img');
+        img.src = thumbnailUrl;
+        img.classList.add('thumbnail');
+        link.appendChild(img);
+        const info = document.createElement('div');
+        info.className = 'info';
+        card.appendChild(info);
+        const flag = document.createElement('img');
+        flag.src = `assets/id.svg`;
+        flag.classList.add('flag');
+        info.appendChild(flag);
+        const obby = document.createElement('h1');
+        obby.id = 'after-video';
+        obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
+        info.appendChild(obby);
+        const verifier = document.createElement('p');
+        verifier.textContent = item.verifier;
+        info.appendChild(verifier);
+        const gamelink = document.createElement('a');
+        gamelink.href = item.gamelink;
+        gamelink.target = "_blank";
+        gamelink.textContent = `Game`;
+        info.appendChild(gamelink);
+        if (total > 50) {
+            legacycontainer.appendChild(card);
+        } else {
+            container.appendChild(card);
+        }
+    });
+}
+    if (document.getElementById('eio-list')) {
         let total = 0;
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
