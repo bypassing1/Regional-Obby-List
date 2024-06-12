@@ -1,5 +1,56 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const data = [
+    const vndata = [
+        { title: `Sundarkened World`, verifier: `Darkside_Dammed`, link: `https://www.youtube.com/watch?v=hhnIKUr1xps`, gamelink: `https://www.roblox.com/games/6704089238/Sundarkened-World` },
+        { title: `Drowning`, verifier: `hehe9709_2`, link: `https://www.youtube.com/watch?v=R92TCuzWwBI`, gamelink: `https://www.roblox.com/games/7156683685/Drowning` },
+        { title: `Haze`, verifier: `Darkside_Dammed`, link: `https://www.youtube.com/watch?v=i94Sdwy0_-M`, gamelink: `https://www.roblox.com/games/7278772458/Haze` },
+        { title: `Shinku no Naraku`, verifier: `RenVinh`, link: `https://www.youtube.com/watch?v=DhpPhcY8hqA`, gamelink: `https://www.roblox.com/games/5130666899/Shinku-no-naraku` },
+        { title: `Arcrux`, verifier: `hehe9709_2`, link: `https://www.youtube.com/watch?v=NdhrRxYLHW8`, gamelink: `https://www.roblox.com/games/9432231942/Arcrux` },
+        { title: `Hope For Amendment`, verifier: `hehe9709_2`, link: `https://www.youtube.com/watch?v=KDmw4_npy0s`, gamelink: `https://www.roblox.com/games/5224741716/Hope-For-Amendment` },
+        { title: `Comatose`, verifier: `zW_lf`, link: `https://www.youtube.com/watch?v=oAXcx0j1EiM`, gamelink: `https://www.roblox.com/games/5956184387/Comatose` },
+        { title: `The Forgotten`, verifier: `Darkside_Dammed`, link: `https://www.youtube.com/watch?v=Rhy4vpv-PfA`, gamelink: `https://www.roblox.com/games/6704089238/The-Forgotten` },
+        { title: `Somewhere In Nowhere`, verifier: `pro47147abcd`, link: `https://www.youtube.com/watch?v=bmAp-owNhro&t=16s`, gamelink: `https://www.roblox.com/games/8420630976/Somewhere-in-Nowhere` },
+        { title: `Room of Rose`, verifier: `WilliamDuc_06`, link: `https://www.youtube.com/watch?v=muKrLbFOem8`, gamelink: `https://www.roblox.com/games/5278030366/Room-of-Rose` },
+        { title: `Tower of Glory`, verifier: `MyDayToBeat`, link: `https://www.youtube.com/watch?v=G0VPpKy9E9A`, gamelink: `https://www.roblox.com/games/2516649497/Tower-Of-Glory` },
+        { title: `Amaranthine`, verifier: `WilliamDuc_06`, link: `https://www.youtube.com/watch?v=ADQ-PV8qefE`, gamelink: `https://www.roblox.com/games/6746025955/Amaranthine` },
+        { title: `Refraction`, verifier: `Darkside_Dammed`, link: `https://www.youtube.com/watch?v=ZHgs2PTkwI0`, gamelink: `https://www.roblox.com/games/8687594674/Holographic` },
+        { title: `Purge`, verifier: `WilliamDuc_06`, link: `https://www.youtube.com/watch?v=ZHgs2PTkwI0`, gamelink: `https://www.roblox.com/games/8473837404/Purge` },
+        { title: `TARTARUS`, verifier: `tastygrave7896`, link: `https://www.youtube.com/watch?v=sVUpHk0v4Do`, gamelink: `https://www.roblox.com/games/5767147154/TARTARUS` },
+        { title: `Moonlit Cosmos`, verifier: `hehe9709_2`, link: `https://www.youtube.com/watch?v=dMrODkTAUQg`, gamelink: `https://www.roblox.com/games/6088201347/Moonlit-Cosmos` },
+        { title: `Denial`, verifier: `WilliamDuc_06`, link: `https://www.youtube.com/watch?v=zI9RBLzyDUw`, gamelink: `https://www.roblox.com/games/5382768129/Denial` },
+        { title: `Happy Pill`, verifier: `z1nterlude`, link: `https://www.youtube.com/watch?v=czLTWzPoAZA`, gamelink: `https://www.roblox.com/games/9762643182/happy` },
+        { title: `Cosmic Dismay`, verifier: `baconnoobatobbies`, link: `https://www.youtube.com/watch?v=QBBJUJB8EdQ`, gamelink: `https://www.roblox.com/games/7166334901/Cosmic-Dismay` },
+        { title: `Scarlet Paracosm`, verifier: `DmncdfggN`, link: `https://www.youtube.com/watch?v=_FAgdgWodDU`, gamelink: `https://www.roblox.com/games/4905465293/Scarlet-Paracosm` },
+        { title: `FOR THE; Sakura`, verifier: `DucBaoNguyen2006110`, link: `https://www.youtube.com/watch?v=QifmgNeUDfs`, gamelink: `https://www.roblox.com/games/5112826908/FOR-THE-Sakura` },
+        { title: `Noxious Hollow`, verifier: `hehe9709_2`, link: `https://www.youtube.com/watch?v=s2R6CpQoqDw`, gamelink: `https://www.roblox.com/games/6349281093/Noxious-Hollow` },
+        { title: `Nescience`, verifier: `oNi_ck`, link: `https://www.youtube.com/watch?v=WVQjg2TtRMI`, gamelink: `https://www.roblox.com/games/8167197490/Nescience` },
+        { title: `Lemon Juice`, verifier: `WilliamDuc_06`, link: `https://www.youtube.com/watch?v=nSf4E0Jnvxg`, gamelink: `https://www.roblox.com/games/9185353172/Lemon-Juice` },
+        { title: `Spleen 2.0`, verifier: `WilliamDuc_06`, link: `https://www.youtube.com/watch?v=3-xCJcS5lS0`, gamelink: `https://www.roblox.com/games/7239180611/Spleen-2-0` },
+        { title: `Adalora`, verifier: `hehe9709_2`, link: `https://www.youtube.com/watch?v=RJEL52QruMQ`, gamelink: `https://www.roblox.com/games/7221949036/Adalora` },
+        { title: `Pleasant Pastel Parkour`, verifier: `Darkside_Dammed`, link: `https://www.youtube.com/watch?v=GeTPgynfLWQ`, gamelink: `https://www.roblox.com/games/8129227935/Pleasant-Pastel-Parkour` },
+        { title: `Goliad`, verifier: `baconnoobatobbies`, link: `https://www.youtube.com/watch?v=fRSg5v1wdvA`, gamelink: `https://www.roblox.com/games/8845166410/Goliad` },
+        { title: `Malachite`, verifier: `De22_picc`, link: `https://www.youtube.com/watch?v=kVKGv_MdyNg`, gamelink: `https://www.roblox.com/games/7200902470/Malachite` },
+        { title: `Tower of Toilsome`, verifier: `WilliamDuc_06`, link: `https://www.youtube.com/watch?v=1_zaMBj2U5Q`, gamelink: `https://www.roblox.com/games/6027826183/Tower-of-Toilsome` },
+        { title: `Bluestification`, verifier: `DmncdfggN`, link: `https://www.youtube.com/watch?v=ORoO-dIb79U`, gamelink: `https://www.roblox.com/games/5150836146/Bluestification` },
+        { title: `Spleen`, verifier: `WilliamDuc_06`, link: `https://www.youtube.com/watch?v=-3j7BrcXRF8`, gamelink: `https://www.roblox.com/games/6063015812/Spleen` },
+        { title: `Flourite`, verifier: `z1nterlude`, link: `https://www.youtube.com/watch?v=_o2jupr_adw&t=17s`, gamelink: `https://www.roblox.com/games/8517699538/Fluorite` },
+        { title: `Fractured`, verifier: `MapleJokes`, link: `https://www.youtube.com/watch?v=Q9QYG_9legY`, gamelink: `https://www.roblox.com/games/5242498841/Fractured` },
+        { title: `The Remains`, verifier: `DmncdfggN`, link: `https://www.youtube.com/watch?v=cnZpnu8pGJY`, gamelink: `https://www.roblox.com/games/5768084723/The-Remains` },
+        { title: `Firework`, verifier: `baconnoobatobbies`, link: `https://www.youtube.com/watch?v=s28Rqj4rdv8`, gamelink: `https://www.roblox.com/games/10216972000/Firework` },
+        { title: `Site0`, verifier: `Darkside_Dammed`, link: `https://www.youtube.com/watch?v=WxpjCN876wo`, gamelink: `https://www.roblox.com/games/4641587911/Site0` },
+        { title: `LOVE;`, verifier: `WilliamDuc_06`, link: `https://www.youtube.com/watch?v=nuTYDhHfd8M`, gamelink: `https://www.roblox.com/games/5315536918/Love` },
+        { title: `Sea of Clouds`, verifier: `oNi_ck`, link: `https://www.youtube.com/watch?v=kzfk1DfP7SU`, gamelink: `https://www.roblox.com/games/10048662636/Sea-of-Clouds` },
+        { title: `nthree`, verifier: `Sarkdide_Manded`, link: `https://www.youtube.com/watch?v=D55jfayuDvg`, gamelink: `https://www.roblox.com/games/4601576708/nthree` },
+        { title: `Chronological`, verifier: `Darkside_Dammed`, link: `https://www.youtube.com/watch?v=tEsySAzwVeE`, gamelink: `https://www.roblox.com/games/5989945139/Chronological` },
+        { title: `Tower of Skywing`, verifier: `hehe9709_2`, link: `https://www.youtube.com/watch?v=h1H7o2QSSXQ`, gamelink: `https://www.roblox.com/games/5843157218/Tower-of-Skywing` },
+        { title: `Exile`, verifier: `WilliamDuc_06`, link: `https://www.youtube.com/watch?v=FTbfQGT1Uyo`, gamelink: `https://www.roblox.com/games/6593357081/Exile` },
+        { title: `Agony`, verifier: `zW_lf`, link: `https://www.youtube.com/watch?v=leHDJRj-nS8`, gamelink: `https://www.roblox.com/games/6605366008/agony` },
+        { title: `Half-Hearted Imaginary Entreatment`, verifier: `DucBaoNguyen200610`, link: `https://www.youtube.com/watch?v=x6EBD7RK-ik`, gamelink: `https://www.roblox.com/games/6502779039/Half-hearted-Imaginary-Entreatment` },
+        { title: "Forsaken", verifier: "baconnoobatobbies", link: "https://www.youtube.com/watch?v=tNr-e3xEXbs", gamelink: "https://www.roblox.com/games/10133397923/Forsaken-Tier-15-Obby" },
+        { title: "Alluring Sonet", verifier: "oNi_ck", link: "https://www.youtube.com/watch?v=p290zYyjkVE", gamelink: "https://www.roblox.com/games/7528328974/Alluring-Sonet" },
+        { title: "Short but hard", verifier: "oNi_ck", link: "https://www.youtube.com/watch?v=1kHagq8_Fpc", gamelink: "https://www.roblox.com/games/7834140228/Untitled-Game" }
+    ];
+    
+    const iddata = [
         { title: `Honor`, verifier: `itsmycrafted`, link: `https://www.youtube.com/watch?v=AJIPS8X7Ew8`, gamelink: `https://www.roblox.com/games/7233295548/Honor` },
         { title: `Anata wa horobimasu`, verifier: `proprpod`, link: `https://youtube.com/watch?v=PN8jR22Imus`, gamelink: `https://www.roblox.com/games/5805830267/Anata-wa-horobimasu` },
         { title: `Frostbite`, verifier: `itsmycrafted`, link: `https://www.youtube.com/watch?v=ojTLAGUtmGE`, gamelink: `https://www.roblox.com/games/6549205615/Frostbite` },
@@ -85,44 +136,94 @@ document.addEventListener('DOMContentLoaded', function() {
         { title: `Obbyists Home`, verifier: `Marvel2232`, link: `https://www.youtube.com/watch?v=e8XoSQRGfg4`, gamelink: `https://www.roblox.com/games/4616343089/Obbyists-Home` },
         { title: `Tower of Stigmatism`, verifier: `nahlclea`, link: `https://www.youtube.com/watch?v=muVNijgfjOE`, gamelink: `https://www.roblox.com/games/7593639579/Purist-Towers-of-Hell` }
     ];
-    let total = 0
-    const container = document.getElementById('cards-container');
-    const legacycontainer = document.getElementById('legacy-container')
-    data.forEach(item => {
-        total += 1;
-        const card = document.createElement('div');
-        card.className = 'card';
-        const link = document.createElement('a')
-        link.href = item.link
-        link.target = "_blank"
-        link.className = "link-overlay"
-        card.appendChild(link)
-        const videoId = item.link.split('v=')[1].split('&')[0];
-        const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-        const img = document.createElement('img');
-        img.src = thumbnailUrl;
-        img.classList.add('thumbnail');
-        link.appendChild(img);
-        const info = document.createElement('div');
-        info.className = 'info';
-        card.appendChild(info);
-        const obby = document.createElement('h1');
-        obby.id = 'after-video'
-        obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
-        info.appendChild(obby)
-        const verifier = document.createElement('p')
-        verifier.textContent = item.verifier
-        info.appendChild(verifier)
-        const gamelink = document.createElement('a')
-        gamelink.href = item.gamelink
-        gamelink.target = "_blank"
-        gamelink.textContent = `Game`
-        info.appendChild(gamelink)
-        if (total > 50) {
-            legacycontainer.appendChild(card);
-        } else {
-            container.appendChild(card);
-        }
-    });
-    
+    if (window.location.pathname.endsWith('voc-list.html')) {
+        let total = 0;
+        const container = document.getElementById('cards-container');
+        const legacycontainer = document.getElementById('legacy-container');
+        vndata.forEach(item => {
+            total += 1;
+            const card = document.createElement('div');
+            card.className = 'card';
+            const link = document.createElement('a');
+            link.href = item.link;
+            link.target = "_blank";
+            link.className = "link-overlay";
+            card.appendChild(link);
+            const videoId = item.link.split('v=')[1].split('&')[0];
+            const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+            const img = document.createElement('img');
+            img.src = thumbnailUrl;
+            img.classList.add('thumbnail');
+            link.appendChild(img);
+            const info = document.createElement('div');
+            info.className = 'info';
+            card.appendChild(info);
+            const flag = document.createElement('img');
+            flag.src = `assets/vn.svg`;
+            flag.classList.add('flag');
+            info.appendChild(flag);
+            const obby = document.createElement('h1');
+            obby.id = 'after-video';
+            obby.textContent = total < 46 ? `#${total} - ${item.title}` : `${item.title}`;
+            info.appendChild(obby);
+            const verifier = document.createElement('p');
+            verifier.textContent = item.verifier;
+            info.appendChild(verifier);
+            const gamelink = document.createElement('a');
+            gamelink.href = item.gamelink;
+            gamelink.target = "_blank";
+            gamelink.textContent = `Game`;
+            info.appendChild(gamelink);
+            if (total > 45) {
+                legacycontainer.appendChild(card);
+            } else {
+                container.appendChild(card);
+            }
+        });
+    }
+    if (window.location.pathname.endsWith('eio-list.html')) {
+        let total = 0;
+        const container = document.getElementById('cards-container');
+        const legacycontainer = document.getElementById('legacy-container');
+        iddata.forEach(item => {
+            total += 1;
+            const card = document.createElement('div');
+            card.className = 'card';
+            const link = document.createElement('a');
+            link.href = item.link;
+            link.target = "_blank";
+            link.className = "link-overlay";
+            card.appendChild(link);
+            const videoId = item.link.split('v=')[1].split('&')[0];
+            const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+            const img = document.createElement('img');
+            img.src = thumbnailUrl;
+            img.classList.add('thumbnail');
+            link.appendChild(img);
+            const info = document.createElement('div');
+            info.className = 'info';
+            card.appendChild(info);
+            const flag = document.createElement('img');
+            flag.src = `assets/id.svg`;
+            flag.classList.add('flag');
+            info.appendChild(flag);
+            const obby = document.createElement('h1');
+            obby.id = 'after-video';
+            obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
+            info.appendChild(obby);
+            const verifier = document.createElement('p');
+            verifier.textContent = item.verifier;
+            info.appendChild(verifier);
+            const gamelink = document.createElement('a');
+            gamelink.href = item.gamelink;
+            gamelink.target = "_blank";
+            gamelink.textContent = `Game`;
+            info.appendChild(gamelink);
+            if (total > 50) {
+                legacycontainer.appendChild(card);
+            } else {
+                container.appendChild(card);
+            }
+        });
+    }
 });
