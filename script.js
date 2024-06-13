@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { title: `Tower of Glory`, verifier: `MyDayToBeat`, link: `https://www.youtube.com/watch?v=G0VPpKy9E9A`, gamelink: `https://www.roblox.com/games/2516649497/Tower-Of-Glory` },
         { title: `Amaranthine`, verifier: `WilliamDuc_06`, link: `https://www.youtube.com/watch?v=ADQ-PV8qefE`, gamelink: `https://www.roblox.com/games/6746025955/Amaranthine` },
         { title: `Refraction`, verifier: `Darkside_Dammed`, link: `https://www.youtube.com/watch?v=ZHgs2PTkwI0`, gamelink: `https://www.roblox.com/games/8687594674/Holographic` },
-        { title: `Purge`, verifier: `WilliamDuc_06`, link: `https://www.youtube.com/watch?v=ZHgs2PTkwI0`, gamelink: `https://www.roblox.com/games/8473837404/Purge` },
+        { title: `Purge`, verifier: `WilliamDuc_06`, link: `https://www.youtube.com/watch?v=SrxmCtmGfIk`, gamelink: `https://www.roblox.com/games/8473837404/Purge` },
         { title: `TARTARUS`, verifier: `tastygrave7896`, link: `https://www.youtube.com/watch?v=sVUpHk0v4Do`, gamelink: `https://www.roblox.com/games/5767147154/TARTARUS` },
         { title: `Moonlit Cosmos`, verifier: `hehe9709_2`, link: `https://www.youtube.com/watch?v=dMrODkTAUQg`, gamelink: `https://www.roblox.com/games/6088201347/Moonlit-Cosmos` },
         { title: `Denial`, verifier: `WilliamDuc_06`, link: `https://www.youtube.com/watch?v=zI9RBLzyDUw`, gamelink: `https://www.roblox.com/games/5382768129/Denial` },
