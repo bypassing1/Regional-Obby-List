@@ -126,6 +126,7 @@ header .nav-group{
     background: transparent;
     height: 100%;
     padding: 10px 20px;
+    text-align: center;
     color: #e3e3e3;
     font-size: 16px;
     border: none;
@@ -188,6 +189,7 @@ header .nav-group a{
     flex-direction: column;
     text-decoration: none;
     color: #e3e3e3;
+    text-align: center;
     transition: .25s;
 }
 
@@ -408,7 +410,7 @@ header .info-text .scroll::before{
 }
 
 .title{
-    width: 70%;
+    width: 65%;
     height: 7.5rem;
     display: flex;
     align-items: center;
@@ -451,6 +453,8 @@ header .info-text .scroll::before{
 }
 
 #about .card, #features .card{
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
     padding: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     border-radius: 20px;
@@ -459,7 +463,7 @@ header .info-text .scroll::before{
     background-image: url(assets/card-bg.svg);
     background-size: cover;
     border: 1px solid transparent;
-    transition: all 0.3s ease;
+    transition: 0.3s ease;
     z-index: 1;
 }
 
@@ -603,6 +607,10 @@ header .info-text .scroll::before{
         display: none;
     }
 
+    .nav-title {
+        display: none;
+    }
+
     header .info-text a{
         font-size: 1.25rem;
     }
@@ -615,8 +623,35 @@ header .info-text .scroll::before{
         display: none;
     }
 
+    .thumbnail {
+        width: 150px;
+        height: 84px;
+        object-fit: cover;
+        transition: .25s;
+        border: dashed 2px grey;
+    }
+
     header .info-text h3{
         font-size: 1.1rem;
+    }
+
+    header .info-text span{
+        font-size: 2rem;
+        font-weight: 500;
+        font-family: 'Ubuntu';
+        background-image: linear-gradient(
+        -225deg,
+        #231557 0%,
+        #44107a 29%,
+        #ff1361 67%,
+        #2d463a 82%,
+        #231557 100%
+    );
+        background-size: 200% auto;
+        color: #fff;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: textclip 2s linear infinite;
     }
 
     #about .card{
