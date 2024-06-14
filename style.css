@@ -30,14 +30,20 @@ body{
 }
 
 header{
+    position: fixed;
     width: 100%;
     height: 6rem;
-    background-color: white;
+    backdrop-filter: blur(4px);
     align-items: center;
     z-index: 2;
     display: flex;
     justify-content: center;
-    border-bottom: 2px solid black;
+}
+
+.top-block{
+    width: 100%;
+    height: 6rem;
+    background-color: #1e1f20;
 }
 
 .nav-container {
@@ -52,7 +58,7 @@ header{
     position: relative;
     display: inline-block;
     height: 90%;
-    border-right: 2px solid black;
+    border-right: 2px solid #e3e3e3;
     padding: 10px 20px;
     transition: .25s ease;
 }
@@ -99,22 +105,28 @@ header .nav-group{
     align-items: center;
 }
 
+.option{
+    display: flex;
+    justify-content: center;
+}
+
 .dropdown {
     position: relative;
     display: inline-block;
     height: 90%;
-    border-right: 2px solid black;
+    border-right: 2px solid #e3e3e3;
     transition: .25s ease;
 }
 
 .dropdown:hover{
-    background-color: #dddddd;
+    background-color: #121213;
 }
 
 .dropbtn {
     background: transparent;
     height: 100%;
     padding: 10px 20px;
+    color: #e3e3e3;
     font-size: 16px;
     border: none;
     cursor: pointer;
@@ -144,11 +156,11 @@ header .nav-group{
 }
 
 .dropdown-content a:nth-child(odd) {
-    background-color: #f2f2f2;
+    background-color: #0f0f0f;
 }
 
 .dropdown-content a:nth-child(even) {
-    background-color: #ffffff;
+    background-color: #1a1a1b;
 }
 
 .dropdown-content a {
@@ -175,7 +187,7 @@ header .nav-group a{
     align-items: center;
     flex-direction: column;
     text-decoration: none;
-    color: black;
+    color: #e3e3e3;
     transition: .25s;
 }
 
@@ -188,15 +200,35 @@ header .info-text{
 
 header .info-text a{
     text-decoration: none;
-    color: black;
+    color: #e3e3e3;
     font-size: 2rem;
     font-weight: 500;
     font-family: 'Ubuntu';
 }
 
 header .info-text span{
-    color: #ff0000;
-    -webkit-text-stroke: 1px #ff0000;
+    font-size: 2.5rem;
+    font-weight: 500;
+    font-family: 'Ubuntu';
+    background-image: linear-gradient(
+    -225deg,
+    #231557 0%,
+    #44107a 29%,
+    #ff1361 67%,
+    #2d463a 82%,
+    #231557 100%
+);
+    background-size: 200% auto;
+    color: #fff;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textclip 2s linear infinite;
+}
+
+@keyframes textclip {
+    to {
+    background-position: 200% center;
+    }
 }
 
 header .info-text h3{
@@ -243,41 +275,60 @@ header .info-text .scroll::before{
     height: 70%;
 }
 
-.information-middle h1{
-    font-size:3rem;
-    padding: 15px;
+.fade-text {
+    font-size: 2em;
+    font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+    position: relative;
+    color: transparent;
 }
 
-.information-middle h2{
-    font-size: 1.5rem;
-    padding: 10px;
+.fade-text::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    color: black;
+    animation: fadeFromLeft 2s forwards;
 }
 
-.information-middle p{
-    font-size: 1rem;
+@keyframes fadeFromLeft {
+    0% {
+        clip-path: inset(0 100% 0 0);
+    }
+    100% {
+        clip-path: inset(0 0 0 0);
+    }
 }
+
 
 .lists{
+    margin-top: 4rem;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .lists div{
-    background-color: white;
+    background-color: #1e1f20;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-inline: 10px ;
+    border-radius: 20px;
     height: 3rem;
     width: 12.5rem;
-    border: 1px solid;
     border-top: 0px;
     transition: .25s;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
 }
 
 .lists div:hover{
-    background-color: #dddddd;
+    background-color: #121213;
 }
 
 .lists div a{
@@ -287,9 +338,61 @@ header .info-text .scroll::before{
     height: 100%;
     width: 100%;
     text-decoration: none;
-    color: black;
+    color: #e3e3e3;
     align-items: center;
     flex-direction: column;
+}
+
+#page {
+    min-width: 100vw;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+[data-route=a] #cards-container {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+[data-route=b] #legacy-container {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+.loader {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    background-color: #252525;
+    transform: translatex(0%);
+    transition: transform .5s cubic-bezier(0.76, 0, 0.24, 1) 0.5s;
+    will-change: transform;
+}
+
+.main,
+.legacy {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .75s, visibility .75s;
+}
+
+#type-list, .card {
+    transition: opacity .5s ease-in-out;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity .5s ease;
 }
 
 #about, #features{
@@ -305,13 +408,15 @@ header .info-text .scroll::before{
 }
 
 .title{
+    width: 70%;
     height: 7.5rem;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
 }
 
 .title h1{
+    color: #e3e3e3;
     font-size: 2.5rem;
 }
 
@@ -470,6 +575,7 @@ header .info-text .scroll::before{
     height: 2px;
     width: 0;
     bottom: 0;
+
     left: 0;
     background-color: #141414;
     transition: all 1s ease;
