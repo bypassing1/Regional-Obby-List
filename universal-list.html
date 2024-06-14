@@ -114,6 +114,11 @@ const endTransition = () => {
     loader.style.transform = "";
 };
 
+function toggleDropdown() {
+        const dropdownContent = document.getElementById("dropdownContent");
+        dropdownContent.classList.toggle("show");
+    }
+
 const startTransition = () => {
     loader.style.transform = "translateX(100%)";
     appRoot.dataset.route = "a";
