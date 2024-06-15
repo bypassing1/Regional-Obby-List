@@ -22,7 +22,7 @@
     <header>
         <div class="nav-container">
             <div class="info-text">
-                <a href="index.html"><span>Universal</span> List</a>
+                <a href="index"><span>Universal</span> List</a>
             </div>
             <div class="nav-group">
                 <div class="dropdown">
@@ -78,7 +78,7 @@
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-    const cards = document.querySelectorAll("#about .card, #features .card");
+    const cards = document.querySelectorAll(".card");
 
     const setCardOpacity = () => {
         cards.forEach(card => {
@@ -187,7 +187,3 @@ window.addEventListener("load", () => {
     </footer>
 </body>
 </html>
-
-<a class="active" href="" onClick=" onRouteClick('a'); return false; ">about</a>
-<a href="" onClick=" onRouteClick('b'); return false; ">work</a>
-<a href="" onClick=" onRouteClick('c'); return false; ">contact</a>

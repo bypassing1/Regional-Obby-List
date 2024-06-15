@@ -242,6 +242,10 @@ document.addEventListener('DOMContentLoaded', function() {
         { title: `Obbyists Home`, verifier: `Marvel2232`, link: `https://www.youtube.com/watch?v=e8XoSQRGfg4`, gamelink: `https://www.roblox.com/games/4616343089/Obbyists-Home` },
         { title: `Tower of Stigmatism`, verifier: `nahlclea`, link: `https://www.youtube.com/watch?v=muVNijgfjOE`, gamelink: `https://www.roblox.com/games/7593639579/Purist-Towers-of-Hell` }
     ];
+    if (document.getElementById('index')) {
+        const top1ObbyistElement = document.querySelector('.top1-obbyist');
+        top1ObbyistElement.textContent = globaldata[0].verifier;
+    }
     if (document.getElementById('universal-list')) {
         let total = 0;
         const container = document.getElementById('cards-container');
