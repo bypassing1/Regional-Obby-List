@@ -1,22 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&family=Ubuntu:wght@300;400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&family=Ubuntu:wght@300;400;500;700&display=swap");
 
-html{
+html {
     scroll-behavior: smooth;
 }
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Raleway', sans-serif;
+    font-family: "Raleway", sans-serif;
 }
 
-body{
+body {
     background-image: url(assets/bg.svg);
     font-size: 14px;
 }
 
-.img{
+.img {
     background-image: url(assets/sides.png);
     width: 100%;
     height: 100%;
@@ -29,7 +29,7 @@ body{
     z-index: 0;
 }
 
-header{
+header {
     position: fixed;
     width: 100%;
     height: 6rem;
@@ -40,7 +40,7 @@ header{
     justify-content: center;
 }
 
-.top-block{
+.top-block {
     width: 100%;
     height: 6rem;
     background-color: #1e1f20;
@@ -60,14 +60,14 @@ header{
     height: 90%;
     border-right: 2px solid #e3e3e3;
     padding: 10px 20px;
-    transition: .25s ease;
+    transition: 0.25s ease;
 }
 
-.nav:hover{
+.nav:hover {
     background-color: #121213;
 }
 
-footer{
+footer {
     padding-left: calc(50% - 1072px / 2);
     padding-right: calc(50% - 1072px / 2);
     width: 100%;
@@ -81,15 +81,15 @@ footer{
     color: #e3e3e3;
 }
 
-footer p{
+footer p {
     font-weight: bold;
 }
 
-.shoutout{
+.shoutout {
     font-size: 1.2rem;
 }
 
-header #particles{
+header #particles {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -97,7 +97,7 @@ header #particles{
     left: 0;
 }
 
-header .nav-group{
+header .nav-group {
     display: flex;
     position: relative;
     height: 100%;
@@ -105,7 +105,7 @@ header .nav-group{
     align-items: center;
 }
 
-.option{
+.option {
     display: flex;
     justify-content: center;
 }
@@ -115,10 +115,10 @@ header .nav-group{
     display: inline-block;
     height: 90%;
     border-right: 2px solid #e3e3e3;
-    transition: .25s ease;
+    transition: 0.25s ease;
 }
 
-.dropdown:hover{
+.dropdown:hover {
     background-color: #121213;
 }
 
@@ -149,7 +149,7 @@ header .nav-group{
     position: absolute;
     background-color: #f9f9f9;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     top: 100%;
     left: 0;
@@ -179,10 +179,10 @@ header .nav-group{
     max-height: 500px;
 }
 
-header .nav-group a{
+header .nav-group a {
     display: flex;
     justify-content: center;
-    padding: 5px,20px;
+    padding: 5px, 20px;
     height: 100%;
     width: 100%;
     align-items: center;
@@ -190,36 +190,29 @@ header .nav-group a{
     text-decoration: none;
     color: #e3e3e3;
     text-align: center;
-    transition: .25s;
+    transition: 0.25s;
 }
 
-header .info-text{
+header .info-text {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 }
 
-header .info-text a{
+header .info-text a {
     text-decoration: none;
     color: #e3e3e3;
     font-size: 2rem;
     font-weight: 500;
-    font-family: 'Ubuntu';
+    font-family: "Ubuntu";
 }
 
-header .info-text span{
+header .info-text span {
     font-size: 2.5rem;
     font-weight: 500;
-    font-family: 'Ubuntu';
-    background-image: linear-gradient(
-    -225deg,
-    #231557 0%,
-    #44107a 29%,
-    #ff1361 67%,
-    #2d463a 82%,
-    #231557 100%
-);
+    font-family: "Ubuntu";
+    background-image: linear-gradient(-225deg, #231557 0%, #44107a 29%, #ff1361 67%, #2d463a 82%, #231557 100%);
     background-size: 200% auto;
     color: #fff;
     -webkit-background-clip: text;
@@ -229,15 +222,15 @@ header .info-text span{
 
 @keyframes textclip {
     to {
-    background-position: 200% center;
+        background-position: 200% center;
     }
 }
 
-header .info-text h3{
+header .info-text h3 {
     font-size: 1.5rem;
 }
 
-header .info-text .scroll{
+header .info-text .scroll {
     position: absolute;
     bottom: 20%;
     left: 50%;
@@ -246,16 +239,16 @@ header .info-text .scroll{
     transition: all 0.5s;
 }
 
-header .info-text .scroll:hover{
+header .info-text .scroll:hover {
     opacity: 0.7;
 }
 
-header .info-text .scroll::before{
+header .info-text .scroll::before {
     position: absolute;
     top: -16px;
     left: -16px;
     z-index: -1;
-    content: '';
+    content: "";
     width: 44px;
     height: 44px;
     box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.1);
@@ -263,35 +256,35 @@ header .info-text .scroll::before{
     animation: pulse 3s infinite;
 }
 
-.lists{
+.lists {
     margin-top: 4rem;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.lists div{
+.lists div {
     background-color: #1e1f20;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-inline: 10px ;
+    margin-inline: 10px;
     border-radius: 20px;
     height: 3rem;
     width: 12.5rem;
     border-top: 0px;
-    transition: .25s;
+    transition: 0.25s;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
 }
 
-.lists div:hover{
+.lists div:hover {
     background-color: #121213;
 }
 
-.lists div a{
+.lists div a {
     display: flex;
     justify-content: center;
-    padding: 5px,20px;
+    padding: 5px, 20px;
     height: 100%;
     width: 100%;
     text-decoration: none;
@@ -306,13 +299,13 @@ header .info-text .scroll::before{
     overflow: hidden;
 }
 
-[data-route=a] #cards-container {
+[data-route="a"] #cards-container {
     display: block;
     opacity: 1;
     visibility: visible;
 }
 
-[data-route=b] #legacy-container {
+[data-route="b"] #legacy-container {
     display: block;
     opacity: 1;
     visibility: visible;
@@ -324,7 +317,7 @@ header .info-text .scroll::before{
     z-index: 5;
     background-color: #252525;
     transform: translatex(0%);
-    transition: transform .5s cubic-bezier(0.76, 0, 0.24, 1) 0.5s;
+    transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1) 0.5s;
     will-change: transform;
 }
 
@@ -333,11 +326,14 @@ header .info-text .scroll::before{
     display: none;
     opacity: 0;
     visibility: hidden;
-    transition: opacity .75s, visibility .75s;
+    transition:
+        opacity 0.75s,
+        visibility 0.75s;
 }
 
-#type-list, .card {
-    transition: opacity .5s ease-in-out;
+#type-list,
+.card {
+    transition: opacity 0.5s ease-in-out;
 }
 
 #overlay {
@@ -349,10 +345,11 @@ header .info-text .scroll::before{
     background-color: rgb(255, 255, 255);
     z-index: 9999;
     opacity: 1;
-    transition: opacity .5s ease;
+    transition: opacity 0.5s ease;
 }
 
-#about, #features{
+#about,
+#features {
     display: flex;
     justify-content: center;
 }
@@ -364,7 +361,7 @@ header .info-text .scroll::before{
     justify-content: center;
 }
 
-.title{
+.title {
     width: 65%;
     height: 7.5rem;
     display: flex;
@@ -372,26 +369,29 @@ header .info-text .scroll::before{
     justify-content: left;
 }
 
-.title h1{
+.title h1 {
     color: #e3e3e3;
     font-size: 2.5rem;
 }
 
-#about .header, #features .header{
+#about .header,
+#features .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 40px;
 }
 
-#about .header h1, #features .header h1{
+#about .header h1,
+#features .header h1 {
     text-align: center;
     font-weight: bold;
     color: #000000;
     text-transform: uppercase;
 }
 
-#about .header a, #features .header a{
+#about .header a,
+#features .header a {
     text-decoration: none;
     font-size: 1.3em;
     color: #fff;
@@ -402,12 +402,14 @@ header .info-text .scroll::before{
     transition: all 0.3s ease;
 }
 
-#about .header a:hover, #features .header a:hover{
+#about .header a:hover,
+#features .header a:hover {
     border-color: #fff;
     box-shadow: none;
 }
 
-#about .card, #features .card{
+#about .card,
+#features .card {
     opacity: 0;
     transition: opacity 0.6s ease-in-out;
     padding: 30px;
@@ -422,32 +424,35 @@ header .info-text .scroll::before{
     z-index: 1;
 }
 
-#about .card:hover, #features .card:hover{
+#about .card:hover,
+#features .card:hover {
     border-color: #fff;
     box-shadow: none;
     transform: scale(1.1);
 }
 
-#about .card img{
+#about .card img {
     max-width: 200px;
     max-height: 200px;
 }
 
-#about .card .info{
+#about .card .info {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
 }
 
-#about .card .info h1, #features .card .info h1{
+#about .card .info h1,
+#features .card .info h1 {
     color: #000000;
     font-size: 1.25rem;
     font-weight: bold;
-    font-family: 'Ubuntu';
+    font-family: "Ubuntu";
 }
 
-#about .card .info p, #features .card .info p{
+#about .card .info p,
+#features .card .info p {
     font-weight: bold;
     text-align: left;
     color: #818181;
@@ -455,29 +460,29 @@ header .info-text .scroll::before{
     line-height: 1.8rem;
 }
 
-#about .card .info a{
-    transition: .25s;
+#about .card .info a {
+    transition: 0.25s;
 }
 
-#about .card .info a{
-    transform: scale(.25);
+#about .card .info a {
+    transform: scale(0.25);
 }
 
-#features .feature-cards{
+#features .feature-cards {
     display: flex;
     flex-wrap: wrap;
     gap: 2.5rem;
     width: 70%;
 }
 
-#features .feature-cards .card{
+#features .feature-cards .card {
     display: flex;
     width: 100%;
     flex-direction: row;
     align-items: center;
 }
 
-#features .feature-cards .card .info i{
+#features .feature-cards .card .info i {
     color: #fff;
     font-size: 8rem;
     width: 100%;
@@ -489,27 +494,27 @@ header .info-text .scroll::before{
     width: 178px;
     height: 100px;
     object-fit: cover;
-    transition: .25s;
+    transition: 0.25s;
     border: dashed 2px grey;
 }
 
-.thumbnail:hover{
+.thumbnail:hover {
     filter: brightness(50%);
 }
 
-.thumbnail a{
+.thumbnail a {
     display: block;
     width: 100%;
     height: 100%;
 }
 
-#features .feature-cards .card .info{
+#features .feature-cards .card .info {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-#features .feature-cards .card .info h1{
+#features .feature-cards .card .info h1 {
     text-align: left;
 }
 
@@ -524,16 +529,16 @@ header .info-text .scroll::before{
     color: #e3e3e3;
 }
 
-.information h1{
+.information h1 {
     margin-bottom: 2rem;
     font-size: 2rem;
 }
 
-.information h2{
+.information h2 {
     margin-bottom: 1rem;
 }
 
-.top-1{
+.top-1 {
     padding: 75px;
     background-color: #131314;
     display: flex;
@@ -542,30 +547,30 @@ header .info-text .scroll::before{
     color: #e3e3e3;
 }
 
-.crown-top-1{
+.crown-top-1 {
     width: 75px;
     height: auto;
     vertical-align: middle;
 }
 
-.contact-me{
+.contact-me {
     text-align: center;
     color: #e3e3e3;
     background-color: #131314;
 }
 
-.contact-me h2{
+.contact-me h2 {
     font-size: 2rem;
 }
 
-.icons{
+.icons {
     width: 100px;
     height: auto;
     vertical-align: middle;
-    transition: .25s ease;
+    transition: 0.25s ease;
 }
 
-.icons:hover{
+.icons:hover {
     filter: brightness(50%);
 }
 
@@ -575,7 +580,7 @@ header .info-text .scroll::before{
     vertical-align: middle;
 }
 
-#features .feature-cards .card .info a{
+#features .feature-cards .card .info a {
     font-size: 1.1rem;
     text-align: left;
     text-decoration: none;
@@ -584,7 +589,7 @@ header .info-text .scroll::before{
     color: #00388d;
 }
 
-#features .feature-cards .card .info a::after{
+#features .feature-cards .card .info a::after {
     content: "";
     position: absolute;
     height: 2px;
@@ -596,12 +601,12 @@ header .info-text .scroll::before{
     transition: all 1s ease;
 }
 
-#features .feature-cards .card .info a:hover::after{
+#features .feature-cards .card .info a:hover::after {
     width: 100%;
 }
 
 @media screen and (max-width: 768px) {
-    header .info-text h1{
+    header .info-text h1 {
         font-size: 2rem;
     }
 
@@ -622,12 +627,12 @@ header .info-text .scroll::before{
         display: none;
     }
 
-    header .info-text a{
+    header .info-text a {
         font-size: 1.25rem;
     }
 
-    .nav-group h3{
-        font-size: .8rem;
+    .nav-group h3 {
+        font-size: 0.8rem;
     }
 
     .img {
@@ -638,26 +643,19 @@ header .info-text .scroll::before{
         width: 150px;
         height: 84px;
         object-fit: cover;
-        transition: .25s;
+        transition: 0.25s;
         border: dashed 2px grey;
     }
 
-    header .info-text h3{
+    header .info-text h3 {
         font-size: 1.1rem;
     }
 
-    header .info-text span{
+    header .info-text span {
         font-size: 2rem;
         font-weight: 500;
-        font-family: 'Ubuntu';
-        background-image: linear-gradient(
-        -225deg,
-        #231557 0%,
-        #44107a 29%,
-        #ff1361 67%,
-        #2d463a 82%,
-        #231557 100%
-    );
+        font-family: "Ubuntu";
+        background-image: linear-gradient(-225deg, #231557 0%, #44107a 29%, #ff1361 67%, #2d463a 82%, #231557 100%);
         background-size: 200% auto;
         color: #fff;
         -webkit-background-clip: text;
@@ -665,14 +663,17 @@ header .info-text .scroll::before{
         animation: textclip 2s linear infinite;
     }
 
-    #about .card{
+    #about .card {
         flex-direction: column;
         align-items: center;
     }
 
-    #about .card img{
+    #about .card img {
         max-width: 150px;
         max-height: 150px;
     }
 
+    #home {
+        display: none;
+    }
 }
