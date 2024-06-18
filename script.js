@@ -1527,15 +1527,19 @@ document.addEventListener('DOMContentLoaded', function () {
         const legacycontainer = document.getElementById('legacy-container');
         globaldata.forEach(item => {
             total += 1;
+            const videoId = item.link.split('v=')[1].split('&')[0];
+            const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
             const card = document.createElement('div');
             card.className = 'card';
+            const bgblur = document.createElement('div');
+            bgblur.className = "background-blur"
+            bgblur.style.backgroundImage = `url(${thumbnailUrl})`
+            card.appendChild(bgblur)
             const link = document.createElement('a');
             link.href = item.link;
             link.target = "_blank";
             link.className = "link-overlay";
             card.appendChild(link);
-            const videoId = item.link.split('v=')[1].split('&')[0];
-            const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
             const img = document.createElement('img');
             img.src = thumbnailUrl;
             img.classList.add('thumbnail');

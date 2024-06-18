@@ -374,98 +374,90 @@ header .info-text .scroll::before {
     font-size: 2.5rem;
 }
 
-#about .header,
-#features .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 40px;
-}
-
-#about .header h1,
-#features .header h1 {
-    text-align: center;
-    font-weight: bold;
-    color: #000000;
-    text-transform: uppercase;
-}
-
-#about .header a,
-#features .header a {
-    text-decoration: none;
-    font-size: 1.3em;
-    color: #fff;
-    border: 1px solid transparent;
-    padding: 10px 50px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
-    border-radius: 6px;
-    transition: all 0.3s ease;
-}
-
-#about .header a:hover,
-#features .header a:hover {
-    border-color: #fff;
-    box-shadow: none;
-}
-
-#about .card,
 #features .card {
-    opacity: 0;
-    transition: opacity 0.6s ease-in-out;
+    position: relative;
     padding: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     border-radius: 20px;
     display: flex;
     gap: 30px;
-    background-image: url(assets/card-bg.svg);
-    background-size: cover;
     border: 1px solid transparent;
     transition: 0.3s ease;
     z-index: 1;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.8); /* Slightly opaque background for text readability */
 }
 
-#about .card:hover,
+.background-blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(3px) brightness(50%);
+    z-index: 0;
+    opacity: 1;
+}
+
+.background-blur::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(45deg, rgba(255, 255, 255, 1) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 75%, transparent 75%, transparent);
+    background-size: 10px 10px; /* Increase the size of the lines */
+    opacity: 1; /* Increase the opacity of the lines */
+    z-index: 1;
+}
+
+
+.card .info {
+    position: relative;
+    z-index: 1; /* Ensure content is above the background */
+    background: transparent; /* Transparent background to show blurred image behind */
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.thumbnail {
+    width: 178px;
+    height: 100px;
+    object-fit: cover;
+    transition: 0.25s;
+    border: dashed 2px grey;
+    z-index: 1;
+    position: relative;
+    transition: .25s ease;
+    }
+
+    .thumbnail:hover
+{
+filter: brightness(50%);
+}
+
 #features .card:hover {
     border-color: #fff;
     box-shadow: none;
     transform: scale(1.1);
 }
 
-#about .card img {
-    max-width: 200px;
-    max-height: 200px;
-}
-
-#about .card .info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-}
-
-#about .card .info h1,
 #features .card .info h1 {
-    color: #000000;
+    color: #e0e0e0;
     font-size: 1.25rem;
     font-weight: bold;
     font-family: "Ubuntu";
 }
 
-#about .card .info p,
 #features .card .info p {
     font-weight: bold;
     text-align: left;
-    color: #818181;
+    color: #bdbdbd;
     font-size: 1rem;
     line-height: 1.8rem;
-}
-
-#about .card .info a {
-    transition: 0.25s;
-}
-
-#about .card .info a {
-    transform: scale(0.25);
 }
 
 #features .feature-cards {
@@ -488,34 +480,6 @@ header .info-text .scroll::before {
     width: 100%;
     text-align: center;
     margin-bottom: 1.4rem;
-}
-
-.thumbnail {
-    width: 178px;
-    height: 100px;
-    object-fit: cover;
-    transition: 0.25s;
-    border: dashed 2px grey;
-}
-
-.thumbnail:hover {
-    filter: brightness(50%);
-}
-
-.thumbnail a {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-
-#features .feature-cards .card .info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-#features .feature-cards .card .info h1 {
-    text-align: left;
 }
 
 .information {
@@ -586,7 +550,7 @@ header .info-text .scroll::before {
     text-decoration: none;
     position: relative;
     padding-bottom: 0.75rem;
-    color: #00388d;
+    color: #4c93ff;
 }
 
 #features .feature-cards .card .info a::after {
@@ -597,7 +561,7 @@ header .info-text .scroll::before {
     bottom: 0;
 
     left: 0;
-    background-color: #141414;
+    background-color: #d3d3d3;
     transition: all 1s ease;
 }
 
@@ -619,8 +583,8 @@ header .info-text .scroll::before {
         justify-content: center;
     }
 
-    .info {
-        display: none;
+    .title{
+        justify-content: center;
     }
 
     .nav-title {
@@ -675,5 +639,23 @@ header .info-text .scroll::before {
 
     #home {
         display: none;
+    }
+
+    .nav:hover,
+    .dropdown:hover,
+    .dropdown-content a:hover,
+    header .info-text .scroll:hover,
+    .lists div:hover,
+    .thumbnail:hover,
+    #features .card:hover,
+    .icons:hover,
+    #features .feature-cards .card .info a:hover::after {
+        transition: none; /* Disable transition */
+        background-color: inherit !important; /* Reset background color */
+        opacity: 1 !important; /* Reset opacity */
+        filter: brightness(100%) !important; /* Reset brightness filter */
+        border-color: initial !important; /* Reset border color */
+        box-shadow: initial !important; /* Reset box shadow */
+        transform: initial !important; /* Reset transform */
     }
 }
