@@ -723,6 +723,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ]
 
     const vndata = [
+        
         {
             title: `Tower of Vacant Hindrances`,
             verifier: `Darkside_Dammed`,
