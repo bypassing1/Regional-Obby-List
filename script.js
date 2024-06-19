@@ -722,7 +722,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     ]
 
-    const vndata = [{
+    const vndata = [
+        {
+            title: `Tower of Vacant Hindrances`,
+            verifier: `Darkside_Dammed`,
+            link: `https://www.youtube.com/watch?v=60AaVdW-UXk`,
+            gamelink: `https://www.roblox.com/games/4827159348/Tower-of-Vacant-Hindrances`
+        },
+        {
             title: `Sundarkened World`,
             verifier: `Darkside_Dammed`,
             link: `https://www.youtube.com/watch?v=hhnIKUr1xps`,
