@@ -420,7 +420,6 @@ header .info-text .scroll::before {
     z-index: 1; /* Ensure content is above the background */
     background: transparent; /* Transparent background to show blurred image behind */
     border-radius: 20px;
-    padding: 20px;
 }
 
 .thumbnail {
@@ -575,7 +574,7 @@ filter: brightness(50%);
     }
 
     #features .feature-cards {
-        width: 30rem;
+        width: 95%;
         justify-self: center;
     }
 
@@ -625,16 +624,6 @@ filter: brightness(50%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         animation: textclip 2s linear infinite;
-    }
-
-    #about .card {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #about .card img {
-        max-width: 150px;
-        max-height: 150px;
     }
 
     #home {
