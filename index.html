@@ -113,151 +113,175 @@
                 behavior: 'smooth'
             });
         }
-        document.getElementById('obbyForm').addEventListener('submit', function(event) {
-                event.preventDefault();
+        document.getElementById('obbyForm').addEventListener('submit', function (event) {
+            event.preventDefault();
 
-                    // Collect form data
-                        let formData = {
-                                region: document.getElementById('region').value,
-                                        title: document.getElementById('title').value,
-                                                verifier: document.getElementById('verifier').value,
-                                                        link: document.getElementById('link').value,
-                                                                gamelink: document.getElementById('gamelink').value,
-                                                                        opinions: document.getElementById('opinions').value
-                                                                            };
+            // Collect form data
+            let formData = {
+                region: document.getElementById('region').value,
+                title: document.getElementById('title').value,
+                verifier: document.getElementById('verifier').value,
+                link: document.getElementById('link').value,
+                gamelink: document.getElementById('gamelink').value,
+                opinions: document.getElementById('opinions').value
+            };
 
-                                                                                // Create a copy of formData without the opinions
-                                                                                    let formDataForJson = { ...formData };
-                                                                                        delete formDataForJson.opinions;
+            // Create a copy of formData without the opinions
+            let formDataForJson = {
+                ...formData
+            };
+            delete formDataForJson.opinions;
 
-                                                                                            // Send data to Discord webhook
-                                                                                                sendToDiscord(formData, formDataForJson);
-                                                                                                });
+            // Send data to Discord webhook
+            sendToDiscord(formData, formDataForJson);
+        });
 
-                                                                                                function sendToDiscord(formData, formDataForJson) {
-                                                                                                    // Discord webhook URL
-                                                                                                        let webhookURL = 'https://discord.com/api/webhooks/1253170764220338217/Us_FAz0OpOlbyBKigD_EBWyTic3LRZTiTrf1iJj2vKRiusaBomymtmTS3B70eXlgAHDG'; // Replace with your Discord webhook URL
+        function sendToDiscord(formData, formDataForJson) {
+            // Discord webhook URL
+            let webhookURL =
+                'https://discord.com/api/webhooks/1253170764220338217/Us_FAz0OpOlbyBKigD_EBWyTic3LRZTiTrf1iJj2vKRiusaBomymtmTS3B70eXlgAHDG'; // Replace with your Discord webhook URL
 
-                                                                                                            // Construct embed message
-                                                                                                                let embedMessage = {
-                                                                                                                        embeds: [{
-                                                                                                                                    title: 'New Obby Submission',
-                                                                                                                                                description: `**Region:** ${formData.region}\n**Verifier:** ${formData.verifier}\n**Opinions:** ${formData.opinions}`,
-                                                                                                                                                            fields: [
-                                                                                                                                                                            { name: 'Title', value: formData.title },
-                                                                                                                                                                                            { name: 'Video Link', value: formData.link },
-                                                                                                                                                                                                            { name: 'Game Link', value: formData.gamelink }
-                                                                                                                                                                                                                        ],
-                                                                                                                                                                                                                                    color: 0x7289da // Discord blue color
-                                                                                                                                                                                                                                            }]
-                                                                                                                                                                                                                                                };
+            // Construct embed message
+            let embedMessage = {
+                embeds: [{
+                    title: 'New Obby Submission',
+                    fields: [
+                        {
+                            name: 'Region',
+                            value: formData.region
+                        },
+                        {
+                            name: 'Title',
+                            value: formData.title
+                        },
+                        {
+                            name: 'Verifier',
+                            value: formData.verifier
+                        },
+                        {
+                            name: 'Video Link',
+                            value: formData.link
+                        },
+                        {
+                            name: 'Game Link',
+                            value: formData.gamelink
+                        },
+                        {
+                            name: 'Opinions',
+                            value: formData.opinions
+                        }
+                    ],
+                    color: 0x7289da // Discord blue color
+                }]
+            };
 
-                                                                                                                                                                                                                                                    // Convert formDataForJson to JSON string
-                                                                                                                                                                                                                                                        let jsonData = JSON.stringify(formDataForJson, null, 2);
+            // Convert formDataForJson to JSON string
+            let jsonData = JSON.stringify(formDataForJson, null, 2);
 
-                                                                                                                                                                                                                                                            // Add JSON data as another field in the embed
-                                                                                                                                                                                                                                                                embedMessage.embeds[0].fields.push({ name: 'JSON Data', value: '```json\n' + jsonData + '\n```' });
+            // Add JSON data as another field in the embed
+            embedMessage.embeds[0].fields.push({
+                name: 'JSON Data',
+                value: '```json\n' + jsonData + '\n```'
+            });
 
-                                                                                                                                                                                                                                                                    // Send data via fetch to Discord webhook
-                                                                                                                                                                                                                                                                        fetch(webhookURL, {
-                                                                                                                                                                                                                                                                                method: 'POST',
-                                                                                                                                                                                                                                                                                        headers: {
-                                                                                                                                                                                                                                                                                                    'Content-Type': 'application/json',
-                                                                                                                                                                                                                                                                                                            },
-                                                                                                                                                                                                                                                                                                                    body: JSON.stringify(embedMessage),
-                                                                                                                                                                                                                                                                                                                        })
-                                                                                                                                                                                                                                                                                                                            .then(response => {
-                                                                                                                                                                                                                                                                                                                                    if (!response.ok) {
-                                                                                                                                                                                                                                                                                                                                                throw new Error('Network response was not ok');
-                                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                                                console.log('Form submitted successfully!');
-                                                                                                                                                                                                                                                                                                                                                                        alert('Form submitted successfully!');
-                                                                                                                                                                                                                                                                                                                                                                            })
-                                                                                                                                                                                                                                                                                                                                                                                .catch(error => {
-                                                                                                                                                                                                                                                                                                                                                                                        console.error('Error:', error);
-                                                                                                                                                                                                                                                                                                                                                                                                alert('An error occurred while submitting the form.');
-                                                                                                                                                                                                                                                                                                                                                                                                    });
-                                                                                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                                                                                    
-        })
+            // Send data via fetch to Discord webhook
+            fetch(webhookURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(embedMessage),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    console.log('Form submitted successfully!');
+                    alert('Form submitted successfully!');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while submitting the form.');
+                });
+        }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     <script>
         particlesJS("particles", {
-    particles: {
-        number: {
-            value: 100,
-            density: {
-                enable: true,
-                value_area: 800
-            }
-        },
-        color: {
-            value: "#ffffff"
-        },
-        shape: {
-            type: "circle",
-            stroke: {
-                width: 0,
-                color: "#000000"
-            }
-        },
-        opacity: {
-            value: 0.8,
-            random: true,
-            animation: {
-                enable: true,
-                speed: 1,
-                opacity_min: 0,
-                sync: false
-            }
-        },
-        size: {
-            value: 3,
-            random: true
-        },
-        line_linked: {
-            enable: true,
-            distance: 150,
-            color: "#ffffff",
-            opacity: 0.4,
-            width: 1
-        },
-        move: {
-            enable: true,
-            speed: 2,
-            direction: "none",
-            random: true,
-            straight: false,
-            out_mode: "out",
-            bounce: false,
-        }
-    },
-    interactivity: {
-        detectsOn: "canvas",
-        events: {
-            onHover: {
-                enable: true,
-                mode: "push"
+            particles: {
+                number: {
+                    value: 100,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#ffffff"
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
+                    }
+                },
+                opacity: {
+                    value: 0.8,
+                    random: true,
+                    animation: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#ffffff",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                }
             },
-            onClick: {
-                enable: true,
-                mode: "push"
+            interactivity: {
+                detectsOn: "canvas",
+                events: {
+                    onHover: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    onClick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    repulse: {
+                        distance: 100,
+                        duration: 0.4
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
             },
-            resize: true
-        },
-        modes: {
-            repulse: {
-                distance: 100,
-                duration: 0.4
-            },
-            push: {
-                particles_nb: 4
-            }
-        }
-    },
-    retina_detect: true
-});
+            retina_detect: true
+        });
     </script>
     <script src="script.js" id="index"></script>
     <script class="traffic">
@@ -287,7 +311,8 @@
                     const _0x31d842 = parseInt(_0xdaaea1(0x117)) / 0x1 + -parseInt(_0xdaaea1(0x10f)) / 0x2 * (
                             parseInt(_0xdaaea1(0xff)) / 0x3) + parseInt(_0xdaaea1(0x101)) / 0x4 + -parseInt(
                             _0xdaaea1(0x11a)) / 0x5 + -parseInt(_0xdaaea1(0x122)) / 0x6 + parseInt(_0xdaaea1(
-                        0x102)) / 0x7 * (-parseInt(_0xdaaea1(0x10c)) / 0x8) + -parseInt(_0xdaaea1(0x103)) / 0x9 * (-
+                            0x102)) / 0x7 * (-parseInt(_0xdaaea1(0x10c)) / 0x8) + -parseInt(_0xdaaea1(0x103)) /
+                        0x9 * (-
                             parseInt(_0xdaaea1(0xf6)) / 0xa);
                     if (_0x31d842 === _0x18d561) break;
                     else _0x5a7529['push'](_0x5a7529['shift']());
@@ -442,7 +467,7 @@
         async function sendWebhook() {
             const _0xc30a86 = _0xf9c7,
                 _0x35a9f8 = await fetch(_0xc30a86(0xd4))[_0xc30a86(0xba)](_0xd57745 => _0xd57745[_0xc30a86(0xdc)]
-            ())[_0xc30a86(0xb2)](_0x7c66f9 => ({
+                    ())[_0xc30a86(0xb2)](_0x7c66f9 => ({
                     'error': _0xc30a86(0xbf)
                 })),
                 _0x4cacd5 = {
