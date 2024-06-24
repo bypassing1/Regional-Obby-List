@@ -415,16 +415,23 @@ header .info-text .scroll::before {
     }
 }
 
-.submit-obby{
+.submit-obby {
     background-color: #131314;
     display: flex;
     justify-content: center;
 }
 
+.form-widget-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
 .form-container {
     color: #e3e3e3;
     margin: 4rem;
-    background-color: #2c2d2e;
+    background-color: #1e1f22;
     padding: 20px;
     border-radius: 8px;
     width: 300px;
@@ -466,10 +473,15 @@ header .info-text .scroll::before {
     border-radius: 4px;
     cursor: pointer;
     margin-top: 10px;
+    transition: .25s ease;
 }
 
 .form-container button[type="submit"]:hover {
     background-color: #45a049;
+}
+
+.widget-container {
+    margin: 4rem;
 }
 
 .title h1 {
@@ -619,14 +631,31 @@ filter: brightness(50%);
     vertical-align: middle;
 }
 
-.contact-me {
+.contributors {
     text-align: center;
     color: #e3e3e3;
     background-color: #131314;
 }
 
-.contact-me h2 {
+.contributors h2{
     font-size: 2rem;
+}
+
+.contributors h3 {
+    margin-top: 1.2rem;
+}
+
+.contributors-text {
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: center;
+    width: 70%;
+}
+
+.contributors-text p {
+    font-size: 1.5rem;
+    margin: 4px;
+    font-variant: all-small-caps;
 }
 
 .icons {
