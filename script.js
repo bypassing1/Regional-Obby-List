@@ -6,6 +6,19 @@ document.addEventListener('DOMContentLoaded', function () {
             if (document.getElementById('index')) {
                 const top1ObbyistElement = document.querySelector('.top1-obbyist');
                 top1ObbyistElement.textContent = globaldata[0].verifier;
+                let contributors = [
+                    'itsmycrafted',
+                    'galih_funfan',
+                    'lcknt',
+                    'zayenzoo',
+                    'darkside_dammed'
+                ]
+                let contributorsContainer = document.querySelector('.contributors-text');
+                contributors.forEach(contributor => {
+                    let p = document.createElement('p');
+                    p.textContent = contributor;
+                    contributorsContainer.appendChild(p);
+                });
             }
             if (document.getElementById('universal-list')) {
                 let total = 0;
