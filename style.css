@@ -636,7 +636,7 @@ filter: brightness(50%);
     display: flex;
     justify-content: center;
     width: 100%;
-    text-align:center;
+
 }
 
 .stats-viewer {
@@ -736,6 +736,7 @@ filter: brightness(50%);
     align-items: center;
     margin: 20px;
     gap: 50px;
+    text-align:center;
 }
 
 .stats-container span {
