@@ -1,8 +1,124 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Fetch the JSON data
-    fetch('data/globaldata.json')
-        .then(response => response.json())
-        .then(globaldata => {
+    // Fetch globaldata.json and playerstat.json
+    Promise.all([
+            fetch('data/globaldata.json').then(response => response.json()),
+            fetch('data/playerstat.json').then(response => response.json())
+        ])
+        .then(([globaldata, playerstat]) => {
+            // Ensure globaldata has the points property
+            let points = 300;
+            for (let i = 0; i < 100; i++) {
+                globaldata[i].points = points.toFixed(2);
+                points -= 2.77;
+            }
+
+            // Calculate player points for each player in playerstat
+            playerstat.forEach(player => {
+                let totalPoints = 0;
+                let hardestObby = '';
+                let highestPoints = 0;
+
+                player.beaten.forEach(obby => {
+                    const obbyData = globaldata.find(data => data.title === obby);
+                    if (obbyData && obbyData.points) {
+                        const obbyPoints = parseFloat(obbyData.points);
+                        totalPoints += obbyPoints;
+                        if (obbyPoints > highestPoints) {
+                            highestPoints = obbyPoints;
+                            hardestObby = obby;
+                        }
+                    }
+                });
+
+                player.playerpoints = totalPoints.toFixed(2);
+                player.hardestobby = hardestObby;
+            });
+
+            playerstat.sort((a, b) => parseFloat(b.playerpoints) - parseFloat(a.playerpoints));
+
+            if (document.getElementById('statistics')) {
+                const scrollableDiv = document.getElementById('scrollable');
+
+                playerstat.forEach((player, index) => {
+                    const playerDiv = document.createElement('a');
+                    playerDiv.className = 'player-div';
+
+                    const playerFlag = document.createElement('img');
+                    playerFlag.src = `assets/${player.region}.svg`;
+                    playerFlag.className = 'player-flag';
+                    playerFlag.alt = '';
+
+                    const playerName = document.createElement('h4');
+                    playerName.textContent = `#${index + 1} - ${player.name}`;
+
+                    playerDiv.appendChild(playerFlag);
+                    playerDiv.appendChild(playerName);
+                    scrollableDiv.appendChild(playerDiv);
+
+                    // Add click event listener to each playerDiv
+                    playerDiv.addEventListener('click', () => {
+                        const playerStatsDiv = document.querySelector('.player-stats');
+                        playerStatsDiv.innerHTML = ''; // Clear previous content
+
+                        const nationality = player.region.toUpperCase()
+
+                        playerStatsDiv.innerHTML = `
+                    <div class="stats-header">
+                    <img src="assets/${player.region}.svg" class="flag" alt="">
+                    <h2 id="player">${player.name}</h2>
+                    </div>
+                    <div class="stats-container">
+                        <span>
+                            <b>Nationality</b>
+                            <p>${nationality}</p>
+                        </span>
+                    </div>
+                    <div class="stats-container">
+                        <span>
+                            <b>Rank</b>
+                            <p>${index + 1}</p>
+                        </span>
+                        <span>
+                            <b>Points</b>
+                            <p>${player.playerpoints}</p>
+                        </span>
+                    </div>
+                    <div class="stats-container">
+                        <span>
+                            <b>Hardest Obby</b>
+                            <p>${player.hardestobby}</p>
+                        </span>
+                    </div>
+                    <div class="stats-container">
+                        <span>
+                            <b>Obby Beaten</b>
+                            <span>
+                            ${player.beaten.map(obby => `<p>${obby}</p>`).join('')}
+                        </span>
+                        </span>
+                    </div>
+                `;
+
+                        playerStatsDiv.style.display = 'block'; // Show the player-stats div
+                        startTransition();
+                    });
+                });
+            }
+
+            const loader = document.querySelector(".loader");
+            const playerStatsDiv = document.querySelector(".player-stats")
+
+            const startTransition = () => {
+                playerStatsDiv.style.opacity = '0'
+                loader.style.transform = "translateX(0%)";
+                setTimeout(() => {
+                    loader.style.transform = "translateX(100%)"; // End position
+                    playerStatsDiv.style.opacity = '1'
+                }, 1000);
+            };
+
+            // Continue with your existing script logic
             if (document.getElementById('index')) {
                 const top1ObbyistElement = document.querySelector('.top1-obbyist');
                 top1ObbyistElement.textContent = globaldata[0].verifier;
@@ -12,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     'lcknt',
                     'zayenzoo',
                     'darkside_dammed'
-                ]
+                ];
                 let contributorsContainer = document.querySelector('.contributors-text');
                 contributors.forEach(contributor => {
                     let p = document.createElement('p');
@@ -91,6 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
         })
+        .catch(error => console.error('Error fetching data:', error));
     if (document.getElementById('voc-list')) {
         let total = 0;
         const container = document.getElementById('cards-container');
