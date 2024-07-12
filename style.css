@@ -712,6 +712,15 @@ filter: brightness(50%);
     transition: .5s ease;
 }
 
+.beaten-obby {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    gap: 10px;
+}
+
 .stats-header {
     display: flex;
     align-items: center;

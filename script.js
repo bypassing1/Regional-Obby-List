@@ -93,9 +93,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="stats-container">
                         <span>
                             <b>Obby Beaten</b>
-                            <span>
+                            <div class="beaten-obby">
                             ${player.beaten.map(obby => `<p>${obby}</p>`).join('')}
-                        </span>
+                        </div>
                         </span>
                     </div>
                 `;

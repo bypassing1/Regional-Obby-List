@@ -2,6 +2,41 @@
     {
         "name" : "itsmycrafted",
         "region" : "id",
-        "beaten" : ["Frostbite" , "Tower of Vacant Hindrances", "Honor"]
+        "beaten" : ["Frostbite" , "Tower of Vacant Hindrances", "Honor", "Tower of Terse Persecution", "Magnetic", "The Nightmare", "Tower of Honor", "Asiruuus", "Comatose", "Tower of Glory", "Site0", "Tower of Upended Vapor", "Tower of Abandoned Pillars", "Ice", "Another World", "Rise of Colors", "Tower of Maltael", "Epiphany"]
+    },
+    {
+        "name" : "galih_funfan",
+        "region" : "id",
+        "beaten" : ["Frostbite","Dysphoria", "Tower of Cruel Punishment", "Arcrux", "Tower of Champion's Road", "Cobalt Paradox", "Comatose", "Tower of Glory","Somewhere in Nowhere.", "Refraction", "TARTARUS", "Divine Intervention", "Cosmic Dismay"]
+    },
+    {
+        "name" : "infinicator",
+        "region" : "vn",
+        "beaten": ["Sundarkened World", "Shinku no Naraku", "Somewhere in Nowhere.", "Moonlit Cosmos"]
+    },
+    {
+        "name" : "proprpod",
+        "region" :"id",
+        "beaten" :["Anata wa Horobimasu", "Longhopping", "The Conquering", "The Nightmare", "Hope for Amendment", "Forgotten Obby 2", "Mint Skies", "Shinku no Naraku"]
+    },
+    {
+        "name" : "toweroftest",
+        "region" :"id",
+        "beaten":["Bluestification", "Tower of Glory"]
+    },
+    {
+        "name" : "Ariouss",
+        "region" : "id",
+        "beaten":["Tower of Jabberwock Jagger", "Tower of Cruel Punishment", "Tower of Elongated Runs", "Comatose","Moonlit Cosmos","Scarlet Paracosm", "Site0"]
+    },
+    {
+        "name" : "Marvel2232",
+        "region" : "id",
+        "beaten":["Room of Rose", "rh", "Somewhere in Nowhere.", "Refraction", "Tritanopia", "A Monolith", "Desolate", "Denial", "Cupid Delight", "Lucid Dream", "Bluestification", "Neptune", "Site0"]
+    },
+    {
+        "name" : "R96Fsa",
+        "region" :"id",
+        "beaten" : ["Tower of Glory"]
     }
 ]
