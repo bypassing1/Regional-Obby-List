@@ -7,7 +7,7 @@
     {
         "name" : "galih_funfan",
         "region" : "id",
-        "beaten" : ["Frostbite","Dysphoria", "Tower of Cruel Punishment", "Arcrux", "Tower of Champion's Road", "Cobalt Paradox", "Comatose", "Tower of Glory","Somewhere in Nowhere.", "Refraction", "TARTARUS", "Divine Intervention", "Cosmic Dismay"]
+        "beaten" : ["Frostbite","Dysphoria", "Tower of Cruel Punishment", "Arcrux", "Tower of Champion's Road", "Cobalt Paradox", "Comatose", "Tower of Glory","Somewhere in Nowhere.", "Refraction", "TARTARUS", "Divine Intervention", "Cosmic Dismay","Desolate"]
     },
     {
         "name" : "infinicator",
@@ -38,5 +38,11 @@
         "name" : "R96Fsa",
         "region" :"id",
         "beaten" : ["Tower of Glory"]
+    },
+    {
+        "name" : "sxn_nyeo",
+        "region" : "ukr",
+        "beaten" :["Pillars : Hardcore","Anata wa Horobimasu", "Enigmatic Void", "The Conquering", "Shinku no Naraku", "Hope for Amendment", "Nescience","Forgotten Obby 2","FOR THE; Sakura","Honor"]
+
     }
 ]
