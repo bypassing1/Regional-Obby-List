@@ -450,7 +450,6 @@ header .info-text .scroll::before {
     border-radius: 8px;
     width: 300px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    height: 40rem;
 }
 
 .form-container h2 {
@@ -594,6 +593,7 @@ filter: brightness(50%);
     flex-wrap: wrap;
     gap: 2.5rem;
     width: 70%;
+    margin-bottom: 2.5rem;
 }
 
 #features .feature-cards .card {
@@ -643,6 +643,7 @@ filter: brightness(50%);
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -701,8 +702,7 @@ filter: brightness(50%);
 }
 
 .player-stats {
-    display: none;
-    padding: 20px;
+    padding: 10px;
     background-color: #1e1f22;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
