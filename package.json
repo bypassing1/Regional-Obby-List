@@ -1,0 +1,15 @@
+{
+  "name": "eiolist",
+  "version": "1.0.0",
+  "description": "In this website i'll list obbies from each country, ALL of the Back-End and Front-End are all completely made by one person (me), However if you wanted to help me with data you can send me a dm in Discord : ptxc ; and you could also join our discord server ([Here](https://discord.gg/XXCk8EDF6r)), Thanks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/speed-insights": "^1.0.12"
+  }
+}
