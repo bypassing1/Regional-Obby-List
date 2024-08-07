@@ -37,6 +37,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
             playerstat.sort((a, b) => parseFloat(b.playerpoints) - parseFloat(a.playerpoints));
 
+            if (document.getElementById('list-editor')) {
+                document.getElementById('pushDataButton').addEventListener('click', async () => {
+                    const newData = {
+                        "region": "ukr",
+                        "title": "Pillars : Hardcore",
+                        "verifier": "sxn_nyeo",
+                        "link": "https://www.youtube.com/watch?v=kTyp6PF-EZU",
+                        "gamelink": "https://www.roblox.com/games/3026834641/Pillars"
+                    };
+                
+                    try {
+                        const response = await fetch('/api/updateData', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(newData)
+                        });
+                
+                        if (response.ok) {
+                            console.log('Data pushed successfully!');
+                        } else {
+                            console.error('Failed to push data');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+
             if (document.getElementById('statistics')) {
                 const scrollableDiv = document.getElementById('scrollable');
 
