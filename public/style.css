@@ -152,9 +152,13 @@ header .nav-group {
 }
 
 .flag-icon {
-    width: 50px;
+    width: 25px;
     height: auto;
     vertical-align: middle;
+}
+
+h3{
+    font-size: 20px;
 }
 
 .dropdown-content {

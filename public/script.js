@@ -63,6 +63,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         const nationality = player.region.toUpperCase()
 
+                        const beatenObbyHTML = player.beaten.map(obby => {
+                            const obbyData = globaldata.find(data => data.title === obby);
+                            const obbyPoints = obbyData ? obbyData.points : '0.00';
+                            return `<p title="${obbyPoints} Points">${obby}</p>`;
+                        }).join('');
+
                         playerStatsDiv.innerHTML = `
                     <div class="stats-header">
                     <img src="assets/${player.region}.svg" class="flag" alt="">
@@ -94,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <span>
                             <b>Obby Beaten</b>
                             <div class="beaten-obby">
-                            ${player.beaten.map(obby => `<p>${obby}</p>`).join('')}
+                            ${beatenObbyHTML}
                         </div>
                         </span>
                     </div>
