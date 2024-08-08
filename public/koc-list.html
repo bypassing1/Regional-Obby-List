@@ -2,21 +2,20 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css" />
-    <title>Elite Indonesian Obbyist List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <title>Korean Obbyist Community List</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2277894072143897"
         crossorigin="anonymous"></script>
-    <meta name="author" content="bypassing1" />
-    <meta property="og:title" content="Elite Indonesian Obbyist List" />
-    <meta property="og:description"
-        content="The Indonesian list, which ranges from top #1 to #50 from all of indonesia." />
-    <meta property="og:url" content="https://bypassing1.github.io/The-Obbyist-List/eio-list.html" />
+    <meta name="author" content="bypassing1">
+    <meta property="og:title" content="Korean Obbyist Community List">
+    <meta property="og:description" content="Korean Obbyist Community List, which ranges from top #1 to #50 from all of south korea.">
+    <meta property="og:url" content="https://bypassing1.github.io/The-Obbyist-List/voc-list">
     <meta property="og:image" id="og-image"
-        content="https://cdn.discordapp.com/attachments/1246327728588849162/1251096040204140596/image.png?ex=666d557c&is=666c03fc&hm=a8381dedaf892f4986a3aaf37147c81cb90227077ce3f5dd5ea650d0f64787b2&" />
-    <meta property="og:type" content="website" />
+        content="https://cdn.discordapp.com/attachments/1246327728588849162/1251096242075860992/image.png?ex=666d55ac&is=666c042c&hm=1673e30fb92b931a8db05c2793e8c374acdfc3acea0928abc6aff203b0d87349&">
+    <meta property="og:type" content="website">
 </head>
 
 <body>
@@ -24,7 +23,7 @@
     <header>
         <div class="nav-container">
             <div class="info-text">
-                <a href="index">Elite <span>Indonesian</span> Obbyist List</a>
+                <a href="index"><span>Korean</span> Obby Community List</a>
             </div>
             <div class="nav-group">
                 <div class="nav" id="home">
@@ -58,12 +57,12 @@
     <div class="top-block"></div>
     <nav class="lists">
         <div>
-            <a href="" href="" onClick=" onRouteClick('a'); return false; ">
+            <a href="#main-list">
                 <h1>Main List</h1>
             </a>
         </div>
         <div>
-            <a href="" onClick=" onRouteClick('b'); return false; ">
+            <a href="#legacy-list">
                 <h1>Legacy List</h1>
             </a>
         </div>
@@ -75,12 +74,15 @@
         </div>
     </section>
     <div id="features" class="main">
-        <div class="feature-cards" id="cards-container"></div>
+        <div class="feature-cards" id="cards-container">
+        </div>
     </div>
     <div id="features" class="legacy">
-        <div class="feature-cards" id="legacy-container"></div>
+        <div class="feature-cards" id="legacy-container">
+        </div>
     </div>
-    <script src="script.js" id="eio-list"></script>
+    <div class=""></div>
+    <script src="script.js" id="koc-list"></script>
     <script>
         window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
     </script>
@@ -100,7 +102,7 @@
             const cards = document.querySelectorAll(".card");
 
             const setCardOpacity = () => {
-                cards.forEach((card) => {
+                cards.forEach(card => {
                     const rect = card.getBoundingClientRect();
                     const windowHeight = window.innerHeight;
 
@@ -113,7 +115,7 @@
                 });
             };
 
-            window.addEventListener("scroll", setCardOpacity);
+            window.addEventListener('scroll', setCardOpacity);
             setCardOpacity(); // Initial call to set the opacity on page load
         });
 
@@ -200,7 +202,7 @@
     </script>
     <footer>
         <p>© Copyright 2024-2024 Elite Indonesian Obbyist</p>
-        <br />
+        <br>
         <p class="shoutout">Shoutout to :</p>
         <p>galih_funfan lcknt Zayenzoo D4RAWET proprpod ReaIBear</p>
     </footer>
