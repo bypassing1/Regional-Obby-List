@@ -48,5 +48,15 @@
         "name":"jankeration",
         "region": "vn",
         "beaten" : ["Tower of Malefic Nuisances"]
+    },
+    {
+        "name":"Junebread",
+        "region": "kr",
+        "beaten": ["Honor", "Towero f Gunga Ginga", "Nebula"]
+    },
+    {
+        "name": "Azusa_iz",
+        "region":"kr",
+        "beaten": ["Frostbite", "Eau de Nil"]
     }
 ]

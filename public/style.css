@@ -46,7 +46,7 @@ body {
 header {
     position: fixed;
     width: 100%;
-    height: 6rem;
+    height: 72px;
     backdrop-filter: blur(4px);
     align-items: center;
     z-index: 2;
@@ -56,7 +56,7 @@ header {
 
 .top-block {
     width: 100%;
-    height: 6rem;
+    height: 72px;
     background-color: #1e1f20;
 }
 
@@ -72,7 +72,7 @@ header {
     position: relative;
     display: inline-block;
     height: 90%;
-    border-right: 2px solid #e3e3e3;
+    border-right: 1.5px solid #e3e3e3;
     padding: 10px 20px;
     transition: 0.25s ease;
 }
@@ -128,7 +128,7 @@ header .nav-group {
     position: relative;
     display: inline-block;
     height: 90%;
-    border-right: 2px solid #e3e3e3;
+    border-right: 1.5px solid #e3e3e3;
     transition: 0.25s ease;
 }
 
@@ -158,7 +158,7 @@ header .nav-group {
 }
 
 h3{
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .dropdown-content {
@@ -166,7 +166,6 @@ h3{
     overflow: hidden;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     top: 100%;
@@ -221,13 +220,13 @@ header .info-text {
 header .info-text a {
     text-decoration: none;
     color: #e3e3e3;
-    font-size: 2rem;
+    font-size: 25px;
     font-weight: 500;
     font-family: "Ubuntu";
 }
 
 header .info-text span {
-    font-size: 2.5rem;
+    font-size: 30px;
     font-weight: 500;
     font-family: "Ubuntu";
     background-image: linear-gradient(-225deg, #231557 0%, #44107a 29%, #ff1361 67%, #2d463a 82%, #231557 100%);
@@ -518,7 +517,6 @@ header .info-text .scroll::before {
     transition: 0.3s ease;
     z-index: 1;
     overflow: hidden;
-    background: rgba(0, 0, 0, 0.8); /* Slightly opaque background for text readability */
 }
 
 .background-blur {
@@ -574,7 +572,6 @@ filter: brightness(50%);
 #features .card:hover {
     border-color: #fff;
     box-shadow: none;
-    transform: scale(1.1);
 }
 
 #features .card .info h1 {

@@ -1,5 +1,12 @@
 [
     {
+        "region": "kr",
+        "title": "Towero f Gunga Ginga",
+        "verifier": "Junebread",
+        "gamelink": "https://www.roblox.com/games/4212833822/towero-f-gunga-ginga",
+        "link": "https://www.youtube.com/watch?v=VG1tHXvwA4Y&t"
+    },
+    {
         "region": "ukr",
         "title": "Pillars : Hardcore",
         "verifier": "sxn_nyeo",
@@ -140,6 +147,20 @@
         "gamelink": "https://www.roblox.com/games/6508985294/Forgotten-Obby-2"
     },
     {
+        "region":"kr",
+        "title": "Eau de nil",
+        "verifier": "Azusa_iz",
+        "gamelink": "https://www.roblox.com/games/10029075852/eau-de-Nil",
+        "link": "https://www.youtube.com/watch?v=T_YHUEV3GWo"
+    },
+    {
+        "region" : "kr",
+        "title": "Tower of Descent Into Exile",
+        "verifier": "624ok",
+        "gamelink": "https://www.roblox.com/games/8562822414/Jukes-Towers-of-Hell",
+        "link": "https://www.youtube.com/watch?v=2y8591VbAwQ"
+    },
+    {
         "region": "id",
         "title": "Dysphoria",
         "verifier": "galih_funfan",
@@ -147,11 +168,25 @@
         "gamelink": "https://www.roblox.com/games/6603931766/"
     },
     {
+        "region":"kr",
+        "title": "Nebula",
+        "verifier": "Junebread",
+        "gamelink": "https://www.roblox.com/games/9103784633/Nebula",
+        "link": "https://www.youtube.com/watch?v=yE3oyKJRVgM"
+    },
+    {
         "region": "id",
         "title": "Tower of Elongated Runs",
         "verifier": "Ariouss",
         "link": "https://www.youtube.com/watch?v=lyIn8NU0ZGk",
         "gamelink": "https://www.roblox.com/games/8562822414/Jukes-Towers-of-Hell-Black-Friday-Sale"
+    },
+    {
+        "region":"kr",
+        "title": "Set In Stone",
+        "verifier": "XxDuzerxX",
+        "gamelink": "https://www.roblox.com/games/5533633393/Set-In-Stone",
+        "link": "https://www.youtube.com/watch?v=2k5XOXOpfE4"
     },
     {
         "region": "vn",
@@ -182,11 +217,11 @@
         "gamelink": "https://www.roblox.com/games/10073518661/affliction"
     },
     {
-        "region": "ukr",
-        "title": "Enigmatic Void",
-        "verifier": "sxn_nyeo",
-        "link": "https://www.youtube.com/watch?v=o8gokREfTOU&t=0s",
-        "gamelink": "https://www.roblox.com/games/5082417745/Enigmatic-Void"
+        "region":"kr",
+        "title": "Ascension to Heaven",
+        "verifier": "XxDuzerxX",
+        "gamelink": "https://www.roblox.com/games/5839874648/Ascension-to-Heaven",
+        "link": "https://www.youtube.com/watch?v=BhJUbdu8PpA"
     },
     {
         "region": "id",
@@ -273,6 +308,13 @@
         "gamelink": "https://www.roblox.com/games/8687594674/Holographic"
     },
     {
+        "region":"kr",
+        "title": "Daedalus",
+        "verifier": "wyeehy",
+        "gamelink": "https://www.roblox.com/games/16110803817/Daedalus",
+        "link": "https://www.youtube.com/watch?v=Zy6FnxAtf5Y"
+    },
+    {
         "region": "id",
         "title": "Cotton",
         "verifier": "ikanpedas",
@@ -336,6 +378,13 @@
         "gamelink": "https://www.roblox.com/games/4923500978/Desolate"
     },
     {
+        "region":"kr",
+        "title": "This is what dreaming feels like",
+        "verifier": "leo_nol",
+        "gamelink": "https://www.roblox.com/games/11724216728/This-is-what-dreaming-feels-like",
+        "link": "https://www.youtube.com/watch?v=6vBiQw2NBB8"
+    },
+    {
         "region": "id",
         "title": "Abyss Room",
         "verifier": "galih_funfan",
@@ -383,6 +432,13 @@
         "verifier": "Marvel2232",
         "link": "https://youtube.com/watch?v=pV3K3VXL3lA",
         "gamelink": "https://www.roblox.com/games/10127428972/Cupid-Delight"
+    },
+    {
+        "region":"kr",
+        "title": "antique inevitability",
+        "verifier": "leo_nol",
+        "gamelink": "https://www.roblox.com/games/7458374979/antique-inevitability",
+        "link": "https://www.youtube.com/watch?v=oKbPpIjkGyA&t"
     },
     {
         "region": "id",

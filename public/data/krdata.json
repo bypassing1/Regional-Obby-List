@@ -18,6 +18,12 @@
         "link": "https://www.youtube.com/watch?v=8W2fOOP4LRQ"
     },
     {
+        "title": "Tower of Vacant Hindrances",
+        "verifier": "typerium",
+        "gamelink": "https://www.roblox.com/games/8562822414/Jukes-Towers-of-Hell",
+        "link": "https://www.youtube.com/watch?v=iWPSicpT7EM"
+    },
+    {
         "title": "The Nightmare",
         "verifier": "Junebread",
         "gamelink": "https://www.roblox.com/games/5643065356/The-Nightmare",
@@ -30,10 +36,22 @@
         "link": "https://www.youtube.com/watch?v=u_NY1Ar5HOM&t"
     },
     {
+        "title": "Tower of Elongated Runs",
+        "verifier": "Belucky_Unlucky",
+        "gamelink": "https://www.roblox.com/games/8562822414/Jukes-Towers-of-Hell",
+        "link": "https://www.youtube.com/watch?v=DS9Ehv4JbpE"
+    },
+    {
         "title": "Eau de nil",
         "verifier": "Azusa_iz",
         "gamelink": "https://www.roblox.com/games/10029075852/eau-de-Nil",
         "link": "https://www.youtube.com/watch?v=T_YHUEV3GWo"
+    },
+    {
+        "title": "Tower of Descent Into Exile",
+        "verifier": "624ok",
+        "gamelink": "https://www.roblox.com/games/8562822414/Jukes-Towers-of-Hell",
+        "link": "https://www.youtube.com/watch?v=2y8591VbAwQ"
     },
     {
         "title": "Nebula",
@@ -111,7 +129,7 @@
         "title": "Refraction",
         "verifier": "TheNewbie_ofRoblox1",
         "gamelink": "https://www.roblox.com/games/8687594674/Holographic",
-        "link": "https://www.youtube.com/watch?v=aqJYNNbJrc4?si=Nm9SVhZq25iKBpfQ"
+        "link": "https://www.youtube.com/watch?v=aqJYNNbJrc4"
     },
     {
         "title": "Daedalus",
@@ -174,16 +192,10 @@
         "link": "https://www.youtube.com/watch?v=XuISuh8p_lE"
     },
     {
-        "title": "Neptune",
-        "verifier": "wyeehy",
-        "gamelink": "https://www.roblox.com/games/6786290287/Neptune",
-        "link": "https://www.youtube.com/watch?v=cl32QLmxwLw"
-    },
-    {
-        "title": "Lemon Juice",
-        "verifier": "wyeehy",
-        "gamelink": "https://www.roblox.com/games/9185353172/Lemon-Juice",
-        "link": "https://www.youtube.com/watch?v=eC7_nJ8iD24"
+        "title": "Tower of Dynamic Pulse",
+        "verifier": "Imqnqnim",
+        "gamelink": "https://www.roblox.com/games/15496896527/Tower-of-Reflecting-Impediments",
+        "link": "https://www.youtube.com/watch?v=e4ZG0A61tcI"
     },
     {
         "title": "Diamond Dance",
@@ -196,12 +208,6 @@
         "verifier": "leo_nol",
         "gamelink": "https://www.roblox.com/games/5806685585/Mountains",
         "link": "https://www.youtube.com/watch?v=akaZHSTtF3I"
-    },
-    {
-        "title": "Goliad",
-        "verifier": "wyeehy",
-        "gamelink": "https://www.roblox.com/games/8845166410/Goliad",
-        "link": "https://www.youtube.com/watch?v=_U6Ri7r4Ikk"
     },
     {
         "title": "Tower of Skywing",
@@ -246,21 +252,15 @@
         "link": "https://www.youtube.com/watch?v=3pcILHFDLgY"
     },
     {
-        "title": "Blueberry",
-        "verifier": "wyeehy",
-        "gamelink": "https://www.roblox.com/games/6826417155/blueberry",
-        "link": "https://www.youtube.com/watch?v=A1ZlOuw-Kzs"
-    },
-    {
-        "title": "Room of Gwyniad",
-        "verifier": "wyeehy",
-        "gamelink": "https://www.roblox.com/games/12597418603/Room-of-Gwyniad",
-        "link": "https://www.youtube.com/watch?v=SPwJDfB54r4"
-    },
-    {
         "title": "Coral Construct",
         "verifier": "AAAAFanboy",
         "gamelink": "https://www.roblox.com/games/7013230913/Coral-Construct",
         "link": "https://www.youtube.com/watch?v=u9XxRwdbfYg"
+    },
+    {
+        "title": "Tower of Infuriating Supplement",
+        "verifier": "Imqnqnim",
+        "gamelink": "https://www.roblox.com/games/3742226955/Ring-8",
+        "link": "https://youtu.be/DPFZpE5jE2M?si=mG6YQ9tT6BPoBu8c"
     }
 ]
