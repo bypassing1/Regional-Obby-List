@@ -7,12 +7,12 @@
             "destination": "/.well-known/discord"
         },
         {
-            "source": "/eio-list-editor",
-            "destination": "/CUmENgiZiU1ZiFGm4lik"
+            "source": "/CUmENgiZiU1ZiFGm4lik/eio-list-editor",
+            "destination": "/eio-list-editor"
         },
         {
-            "source": "/voc-list-editor",
-            "destination": "/eMv84e9xbpzigfyifDoa"
+            "source": "/eMv84e9xbpzigfyifDoa",
+            "destination": "/voc-list-editor"
         }
     ]
 }
