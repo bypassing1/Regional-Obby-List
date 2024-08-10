@@ -13,11 +13,15 @@
         {
             "source": "/eMv84e9xbpzigfyifDoa",
             "destination": "/voc-list-editor"
+        },
+        {
+            "source": "/api/:path*",
+            "destination": "https://pi3etbntstmdvlu5.public.blob.vercel-storage.com/:path*"
         }
     ],
     "headers": [
         {
-            "source": "/(.*)",
+            "source": "/public/(.*)",
             "headers": [
                 {
                     "key": "Access-Control-Allow-Credentials",
