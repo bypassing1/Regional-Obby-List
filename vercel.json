@@ -7,7 +7,7 @@
             "destination": "/.well-known/discord"
         },
         {
-            "source": "/CUmENgiZiU1ZiFGm4lik/eio-list-editor",
+            "source": "/CUmENgiZiU1ZiFGm4lik",
             "destination": "/eio-list-editor"
         },
         {
