@@ -5,6 +5,14 @@
         {
             "source": "/.well-known/discord",
             "destination": "/.well-known/discord"
+        },
+        {
+            "source": "/public/eio-list-editor",
+            "destination": "/CUmENgiZiU1ZiFGm4lik"
+        },
+        {
+            "source": "/public/voc-list-editor",
+            "destination": "/eMv84e9xbpzigfyifDoa"
         }
     ]
 }

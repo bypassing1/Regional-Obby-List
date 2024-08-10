@@ -37,36 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             playerstat.sort((a, b) => parseFloat(b.playerpoints) - parseFloat(a.playerpoints));
 
-            if (document.getElementById('list-editor')) {
-                document.getElementById('pushDataButton').addEventListener('click', async () => {
-                    const newData = {
-                        "region": "ukr",
-                        "title": "Pillars : Hardcore",
-                        "verifier": "sxn_nyeo",
-                        "link": "https://www.youtube.com/watch?v=kTyp6PF-EZU",
-                        "gamelink": "https://www.roblox.com/games/3026834641/Pillars"
-                    };
-                
-                    try {
-                        const response = await fetch('/api/updateData', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(newData)
-                        });
-                
-                        if (response.ok) {
-                            console.log('Data pushed successfully!');
-                        } else {
-                            console.error('Failed to push data');
-                        }
-                    } catch (error) {
-                        console.error('Error:', error);
-                    }
-                });
-            }
-
             if (document.getElementById('statistics')) {
                 const scrollableDiv = document.getElementById('scrollable');
 
@@ -250,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const legacycontainer = document.getElementById('legacy-container');
 
         // Fetch the JSON data
-        fetch('data/vndata.json')
+        fetch('https://pi3etbntstmdvlu5.public.blob.vercel-storage.com/vndata-X5R677InQtGmcFYbxl7OaEbrfSMbq6.json')
             .then(response => response.json())
             .then(vndata => {
                 vndata.forEach(item => {
@@ -326,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const legacycontainer = document.getElementById('legacy-container');
 
         // Fetch the JSON data
-        fetch('data/iddata.json')
+        fetch('https://pi3etbntstmdvlu5.public.blob.vercel-storage.com/iddata-NPnHS9vO5YDELT7CSHFo9rb0mcEHmG.json')
             .then(response => response.json())
             .then(iddata => {
                 iddata.forEach(item => {
