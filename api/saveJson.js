@@ -3,7 +3,7 @@ import { put } from '@vercel/blob';
 export default async function handler(req, res) {
     if (req.method === 'POST') {
         const { blobUrl, updatedData } = req.body;
-        const blobToken = process.env.vercel_blob_rw_PI3eTbNtsTmdvlu5_lCufpkmXsInUuY8wvJMDEqd9LOWDAC;
+        const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
 
         if (!blobUrl || !updatedData) {
             res.status(400).json({ message: 'Missing blobUrl or updatedData' });
@@ -21,9 +21,13 @@ export default async function handler(req, res) {
             if (response.ok) {
                 res.status(200).json({ message: 'JSON data updated successfully!' });
             } else {
-                res.status(response.status).json({ message: 'Failed to update JSON data.' });
+                console.error(`Failed with status: ${response.status}`);
+                const errorText = await response.text();
+                console.error('Response error text:', errorText);
+                res.status(response.status).json({ message: 'Failed to update JSON data.', error: errorText });
             }
         } catch (error) {
+            console.error('Server error:', error);
             res.status(500).json({ message: 'Server error.', error: error.message });
         }
     } else {
