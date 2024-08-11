@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
         try {
             // Step 1: Delete the original blob
-            await del(blobKey, {
+            await del(blobUrl, {
                 headers: {
                     'Authorization': `Bearer ${blobToken}`
                 }
