@@ -15,11 +15,17 @@ export default async function handler(req, res) {
 
         try {
             // Delete the original blob
-            await del(blobKey, {
+            const deleteResult = await del(blobKey, {
                 headers: {
                     'Authorization': `Bearer ${blobToken}`,
                 },
             });
+
+            if (deleteResult.status !== 204) {
+                console.error('Failed to delete the blob. Response:', deleteResult);
+                res.status(500).json({ message: 'Failed to delete the original JSON data.' });
+                return;
+            }
 
             // Create a new blob with the same key and the updated data
             const result = await put(blobKey, updatedData, {

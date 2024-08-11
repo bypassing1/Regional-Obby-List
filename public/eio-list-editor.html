@@ -71,44 +71,45 @@
     <script>
         const blobUrl = 'https://pi3etbntstmdvlu5.public.blob.vercel-storage.com/iddata-NPnHS9vO5YDELT7CSHFo9rb0mcEHmG.json';
         let originalData = '';
-    
-        // Fetch and display the JSON data when the page loads
-        fetch(blobUrl)
-            .then(response => response.json())
-            .then(data => {
-                originalData = JSON.stringify(data, null, 2); // Store the original data
-                document.getElementById('json-editor').value = originalData;
-            })
-            .catch(error => console.error('Error fetching JSON:', error));
-    
-        // Save the updated JSON data when the "Save changes" button is clicked
-        document.getElementById('save-btn').addEventListener('click', () => {
-            const updatedData = document.getElementById('json-editor').value;
-    
-            fetch('/api/saveJson', {
-                    method: 'PUT', // Changed to PUT
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ blobUrl, updatedData }),
-                })
-                .then(response => {
-                    // Check if the response is empty or invalid
-                    if (!response.ok || response.status === 204) {
-                        throw new Error('No content returned');
-                    }
-                    return response.json();
-                })
-                .then(result => {
-                    console.log('Update successful:', result);
-                })
-                .catch(error => console.error('Error updating JSON:', error));
-        });
-    
-        // Revert to original data when "Cancel" button is clicked
-        document.getElementById('cancel-btn').addEventListener('click', () => {
+
+    // Fetch and display the JSON data when the page loads
+    fetch(blobUrl)
+        .then(response => response.json())
+        .then(data => {
+            originalData = JSON.stringify(data, null, 2); // Store the original data
             document.getElementById('json-editor').value = originalData;
-        });
+        })
+        .catch(error => console.error('Error fetching JSON:', error));
+
+    // Save the updated JSON data when the "Save changes" button is clicked
+    document.getElementById('save-btn').addEventListener('click', () => {
+        const updatedData = document.getElementById('json-editor').value;
+
+        fetch('/api/saveJson', {
+                method: 'PUT', // Ensure PUT is used
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ blobUrl, updatedData }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(`Failed to update JSON: ${errorData.message}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(result => {
+                console.log('Update successful:', result);
+            })
+            .catch(error => console.error('Error updating JSON:', error));
+    });
+
+    // Revert to original data when "Cancel" button is clicked
+    document.getElementById('cancel-btn').addEventListener('click', () => {
+        document.getElementById('json-editor').value = originalData;
+    });
     </script>
         
     <script>
