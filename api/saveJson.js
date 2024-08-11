@@ -14,7 +14,11 @@ export default async function handler(req, res) {
         }
 
         try {
-            const result = await put(blobKey, updatedData, {
+            // Parse updatedData to ensure it's a valid JSON object
+            const parsedData = JSON.parse(updatedData);
+
+            // Perform the PUT operation to update the blob
+            const result = await put(blobKey, JSON.stringify(parsedData), {
                 headers: {
                     'Authorization': `Bearer ${blobToken}`,
                     'Content-Type': 'application/json',
@@ -23,9 +27,10 @@ export default async function handler(req, res) {
             });
 
             if (result.url) {
+                console.log('JSON data updated successfully:', result.url);
                 res.status(200).json({ message: 'JSON data updated successfully!' });
             } else {
-                console.error(`Failed to update JSON data. Result:`, result);
+                console.error('Failed to update JSON data. Result:', result);
                 res.status(500).json({ message: 'Failed to update JSON data.' });
             }
         } catch (error) {
