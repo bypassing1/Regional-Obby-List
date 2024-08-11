@@ -5,18 +5,21 @@ export default async function handler(req, res) {
         const { blobUrl, updatedData } = req.body;
         const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
 
-        if (!blobUrl || !updatedData) {
-            res.status(400).json({ message: 'Missing blobUrl or updatedData' });
+        // Extract the key from the blobUrl
+        const blobKey = blobUrl.split('/').pop();
+
+        if (!blobKey || !updatedData) {
+            res.status(400).json({ message: 'Missing blobKey or updatedData' });
             return;
         }
 
         try {
-            const result = await put(blobUrl, updatedData, {
+            const result = await put(blobKey, updatedData, {
                 headers: {
                     'Authorization': `Bearer ${blobToken}`,
                     'Content-Type': 'application/json',
                 },
-                access: 'public',
+                access: 'public', // Ensure the blob remains publicly accessible
             });
 
             if (result.url) {
