@@ -118,6 +118,7 @@
                 .then(response => response.json())
                 .then(result => {
                     console.log('Update successful:', result);
+                    alert('Update successful!');
                 })
                 .catch(error => console.error('Error updating JSON:', error));
         });
