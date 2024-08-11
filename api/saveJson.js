@@ -11,7 +11,7 @@ export default async function handler(req, res) {
         }
 
         try {
-            const response = await put(blobUrl, updatedData, {
+            const result = await put(blobUrl, updatedData, {
                 headers: {
                     'Authorization': `Bearer ${blobToken}`,
                     'Content-Type': 'application/json',
@@ -19,13 +19,11 @@ export default async function handler(req, res) {
                 access: 'public',
             });
 
-            if (response.ok) {
+            if (result.url) {
                 res.status(200).json({ message: 'JSON data updated successfully!' });
             } else {
-                console.error(`Failed with status: ${response.status}`);
-                const errorText = await response.text();
-                console.error('Response error text:', errorText);
-                res.status(response.status).json({ message: 'Failed to update JSON data.', error: errorText });
+                console.error(`Failed to update JSON data. Result:`, result);
+                res.status(500).json({ message: 'Failed to update JSON data.' });
             }
         } catch (error) {
             console.error('Server error:', error);
