@@ -68,10 +68,8 @@
         </div>
     </section>
     <div class="loader"></div>
-    <script src="script.js" id="list-editor"></script>
     <script>
-        const blobUrl =
-            'https://pi3etbntstmdvlu5.public.blob.vercel-storage.com/iddata-NPnHS9vO5YDELT7CSHFo9rb0mcEHmG.json';
+        const blobUrl = 'https://pi3etbntstmdvlu5.public.blob.vercel-storage.com/vndata-X5R677InQtGmcFYbxl7OaEbrfSMbq6.json';
         let originalData = '';
 
         // Fetch and display the JSON data when the page loads
@@ -87,20 +85,19 @@
         document.getElementById('save-btn').addEventListener('click', () => {
             const updatedData = document.getElementById('json-editor').value;
 
-            fetch(blobUrl, {
-                    method: 'PUT',
+            fetch('/api/saveJson', {
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer vercel_blob_rw_PI3eTbNtsTmdvlu5_lCufpkmXsInUuY8wvJMDEqd9LOWDAC',
-                        
                     },
-                    body: updatedData,
+                    body: JSON.stringify({ blobUrl, updatedData }),
                 })
-                .then(response => {
+                .then(response => response.json())
+                .then(result => {
                     if (response.ok) {
-                        alert('JSON data updated successfully!');
+                        alert(result.message);
                     } else {
-                        alert('Failed to update JSON data.');
+                        alert(result.message);
                     }
                 })
                 .catch(error => console.error('Error updating JSON:', error));
