@@ -5,7 +5,8 @@ export default async function handler(req, res) {
         const { blobUrl, updatedData } = req.body;
         const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
 
-        const blobKey = new URL(blobUrl).pathname.substring(1); // Remove leading slash
+        // Extract the blob key correctly
+        const blobKey = new URL(blobUrl).pathname.slice(1); // Remove leading slash
 
         if (!blobKey || !updatedData) {
             res.status(400).json({ message: 'Missing blobKey or updatedData' });
