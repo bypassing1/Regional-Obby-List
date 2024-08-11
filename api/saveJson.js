@@ -5,11 +5,8 @@ export default async function handler(req, res) {
         const { blobUrl, updatedData } = req.body;
         const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
 
-        // Extract the blob key correctly
-        const blobKey = new URL(blobUrl).pathname.slice(1); // Remove leading slash
-
-        if (!blobKey || !updatedData) {
-            res.status(400).json({ message: 'Missing blobKey or updatedData' });
+        if (!blobUrl || !updatedData) {
+            res.status(400).json({ message: 'Missing blobUrl or updatedData' });
             return;
         }
 
@@ -21,8 +18,10 @@ export default async function handler(req, res) {
                 }
             });
 
-            // Step 2: Put the new data into the blob with the same blobKey
+            // Step 2: Put the new data into the blob with the exact same blobKey
             const parsedData = JSON.parse(updatedData);
+            const blobKey = new URL(blobUrl).pathname.slice(1); // Extract the exact blobKey
+
             const result = await put(blobKey, JSON.stringify(parsedData), {
                 headers: {
                     'Authorization': `Bearer ${blobToken}`,
