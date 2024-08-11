@@ -16,6 +16,7 @@ export default async function handler(req, res) {
                     'Authorization': `Bearer ${blobToken}`,
                     'Content-Type': 'application/json',
                 },
+                access: 'public',
             });
 
             if (response.ok) {
