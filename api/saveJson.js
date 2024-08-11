@@ -1,7 +1,7 @@
 import { put } from '@vercel/blob';
 
 export default async function handler(req, res) {
-    if (req.method === 'PUT') { // Changed to PUT
+    if (req.method === 'PUT') {
         const { blobUrl, updatedData } = req.body;
         const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
 
@@ -17,7 +17,7 @@ export default async function handler(req, res) {
             // Parse updatedData to ensure it's a valid JSON object
             const parsedData = JSON.parse(updatedData);
 
-            // Perform the PUT operation to update the blob
+            // Perform the PUT operation to overwrite the blob
             const result = await put(blobKey, JSON.stringify(parsedData), {
                 headers: {
                     'Authorization': `Bearer ${blobToken}`,
