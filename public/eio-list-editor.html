@@ -86,14 +86,14 @@
             const updatedData = document.getElementById('json-editor').value;
     
             fetch('/api/saveJson', {
-                    method: 'POST',
+                    method: 'PUT', // Changed to PUT
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ blobUrl, updatedData }),
                 })
                 .then(response => {
-                    // Check if the response is empty
+                    // Check if the response is empty or invalid
                     if (!response.ok || response.status === 204) {
                         throw new Error('No content returned');
                     }
@@ -109,7 +109,8 @@
         document.getElementById('cancel-btn').addEventListener('click', () => {
             document.getElementById('json-editor').value = originalData;
         });
-    </script>    
+    </script>
+        
     <script>
         window.si = window.si || function () {
             (window.siq = window.siq || []).push(arguments);
