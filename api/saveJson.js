@@ -11,7 +11,7 @@ export default async function handler(req, res) {
         const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
 
         // Keep the original blobKey (the entire path after the domain)
-        const blobKey = blobUrl // Remove leading slash
+        const blobKey = new URL(blobUrl).pathname.substring(1); // Remove leading slash
 
         if (!blobKey || !updatedData) {
             res.status(400).json({
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 
         try {
             const parsedData = JSON.parse(updatedData);
-
+            console.log(blobKey);
             const result = await put(blobKey, JSON.stringify(parsedData), {
                 headers: {
                     'Authorization': `Bearer ${blobToken}`,
@@ -32,6 +32,7 @@ export default async function handler(req, res) {
             });
 
             if (result.url) {
+                console.log(blobKey);
                 console.log('JSON data updated successfully:', result.url);
                 res.status(200).json({
                     message: 'JSON data updated successfully!'
