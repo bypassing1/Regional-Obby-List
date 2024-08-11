@@ -76,16 +76,18 @@
     fetch(listBlobsApiUrl)
     .then(response => response.json())
     .then(data => {
-        console.log('Files response:', data); // Log to inspect the structure
+        console.log('Files response:', data); // Log the response to check the structure
 
-        // Assuming the files are within an `items` key
-        const files = data.items || data.blobs || []; // Adjust based on actual structure
+        // Access the blobs array
+        const files = data.blobs || [];
 
-        const matchedFile = files.find(file => file.name.startsWith(prefix));
+        // Find the file that starts with the prefix
+        const matchedFile = files.find(file => file.pathname && file.pathname.startsWith(prefix));
 
         if (matchedFile) {
             const blobUrl = matchedFile.url;
 
+            // Fetch the content of the matched file
             fetch(blobUrl)
                 .then(response => response.json())
                 .then(data => {
