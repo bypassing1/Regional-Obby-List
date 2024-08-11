@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const listBlobsApiUrl = '/api/listBlobs';
     // Fetch the JSON data
     // Fetch globaldata.json and playerstat.json
     Promise.all([
@@ -216,11 +217,24 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => console.error('Error fetching data:', error));
     if (document.getElementById('voc-list')) {
         let total = 0;
+        const prefix = 'vndata';
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
 
         // Fetch the JSON data
-        fetch('https://pi3etbntstmdvlu5.public.blob.vercel-storage.com/vndata-X5R677InQtGmcFYbxl7OaEbrfSMbq6.json')
+        fetch(listBlobsApiUrl)
+        .then(response => response.json())
+        .then(data => {
+            // Find the blob that starts with the prefix 'iddata'
+            const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
+            
+            if (!dataBlob) {
+                throw new Error(`Blob with the prefix ${prefix} not found.`);
+            }
+
+            // Fetch the JSON data from the found blob URL
+            return fetch(dataBlob.url);
+        })
             .then(response => response.json())
             .then(vndata => {
                 vndata.forEach(item => {
@@ -292,11 +306,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     if (document.getElementById('eio-list')) {
         let total = 0;
+        const prefix = 'iddata';
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
 
         // Fetch the JSON data
-        fetch('https://pi3etbntstmdvlu5.public.blob.vercel-storage.com/iddata-NPnHS9vO5YDELT7CSHFo9rb0mcEHmG.json')
+        fetch(listBlobsApiUrl)
+        .then(response => response.json())
+        .then(data => {
+            // Find the blob that starts with the prefix 'iddata'
+            const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
+            
+            if (!dataBlob) {
+                throw new Error(`Blob with the prefix ${prefix} not found.`);
+            }
+
+            // Fetch the JSON data from the found blob URL
+            return fetch(dataBlob.url);
+        })
             .then(response => response.json())
             .then(iddata => {
                 iddata.forEach(item => {
@@ -368,11 +395,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     if (document.getElementById('ukr-list')) {
         let total = 0;
+        const prefix = 'ukrdata'
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
 
         // Fetch the JSON data
-        fetch('data/ukrdata.json')
+        fetch(listBlobsApiUrl)
+        .then(response => response.json())
+        .then(data => {
+            // Find the blob that starts with the prefix 'iddata'
+            const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
+            
+            if (!dataBlob) {
+                throw new Error(`Blob with the prefix ${prefix} not found.`);
+            }
+
+            // Fetch the JSON data from the found blob URL
+            return fetch(dataBlob.url);
+        })
             .then(response => response.json())
             .then(ukrdata => {
                 ukrdata.forEach(item => {
@@ -444,11 +484,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     if (document.getElementById('koc-list')) {
         let total = 0;
+        const prefix = 'krdata'
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
 
         // Fetch the JSON data
-        fetch('data/krdata.json')
+        fetch(listBlobsApiUrl)
+        .then(response => response.json())
+        .then(data => {
+            // Find the blob that starts with the prefix 'iddata'
+            const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
+            
+            if (!dataBlob) {
+                throw new Error(`Blob with the prefix ${prefix} not found.`);
+            }
+
+            // Fetch the JSON data from the found blob URL
+            return fetch(dataBlob.url);
+        })
             .then(response => response.json())
             .then(ukrdata => {
                 ukrdata.forEach(item => {
@@ -520,11 +573,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     if (document.getElementById('mys-list')) {
         let total = 0;
+        const prefix = 'mysdata'
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
 
         // Fetch the JSON data
-        fetch('data/mysdata.json')
+        fetch(listBlobsApiUrl)
+        .then(response => response.json())
+        .then(data => {
+            // Find the blob that starts with the prefix 'iddata'
+            const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
+            
+            if (!dataBlob) {
+                throw new Error(`Blob with the prefix ${prefix} not found.`);
+            }
+
+            // Fetch the JSON data from the found blob URL
+            return fetch(dataBlob.url);
+        })
             .then(response => response.json())
             .then(ukrdata => {
                 ukrdata.forEach(item => {
