@@ -71,6 +71,8 @@
     <script>
     const prefix = 'iddata';
     const listBlobsApiUrl = '/api/listBlobs'; // Replace with your custom API endpoint
+    let blobUrl = '';
+    let originalData = '';
 
     // Fetch and display the JSON data when the page loads
     fetch(listBlobsApiUrl)
@@ -85,7 +87,7 @@
         const matchedFile = files.find(file => file.pathname && file.pathname.startsWith(prefix));
 
         if (matchedFile) {
-            const blobUrl = matchedFile.url;
+            blobUrl = matchedFile.url;
 
             // Fetch the content of the matched file
             fetch(blobUrl)
