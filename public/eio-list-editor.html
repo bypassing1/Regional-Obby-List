@@ -69,47 +69,57 @@
     </section>
     <div class="loader"></div>
     <script>
-        const blobUrl = 'https://pi3etbntstmdvlu5.public.blob.vercel-storage.com/iddata-NPnHS9vO5YDELT7CSHFo9rb0mcEHmG.json';
-        let originalData = '';
-    
-        // Fetch and display the JSON data when the page loads
-        fetch(blobUrl)
-            .then(response => response.json())
-            .then(data => {
-                originalData = JSON.stringify(data, null, 2); // Store the original data
-                document.getElementById('json-editor').value = originalData;
+    const prefix = 'iddata';
+    const listBlobsApiUrl = '/api/listBlobs'; // Replace with your custom API endpoint
+
+    // Fetch and display the JSON data when the page loads
+    fetch(listBlobsApiUrl)
+        .then(response => response.json())
+        .then(files => {
+            // Filter files with the prefix "iddata"
+            const matchedFile = files.find(file => file.name.startsWith(prefix));
+
+            if (matchedFile) {
+                const blobUrl = matchedFile.url;
+
+                // Fetch the JSON data from the matched file
+                fetch(blobUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        originalData = JSON.stringify(data, null, 2); // Store the original data
+                        document.getElementById('json-editor').value = originalData;
+                    })
+                    .catch(error => console.error('Error fetching JSON:', error));
+            } else {
+                console.error('No file found with the specified prefix.');
+            }
+        })
+        .catch(error => console.error('Error fetching files:', error));
+
+    // Save the updated JSON data when the "Save changes" button is clicked
+    document.getElementById('save-btn').addEventListener('click', () => {
+        const updatedData = document.getElementById('json-editor').value;
+
+        fetch('/api/saveJson', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ blobUrl, updatedData }),
             })
-            .catch(error => console.error('Error fetching JSON:', error));
-    
-        // Save the updated JSON data when the "Save changes" button is clicked
-        document.getElementById('save-btn').addEventListener('click', () => {
-            const updatedData = document.getElementById('json-editor').value;
-    
-            fetch('/api/saveJson', {
-                    method: 'PUT', // Changed to PUT
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ blobUrl, updatedData }),
-                })
-                .then(response => {
-                    // Check if the response is empty or invalid
-                    if (!response.ok || response.status === 204) {
-                        throw new Error('No content returned');
-                    }
-                    return response.json();
-                })
-                .then(result => {
-                    console.log('Update successful:', result);
-                })
-                .catch(error => console.error('Error updating JSON:', error));
-        });
-    
-        // Revert to original data when "Cancel" button is clicked
-        document.getElementById('cancel-btn').addEventListener('click', () => {
-            document.getElementById('json-editor').value = originalData;
-        });
-    </script>
+            .then(response => response.json())
+            .then(result => {
+                console.log('Update successful:', result);
+            })
+            .catch(error => console.error('Error updating JSON:', error));
+    });
+
+    // Revert to original data when "Cancel" button is clicked
+    document.getElementById('cancel-btn').addEventListener('click', () => {
+        document.getElementById('json-editor').value = originalData;
+    });
+</script>
+
     <script>
         window.si = window.si || function () {
             (window.siq = window.siq || []).push(arguments);
