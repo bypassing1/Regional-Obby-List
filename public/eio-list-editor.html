@@ -74,27 +74,31 @@
 
     // Fetch and display the JSON data when the page loads
     fetch(listBlobsApiUrl)
-        .then(response => response.json())
-        .then(files => {
-            // Filter files with the prefix "iddata"
-            const matchedFile = files.find(file => file.name.startsWith(prefix));
+    .then(response => response.json())
+    .then(data => {
+        console.log('Files response:', data); // Log to inspect the structure
 
-            if (matchedFile) {
-                const blobUrl = matchedFile.url;
+        // Assuming the files are within an `items` key
+        const files = data.items || data.blobs || []; // Adjust based on actual structure
 
-                // Fetch the JSON data from the matched file
-                fetch(blobUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        originalData = JSON.stringify(data, null, 2); // Store the original data
-                        document.getElementById('json-editor').value = originalData;
-                    })
-                    .catch(error => console.error('Error fetching JSON:', error));
-            } else {
-                console.error('No file found with the specified prefix.');
-            }
-        })
-        .catch(error => console.error('Error fetching files:', error));
+        const matchedFile = files.find(file => file.name.startsWith(prefix));
+
+        if (matchedFile) {
+            const blobUrl = matchedFile.url;
+
+            fetch(blobUrl)
+                .then(response => response.json())
+                .then(data => {
+                    originalData = JSON.stringify(data, null, 2);
+                    document.getElementById('json-editor').value = originalData;
+                })
+                .catch(error => console.error('Error fetching JSON:', error));
+        } else {
+            console.error('No file found with the specified prefix.');
+        }
+    })
+    .catch(error => console.error('Error fetching files:', error));
+
 
     // Save the updated JSON data when the "Save changes" button is clicked
     document.getElementById('save-btn').addEventListener('click', () => {
