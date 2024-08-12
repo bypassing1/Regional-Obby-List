@@ -17,9 +17,14 @@
         {
             "source": "/rgDx3q1Xoo3iNLE",
             "destination": "/koc-list-editor"
-        },{
+        },
+        {
             "source": "/BcGgN1pHw2587WB",
             "destination": "/mys-list-editor"
+        },
+        {
+            "source": "/zXZSXdFIBVsC1Fn",
+            "destination": "/ukr-list-editor"
         },
         {
             "source": "/api/:path*",
