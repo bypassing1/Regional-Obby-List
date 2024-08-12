@@ -4,28 +4,43 @@
     "rewrites": [
         {
             "source": "/CUmENgiZiU1ZiFGm4lik",
-            "destination": "/eio-list-editor",
-            "permanent": true
+            "destination": "/eio-list-editor"
         },
         {
             "source": "/eMv84e9xbpzigfyifDoa",
-            "destination": "/voc-list-editor",
-            "permanent": true
+            "destination": "/voc-list-editor"
         },
         {
             "source": "/rgDx3q1Xoo3iNLE",
-            "destination": "/koc-list-editor",
-            "permanent": true
+            "destination": "/koc-list-editor"
         },
         {
             "source": "/BcGgN1pHw2587WB",
-            "destination": "/mys-list-editor",
-            "permanent": true
+            "destination": "/mys-list-editor"
         },
         {
             "source": "/zXZSXdFIBVsC1Fn",
-            "destination": "/ukr-list-editor",
-            "permanent": true
+            "destination": "/ukr-list-editor"
+        },
+        {
+            "source": "/eio-list-editor",
+            "destination": "/404"
+        },
+        {
+            "source": "/voc-list-editor",
+            "destination": "/404"
+        },
+        {
+            "source": "/koc-list-editor",
+            "destination": "/404"
+        },
+        {
+            "source": "/mys-list-editor",
+            "destination": "/404"
+        },
+        {
+            "source": "/ukr-list-editor",
+            "destination": "/404"
         },
         {
             "source": "/api/:path*",
