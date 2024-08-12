@@ -4,54 +4,32 @@
     "rewrites": [
         {
             "source": "/CUmENgiZiU1ZiFGm4lik",
-            "destination": "/eio-list-editor"
+            "destination": "/eio-list-editor",
+            "permanent": true
         },
         {
             "source": "/eMv84e9xbpzigfyifDoa",
-            "destination": "/voc-list-editor"
+            "destination": "/voc-list-editor",
+            "permanent": true
         },
         {
             "source": "/rgDx3q1Xoo3iNLE",
-            "destination": "/koc-list-editor"
+            "destination": "/koc-list-editor",
+            "permanent": true
         },
         {
             "source": "/BcGgN1pHw2587WB",
-            "destination": "/mys-list-editor"
+            "destination": "/mys-list-editor",
+            "permanent": true
         },
         {
             "source": "/zXZSXdFIBVsC1Fn",
-            "destination": "/ukr-list-editor"
+            "destination": "/ukr-list-editor",
+            "permanent": true
         },
         {
             "source": "/api/:path*",
             "destination": "https://pi3etbntstmdvlu5.public.blob.vercel-storage.com/:path*"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/koc-list-editor",
-            "status": 404,
-            "dest": "/404"
-        },
-        {
-            "src": "/eio-list-editor",
-            "status": 404,
-            "dest": "/404"
-        },
-        {
-            "src": "/ukr-list-editor",
-            "status": 404,
-            "dest": "/404"
-        },
-        {
-            "src": "/mys-list-editor",
-            "status": 404,
-            "dest": "/404"
-        },
-        {
-            "src": "/voc-list-editor",
-            "status": 404,
-            "dest": "/404"
         }
     ],
     "headers": [
