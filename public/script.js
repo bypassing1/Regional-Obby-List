@@ -220,19 +220,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const prefix = 'vndata';
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
-
-        // Fetch the JSON data
         fetch(listBlobsApiUrl)
         .then(response => response.json())
         .then(data => {
-            // Find the blob that starts with the prefix 'iddata'
             const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
-            
             if (!dataBlob) {
                 throw new Error(`Blob with the prefix ${prefix} not found.`);
             }
-
-            // Fetch the JSON data from the found blob URL
             return fetch(dataBlob.url);
         })
             .then(response => response.json())
@@ -309,19 +303,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const prefix = 'iddata';
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
-
-        // Fetch the JSON data
         fetch(listBlobsApiUrl)
         .then(response => response.json())
         .then(data => {
-            // Find the blob that starts with the prefix 'iddata'
             const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
-            
             if (!dataBlob) {
                 throw new Error(`Blob with the prefix ${prefix} not found.`);
             }
-
-            // Fetch the JSON data from the found blob URL
             return fetch(dataBlob.url);
         })
             .then(response => response.json())
@@ -398,19 +386,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const prefix = 'ukrdata'
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
-
-        // Fetch the JSON data
         fetch(listBlobsApiUrl)
         .then(response => response.json())
         .then(data => {
-            // Find the blob that starts with the prefix 'iddata'
             const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
-            
             if (!dataBlob) {
                 throw new Error(`Blob with the prefix ${prefix} not found.`);
             }
-
-            // Fetch the JSON data from the found blob URL
             return fetch(dataBlob.url);
         })
             .then(response => response.json())
@@ -487,19 +469,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const prefix = 'krdata'
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
-
-        // Fetch the JSON data
         fetch(listBlobsApiUrl)
         .then(response => response.json())
         .then(data => {
-            // Find the blob that starts with the prefix 'iddata'
             const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
-            
             if (!dataBlob) {
                 throw new Error(`Blob with the prefix ${prefix} not found.`);
             }
-
-            // Fetch the JSON data from the found blob URL
             return fetch(dataBlob.url);
         })
             .then(response => response.json())
@@ -576,19 +552,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const prefix = 'mysdata'
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
-
-        // Fetch the JSON data
         fetch(listBlobsApiUrl)
         .then(response => response.json())
         .then(data => {
-            // Find the blob that starts with the prefix 'iddata'
             const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
-            
             if (!dataBlob) {
                 throw new Error(`Blob with the prefix ${prefix} not found.`);
             }
-
-            // Fetch the JSON data from the found blob URL
             return fetch(dataBlob.url);
         })
             .then(response => response.json())

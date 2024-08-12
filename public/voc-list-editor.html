@@ -70,26 +70,16 @@
     <div class="loader"></div>
     <script>
         const prefix = 'vndata';
-        const listBlobsApiUrl = '/api/listBlobs'; // Replace with your custom API endpoint
+        const listBlobsApiUrl = '/api/listBlobs';
         let blobUrl = '';
         let originalData = '';
-    
-        // Fetch and display the JSON data when the page loads
         fetch(listBlobsApiUrl)
         .then(response => response.json())
         .then(data => {
-            console.log('Files response:', data); // Log the response to check the structure
-    
-            // Access the blobs array
             const files = data.blobs || [];
-    
-            // Find the file that starts with the prefix
             const matchedFile = files.find(file => file.pathname && file.pathname.startsWith(prefix));
-    
             if (matchedFile) {
                 blobUrl = matchedFile.url;
-    
-                // Fetch the content of the matched file
                 fetch(blobUrl)
                     .then(response => response.json())
                     .then(data => {
@@ -102,18 +92,14 @@
             }
         })
         .catch(error => console.error('Error fetching files:', error));
-    
-    
-        // Save the updated JSON data when the "Save changes" button is clicked
         document.getElementById('save-btn').addEventListener('click', () => {
             const updatedData = document.getElementById('json-editor').value;
-    
             fetch('/api/saveJson', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ blobUrl, updatedData }),
+                    body: JSON.stringify({ blobUrl, prefix, updatedData }),
                 })
                 .then(response => response.json())
                 .then(result => {
@@ -122,8 +108,6 @@
                 })
                 .catch(error => console.error('Error updating JSON:', error));
         });
-    
-        // Revert to original data when "Cancel" button is clicked
         document.getElementById('cancel-btn').addEventListener('click', () => {
             document.getElementById('json-editor').value = originalData;
         });

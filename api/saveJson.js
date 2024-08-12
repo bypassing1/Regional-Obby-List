@@ -2,27 +2,25 @@ import { put, del } from '@vercel/blob';
 
 export default async function handler(req, res) {
     if (req.method === 'PUT') {
-        const { blobUrl, updatedData } = req.body;
+        const { blobUrl, prefix, updatedData } = req.body;
         const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
 
-        if (!blobUrl || !updatedData) {
-            res.status(400).json({ message: 'Missing blobUrl or updatedData' });
+        if (!blobUrl || !prefix || !updatedData) {
+            res.status(400).json({ message: 'Missing blobUrl, prefix, or updatedData' });
             return;
         }
 
         try {
-            // Step 1: Delete the original blob
             await del(blobUrl, {
                 headers: {
                     'Authorization': `Bearer ${blobToken}`
                 }
             });
 
-            // Step 2: Put the new data into the blob with the exact same blobKey
             const parsedData = JSON.parse(updatedData);
-            const blobKey = new URL(blobUrl).pathname.slice(1); // Extract the exact blobKey
+            const newBlobKey = `${prefix}.json`;
 
-            const result = await put(blobKey, JSON.stringify(parsedData), {
+            const result = await put(newBlobKey, JSON.stringify(parsedData), {
                 headers: {
                     'Authorization': `Bearer ${blobToken}`,
                     'Content-Type': 'application/json',
