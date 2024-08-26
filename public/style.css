@@ -532,7 +532,7 @@ header .info-text .scroll::before {
     filter: blur(3px) brightness(50%);
     z-index: 0;
     opacity: 1;
-    transition: 5s ease;
+    transition: 1s ease;
 }
 
 #features .card:hover .background-blur {
