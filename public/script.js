@@ -1,11 +1,26 @@
 document.addEventListener('DOMContentLoaded', function () {
     const listBlobsApiUrl = '/api/listBlobs';
+    const globaldataPrefix = 'globaldata';
+    const playerstatPrefix = 'playerstat';
     // Fetch the JSON data
     // Fetch globaldata.json and playerstat.json
-    Promise.all([
-            fetch('data/globaldata.json').then(response => response.json()),
-            fetch('data/playerstat.json').then(response => response.json())
-        ])
+    fetch(listBlobsApiUrl)
+    .then(response => response.json())
+    .then(data => {
+        // Find the blobs with the prefixes
+        const globaldataBlob = data.blobs.find(blob => blob.pathname.startsWith(globaldataPrefix));
+        const playerstatBlob = data.blobs.find(blob => blob.pathname.startsWith(playerstatPrefix));
+
+        if (!globaldataBlob || !playerstatBlob) {
+            throw new Error('Required blobs not found.');
+        }
+
+        // Fetch both JSON files using Promise.all
+        return Promise.all([
+            fetch(globaldataBlob.url).then(response => response.json()),
+            fetch(playerstatBlob.url).then(response => response.json())
+        ]);
+    })
         .then(([globaldata, playerstat]) => {
             // Ensure globaldata has the points property
             let points = 300;
