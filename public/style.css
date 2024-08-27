@@ -536,7 +536,7 @@ header .info-text .scroll::before {
 }
 
 #features .card:hover .background-blur {
-    transform: scale(1.5);
+    transform: scale(1.1);
 }
 
 .background-blur::after {
@@ -685,7 +685,7 @@ header .info-text .scroll::before {
 }
 
 .scrollable {
-    max-height: 600px;
+    max-height: 550px;
     overflow-y: auto;
 }
 
