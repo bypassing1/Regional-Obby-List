@@ -63,7 +63,7 @@
             <textarea id="json-editor" rows="65" cols="100"></textarea>
             <div class="btn-container">
                 <button id="cancel-btn">Cancel</button>
-                <button id="save-btn" onClick="window.location.reload();">Save Changes</button>
+                <button id="save-btn">Save Changes</button>
             </div>
         </div>
     </section>
@@ -105,6 +105,8 @@
                 .then(result => {
                     console.log('Update successful:', result);
                     alert('Update successful!');
+                    sleep(2000);
+                    window.location.reload();
                 })
                 .catch(error => console.error('Error updating JSON:', error));
         });
