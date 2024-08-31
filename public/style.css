@@ -764,6 +764,7 @@ header .info-text .scroll::before {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #131314;
 }
 
 .editor-container {
@@ -776,12 +777,61 @@ header .info-text .scroll::before {
     flex-direction: column;
     border-radius: 10px;
     width: 75%;
+    height: 100vh;
 }
 
 .editor-container h1 {
     margin: 20px;
     color: white;
     font-size: 30px;
+}
+
+.editor-main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+#draggable-list, .property-panel {
+    padding: 20px;
+    width: 40%;
+}
+
+#draggable-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    height: 40rem;
+    overflow: auto;
+}
+
+#draggable-list li {
+    padding: 10px 15px;
+    margin: 5px;
+    background-color: #2c2f33;
+    display: flex;
+    color: white;
+    align-items: center;
+    cursor: pointer;
+}
+
+#edit-form label {
+    display: block;
+    color: white;
+    margin: 10px 0 5px;
+}
+
+.property-panel {
+    color: white;
+}
+
+#edit-form input {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 4px;
 }
 
 .btn-container {
