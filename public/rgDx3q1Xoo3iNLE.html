@@ -105,6 +105,8 @@
                 .then(result => {
                     console.log('Update successful:', result);
                     alert('Update successful!');
+                    sleep(2000);
+                    window.location.reload();
                 })
                 .catch(error => console.error('Error updating JSON:', error));
         });
