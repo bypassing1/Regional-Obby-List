@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const li = document.createElement('li');
             li.className = 'draggable';
             li.setAttribute('draggable', 'true');
-            li.textContent = item.title;
+            li.textContent = `#${index + 1} - ${item.title}`;
             li.dataset.index = index;
             draggableList.appendChild(li);
 
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             editedData[currentItemIndex].gamelink = editForm.gamelink.value;
 
             const li = draggableList.querySelector(`.draggable[data-index='${currentItemIndex}']`);
-            li.textContent = editedData[currentItemIndex].title;
+            li.textContent = `#${currentItemIndex + 1} - ${editedData[currentItemIndex].title}`;
         }
     });
 
@@ -118,6 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         editedData = reorderedData;
+
+        // Update the list numbering
+        loadList(editedData);
+        addDragEvents();
     }
 
     addDragEvents();
@@ -160,12 +164,12 @@ document.addEventListener('DOMContentLoaded', () => {
             gamelink: ""
         };
 
-        editedData.push(newItem);
+        editedData.unshift(newItem); // Add new item to the top
         loadList(editedData);
         addDragEvents();
 
         // Automatically select the new item for editing
-        currentItemIndex = editedData.length - 1;
+        currentItemIndex = 0; // New item is at the top
         editForm.title.value = newItem.title;
         editForm.verifier.value = newItem.verifier;
         editForm.link.value = newItem.link;

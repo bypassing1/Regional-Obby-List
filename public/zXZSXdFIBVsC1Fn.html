@@ -57,63 +57,39 @@
         </div>
     </header>
     <div class="top-block"></div>
+    <div id="prefix-container" data-prefix="ukrdata"></div>
     <section class="editor-section">
         <div class="editor-container">
             <h1>Edit Ukraine List</h1>
-            <textarea id="json-editor" rows="65" cols="100"></textarea>
+            <div class="editor-main">
+                <ul id="draggable-list">
+                    
+                </ul>
+                <div class="property-panel">
+                    <h3>Edit Properties</h3>
+                    <form id="edit-form">
+                        <label for="title">Title:</label>
+                        <input type="text" id="title" name="title" placeholder="E.G : Honor"><br>
+        
+                        <label for="verifier">Verifier:</label>
+                        <input type="text" id="verifier" name="verifier" placeholder="E.G : itsmycrafted"><br>
+        
+                        <label for="link">YouTube Link:</label>
+                        <input type="text" id="link" name="link" placeholder="E.G : https://youtube.com/watch?v=... (NOT youtu.be)"><br>
+        
+                        <label for="gamelink">Game Link:</label>
+                        <input type="text" id="gamelink" name="gamelink" placeholder="E.G : https://roblox.com/game-id"><br>
+                    </form>
+                </div>
+            </div>
             <div class="btn-container">
                 <button id="cancel-btn">Cancel</button>
+                <button id="add-btn">Add Data</button>
                 <button id="save-btn">Save Changes</button>
             </div>
         </div>
     </section>
-    <div class="loader"></div>
-    <script>
-        const prefix = 'ukrdata';
-        const listBlobsApiUrl = '/api/listBlobs';
-        let blobUrl = '';
-        let originalData = '';
-        fetch(listBlobsApiUrl)
-        .then(response => response.json())
-        .then(data => {
-            const files = data.blobs || [];
-            const matchedFile = files.find(file => file.pathname && file.pathname.startsWith(prefix));
-            if (matchedFile) {
-                blobUrl = matchedFile.url;
-                fetch(blobUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        originalData = JSON.stringify(data, null, 2);
-                        document.getElementById('json-editor').value = originalData;
-                    })
-                    .catch(error => console.error('Error fetching JSON:', error));
-            } else {
-                console.error('No file found with the specified prefix.');
-            }
-        })
-        .catch(error => console.error('Error fetching files:', error));
-        document.getElementById('save-btn').addEventListener('click', () => {
-            const updatedData = document.getElementById('json-editor').value;
-            fetch('/api/saveJson', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ blobUrl, prefix, updatedData }),
-                })
-                .then(response => response.json())
-                .then(result => {
-                    console.log('Update successful:', result);
-                    alert('Update successful!');
-                    sleep(2000);
-                    window.location.reload();
-                })
-                .catch(error => console.error('Error updating JSON:', error));
-        });
-        document.getElementById('cancel-btn').addEventListener('click', () => {
-            document.getElementById('json-editor').value = originalData;
-        });
-    </script>
+    <script src="editor.js"></script>
     <script>
         window.si = window.si || function () {
             (window.siq = window.siq || []).push(arguments);
