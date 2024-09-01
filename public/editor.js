@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Get the prefix from the data-prefix attribute
     const prefixElement = document.getElementById('prefix-container');
-    const prefix = prefixElement.getAttribute('data-prefix') || 'defaultPrefix';  // Fallback to 'defaultPrefix' if none is provided
+    const prefix = prefixElement.getAttribute('data-prefix') || 'defaultPrefix';
 
     const listBlobsApiUrl = '/api/listBlobs';
     let blobUrl = '';
@@ -11,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const draggableList = document.getElementById('draggable-list');
     const editForm = document.getElementById('edit-form');
+    const moveUpButton = document.getElementById('move-up-btn');
+    const moveDownButton = document.getElementById('move-down-btn');
 
     fetch(listBlobsApiUrl)
         .then(response => response.json())
@@ -33,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error fetching JSON:', error));
 
-    // Function to load the list
     function loadList(data) {
         draggableList.innerHTML = '';
         data.forEach((item, index) => {
@@ -50,11 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 editForm.verifier.value = item.verifier;
                 editForm.link.value = item.link;
                 editForm.gamelink.value = item.gamelink;
+
+                // Highlight the selected item
+                document.querySelectorAll('.draggable').forEach(el => el.classList.remove('selected'));
+                li.classList.add('selected');
             });
         });
     }
 
-    // Update the JSON data when the form inputs are changed
     editForm.addEventListener('input', () => {
         if (currentItemIndex !== null) {
             editedData[currentItemIndex].title = editForm.title.value;
@@ -64,6 +67,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const li = draggableList.querySelector(`.draggable[data-index='${currentItemIndex}']`);
             li.textContent = `#${currentItemIndex + 1} - ${editedData[currentItemIndex].title}`;
+        }
+    });
+
+    function moveItem(oldIndex, newIndex) {
+        if (newIndex >= 0 && newIndex < editedData.length) {
+            const item = editedData.splice(oldIndex, 1)[0];
+            editedData.splice(newIndex, 0, item);
+            loadList(editedData);
+            addDragEvents();
+            currentItemIndex = newIndex;
+
+            editForm.title.value = item.title;
+            editForm.verifier.value = item.verifier;
+            editForm.link.value = item.link;
+            editForm.gamelink.value = item.gamelink;
+        }
+    }
+
+    moveUpButton.addEventListener('click', () => {
+        if (currentItemIndex !== null && currentItemIndex > 0) {
+            moveItem(currentItemIndex, currentItemIndex - 1);
+        }
+    });
+
+    moveDownButton.addEventListener('click', () => {
+        if (currentItemIndex !== null && currentItemIndex < editedData.length - 1) {
+            moveItem(currentItemIndex, currentItemIndex + 1);
         }
     });
 
@@ -118,15 +148,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         editedData = reorderedData;
-
-        // Update the list numbering
         loadList(editedData);
         addDragEvents();
     }
 
-    addDragEvents();
-
-    // Save button functionality
     document.getElementById('save-btn').addEventListener('click', () => {
         const updatedData = JSON.stringify(editedData, null, 2);
         fetch('/api/saveJson', {
@@ -140,14 +165,13 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(result => {
             console.log('Update successful:', result);
             alert('Update successful!');
-            originalData = JSON.parse(JSON.stringify(editedData)); // Update originalData to match the saved data
+            originalData = JSON.parse(JSON.stringify(editedData));
         })
         .catch(error => console.error('Error updating JSON:', error));
     });
 
-    // Cancel button functionality
     document.getElementById('cancel-btn').addEventListener('click', () => {
-        editedData = JSON.parse(JSON.stringify(originalData)); // Revert changes
+        editedData = JSON.parse(JSON.stringify(originalData));
         loadList(editedData);
         addDragEvents();
         editForm.reset();
@@ -155,7 +179,6 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Changes canceled!');
     });
 
-    // Add Data button functionality
     document.getElementById('add-btn').addEventListener('click', () => {
         const newItem = {
             title: "New Item",
@@ -164,12 +187,11 @@ document.addEventListener('DOMContentLoaded', () => {
             gamelink: ""
         };
 
-        editedData.unshift(newItem); // Add new item to the top
+        editedData.unshift(newItem); // Add to the top
         loadList(editedData);
         addDragEvents();
 
-        // Automatically select the new item for editing
-        currentItemIndex = 0; // New item is at the top
+        currentItemIndex = 0;
         editForm.title.value = newItem.title;
         editForm.verifier.value = newItem.verifier;
         editForm.link.value = newItem.link;
