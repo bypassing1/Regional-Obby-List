@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Get the prefix from the data-prefix attribute
     const prefixElement = document.getElementById('prefix-container');
-    const prefix = prefixElement.getAttribute('data-prefix') || 'defaultPrefix';
+    const prefix = prefixElement.getAttribute('data-prefix') || 'defaultPrefix';  // Fallback to 'defaultPrefix' if none is provided
 
     const listBlobsApiUrl = '/api/listBlobs';
     let blobUrl = '';
@@ -66,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Drag and drop functionality with touch support
+    // Drag and drop functionality
     let draggables = [];
     function addDragEvents() {
         draggables = document.querySelectorAll('.draggable');
@@ -80,11 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 draggable.classList.remove('dragging');
                 updateOrder();
             });
-
-            // Mobile touch support
-            draggable.addEventListener('touchstart', handleTouchStart);
-            draggable.addEventListener('touchmove', handleTouchMove);
-            draggable.addEventListener('touchend', handleTouchEnd);
         });
 
         draggableList.addEventListener('dragover', e => {
@@ -97,29 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 draggableList.insertBefore(draggable, afterElement);
             }
         });
-    }
-
-    let touchStartY = 0;
-    function handleTouchStart(e) {
-        touchStartY = e.touches[0].clientY;
-        e.target.classList.add('dragging');
-    }
-
-    function handleTouchMove(e) {
-        const touchY = e.touches[0].clientY;
-        const afterElement = getDragAfterElement(draggableList, touchY);
-        const draggable = document.querySelector('.dragging');
-        if (afterElement == null) {
-            draggableList.appendChild(draggable);
-        } else {
-            draggableList.insertBefore(draggable, afterElement);
-        }
-        touchStartY = touchY;
-    }
-
-    function handleTouchEnd(e) {
-        e.target.classList.remove('dragging');
-        updateOrder();
     }
 
     function getDragAfterElement(container, y) {
@@ -145,7 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         editedData = reorderedData;
-        loadList(editedData); // Update the list to reflect new order and numbering
+
+        // Update the list numbering
+        loadList(editedData);
+        addDragEvents();
     }
 
     addDragEvents();
@@ -193,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         addDragEvents();
 
         // Automatically select the new item for editing
-        currentItemIndex = 0; // New item is now at index 0
+        currentItemIndex = 0; // New item is at the top
         editForm.title.value = newItem.title;
         editForm.verifier.value = newItem.verifier;
         editForm.link.value = newItem.link;
