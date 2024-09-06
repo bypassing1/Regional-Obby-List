@@ -153,6 +153,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.getElementById('save-btn').addEventListener('click', () => {
+        // Loop through the edited data and convert youtu.be links
+        editedData.forEach(item => {
+            if (item.link && item.link.includes('youtu.be')) {
+                const videoId = item.link.split('/').pop();
+                item.link = `https://www.youtube.com/watch?v=${videoId}`;
+            }
+        });
+    
         const updatedData = JSON.stringify(editedData, null, 2);
         fetch('/api/saveJson', {
             method: 'PUT',
@@ -169,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error updating JSON:', error));
     });
+    
 
     document.getElementById('cancel-btn').addEventListener('click', () => {
         editedData = JSON.parse(JSON.stringify(originalData));
