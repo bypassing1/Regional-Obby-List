@@ -153,6 +153,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.getElementById('save-btn').addEventListener('click', () => {
+        // Function to reformat YouTube links
+        function formatYouTubeLink(link) {
+            let videoId = '';
+            let extraParams = '';
+    
+            if (link.includes('youtu.be')) {
+                // Extract video ID from youtu.be link
+                videoId = link.split('/').pop().split('?')[0];  // Get the ID without parameters
+                extraParams = link.split('?')[1] || '';  // Get any extra parameters
+            } else if (link.includes('youtube.com/watch')) {
+                // Extract video ID from youtube.com/watch link
+                const urlParams = new URLSearchParams(link.split('?')[1]);
+                videoId = urlParams.get('v');
+                extraParams = link.split('&').slice(1).join('&'); // Preserve extra params if any
+            }
+    
+            if (videoId) {
+                // Build the full YouTube URL and append any extra parameters
+                let formattedLink = `https://www.youtube.com/watch?v=${videoId}`;
+                if (extraParams) {
+                    formattedLink += `&${extraParams}`;
+                }
+                return formattedLink;
+            }
+    
+            // If the link isn't a valid YouTube link, return it unchanged
+            return link;
+        }
+    
+        // Loop through the edited data and convert YouTube links
+        editedData.forEach(item => {
+            if (item.link) {
+                item.link = formatYouTubeLink(item.link);
+            }
+        });
+    
         const updatedData = JSON.stringify(editedData, null, 2);
         fetch('/api/saveJson', {
             method: 'PUT',
@@ -169,6 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error updating JSON:', error));
     });
+    
+    
 
     document.getElementById('cancel-btn').addEventListener('click', () => {
         editedData = JSON.parse(JSON.stringify(originalData));
