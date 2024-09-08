@@ -1,36 +1,51 @@
 import { put, del } from '@vercel/blob';
+import { list } from '@vercel/blob';
 
 export default async function handler(req, res) {
     if (req.method === 'PUT') {
-        const { blobUrl, prefix, updatedData } = req.body;
+        const { prefix, updatedData } = req.body;
         const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
 
-        if (!blobUrl || !prefix || !updatedData) {
-            res.status(400).json({ message: 'Missing blobUrl, prefix, or updatedData' });
+        if (!prefix || !updatedData) {
+            res.status(400).json({ message: 'Missing prefix or updatedData' });
             return;
         }
 
         try {
-            await del(blobUrl, {
+            // 1. List all blobs to find those with the same prefix
+            const listResult = await list({
                 headers: {
                     'Authorization': `Bearer ${blobToken}`
                 }
             });
 
+            // 2. Filter blobs by prefix
+            const matchingBlobs = listResult.blobs.filter(blob => blob.pathname.startsWith(prefix));
+
+            // 3. Delete all blobs that match the prefix
+            for (const blob of matchingBlobs) {
+                await del(blob.url, {
+                    headers: {
+                        'Authorization': `Bearer ${blobToken}`
+                    }
+                });
+            }
+
+            // 4. Upload the new blob with the specified key (without random suffix)
             const parsedData = JSON.parse(updatedData);
-            const newBlobKey = `${prefix}.json`;
+            const newBlobKey = `${prefix}.json`; // Define blob name explicitly
 
             const result = await put(newBlobKey, JSON.stringify(parsedData), {
                 headers: {
                     'Authorization': `Bearer ${blobToken}`,
                     'Content-Type': 'application/json',
                 },
-                access: 'public',
+                access: 'public', // Adjust access as needed
             });
 
             if (result.url) {
                 console.log('JSON data updated successfully:', result.url);
-                res.status(200).json({ message: 'JSON data updated successfully!' });
+                res.status(200).json({ message: 'JSON data updated successfully!', url: result.url });
             } else {
                 console.error('Failed to update JSON data. Result:', result);
                 res.status(500).json({ message: 'Failed to update JSON data.' });
