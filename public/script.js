@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (topPlayersElement) {
                     // Trim trailing comma and space from the string
                     topVerifiersString = topVerifiersString.slice(0, -2);
-                    topPlayersElement.innerHTML = topVerifiersString.trim();
+                    topPlayersElement.textContent = topVerifiersString;
                 }
 
                 const top1ObbyistElement = document.querySelector('.top1-obbyist');
