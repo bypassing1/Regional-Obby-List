@@ -28,7 +28,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             // Add the verifier of the top item (first item) to the verifiers string
                             if (listData.length > 0) {
                                 const topVerifier = listData[0].verifier;
-                                topVerifiersString += `${topVerifier}ㅤㅤㅤㅤㅤ`; 
+                                topVerifiersString += `${topVerifier}ㅤㅤㅤ`; 
+                                topVerifiersString += `${topVerifier}ㅤㅤㅤ`;
                             }
                         });
                     }
