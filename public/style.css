@@ -974,6 +974,21 @@ header .info-text .scroll::before {
     font-weight: bold;
 }
 
+.content {
+    display: inline-block;
+    white-space: nowrap; /* Prevents line breaks */
+    animation: marquee 15s linear infinite; /* Adjust timing as needed */
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(100%); /* Start from right */
+    }
+    100% {
+        transform: translateX(-100%); /* Move to left */
+    }
+}
+
 .contributors h2 {
     font-size: 2rem;
 }
