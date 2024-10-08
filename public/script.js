@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const listBlobsApiUrl = '/api/listBlobs';
     const globaldataPrefix = 'globaldata';
     const playerstatPrefix = 'playerstat';
-    const prefixList = ['vndata', 'iddata', 'kocdata', 'vocdata'];
+    const prefixList = ['vndata', 'iddata', 'krdata', 'ukrdata', 'mysdata'];
     let topVerifiersString = '';
 
     // Fetch the JSON data
