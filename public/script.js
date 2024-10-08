@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             // Add the verifier of the top item (first item) to the verifiers string
                             if (listData.length > 0) {
                                 const topVerifier = listData[0].verifier;
-                                topVerifiersString += `${topVerifier}ㅤㅤㅤㅤㅤㅤ;`; 
+                                topVerifiersString += `${topVerifier}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`; 
                             }
                         });
                     }
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (topPlayersElement) {
                     // Trim trailing comma and space from the string
                     topVerifiersString = topVerifiersString.slice(0, -2);
-                    topPlayersElement.innerHTML = topVerifiersString;
+                    topPlayersElement.innerHTML = topVerifiersString.trim();
                 }
 
                 const top1ObbyistElement = document.querySelector('.top1-obbyist');
