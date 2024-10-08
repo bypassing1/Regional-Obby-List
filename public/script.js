@@ -2,29 +2,43 @@ document.addEventListener('DOMContentLoaded', function () {
     const listBlobsApiUrl = '/api/listBlobs';
     const globaldataPrefix = 'globaldata';
     const playerstatPrefix = 'playerstat';
+    const prefixList = ['vndata', 'iddata', 'kocdata', 'vocdata'];
+    let topVerifiersString = '';
+
     // Fetch the JSON data
-    // Fetch globaldata.json and playerstat.json
     fetch(listBlobsApiUrl)
-    .then(response => response.json())
-    .then(data => {
-        // Find the blobs with the prefixes
-        const globaldataBlob = data.blobs.find(blob => blob.pathname.startsWith(globaldataPrefix));
-        const playerstatBlob = data.blobs.find(blob => blob.pathname.startsWith(playerstatPrefix));
+        .then(response => response.json())
+        .then(data => {
+            // Find the blobs with the prefixes
+            const globaldataBlob = data.blobs.find(blob => blob.pathname.startsWith(globaldataPrefix));
+            const playerstatBlob = data.blobs.find(blob => blob.pathname.startsWith(playerstatPrefix));
 
-        if (!globaldataBlob || !playerstatBlob) {
-            throw new Error('Required blobs not found.');
-        }
+            if (!globaldataBlob || !playerstatBlob) {
+                throw new Error('Required blobs not found.');
+            }
 
-        // Fetch both JSON files using Promise.all
-        return Promise.all([
-            fetch(globaldataBlob.url).then(response => response.json()),
-            fetch(playerstatBlob.url).then(response => response.json())
-        ]);
-    })
+            // Fetch globaldata and playerstat JSON files
+            return Promise.all([
+                fetch(globaldataBlob.url).then(response => response.json()),
+                fetch(playerstatBlob.url).then(response => response.json()),
+                ...prefixList.map(prefix => {
+                    const blob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
+                    if (blob) {
+                        return fetch(blob.url).then(response => response.json()).then(listData => {
+                            // Add the verifier of the top item (first item) to the verifiers string
+                            if (listData.length > 0) {
+                                const topVerifier = listData[0].verifier;
+                                topVerifiersString += `${topVerifier}, `;
+                            }
+                        });
+                    }
+                })
+            ]);
+        })
         .then(([globaldata, playerstat]) => {
             // Ensure globaldata has the points property
             let points = 300;
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < globaldata.length; i++) {
                 globaldata[i].points = points.toFixed(2);
                 points -= 2.77;
             }
@@ -53,6 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             playerstat.sort((a, b) => parseFloat(b.playerpoints) - parseFloat(a.playerpoints));
 
+            // Handle statistics display
             if (document.getElementById('statistics')) {
                 const scrollableDiv = document.getElementById('scrollable');
 
@@ -77,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         const playerStatsDiv = document.querySelector('.player-stats');
                         playerStatsDiv.innerHTML = ''; // Clear previous content
 
-                        const nationality = player.region.toUpperCase()
+                        const nationality = player.region.toUpperCase();
 
                         const beatenObbyHTML = player.beaten.map(obby => {
                             const obbyData = globaldata.find(data => data.title === obby);
@@ -86,41 +101,41 @@ document.addEventListener('DOMContentLoaded', function () {
                         }).join('');
 
                         playerStatsDiv.innerHTML = `
-                    <div class="stats-header">
-                    <img src="assets/${player.region}.svg" class="flag" alt="">
-                    <h2 id="player">${player.name}</h2>
-                    </div>
-                    <div class="stats-container">
-                        <span>
-                            <b>Nationality</b>
-                            <p>${nationality}</p>
-                        </span>
-                    </div>
-                    <div class="stats-container">
-                        <span>
-                            <b>Rank</b>
-                            <p>${index + 1}</p>
-                        </span>
-                        <span>
-                            <b>Points</b>
-                            <p>${player.playerpoints}</p>
-                        </span>
-                    </div>
-                    <div class="stats-container">
-                        <span>
-                            <b>Hardest Obby</b>
-                            <p>${player.hardestobby}</p>
-                        </span>
-                    </div>
-                    <div class="stats-container">
-                        <span>
-                            <b>Obby Beaten</b>
-                            <div class="beaten-obby">
-                            ${beatenObbyHTML}
-                        </div>
-                        </span>
-                    </div>
-                `;
+                            <div class="stats-header">
+                                <img src="assets/${player.region}.svg" class="flag" alt="">
+                                <h2 id="player">${player.name}</h2>
+                            </div>
+                            <div class="stats-container">
+                                <span>
+                                    <b>Nationality</b>
+                                    <p>${nationality}</p>
+                                </span>
+                            </div>
+                            <div class="stats-container">
+                                <span>
+                                    <b>Rank</b>
+                                    <p>${index + 1}</p>
+                                </span>
+                                <span>
+                                    <b>Points</b>
+                                    <p>${player.playerpoints}</p>
+                                </span>
+                            </div>
+                            <div class="stats-container">
+                                <span>
+                                    <b>Hardest Obby</b>
+                                    <p>${player.hardestobby}</p>
+                                </span>
+                            </div>
+                            <div class="stats-container">
+                                <span>
+                                    <b>Obby Beaten</b>
+                                    <div class="beaten-obby">
+                                        ${beatenObbyHTML}
+                                    </div>
+                                </span>
+                            </div>
+                        `;
 
                         playerStatsDiv.style.display = 'block'; // Show the player-stats div
                         startTransition();
@@ -129,21 +144,28 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const loader = document.querySelector(".loader");
-            const playerStatsDiv = document.querySelector(".player-stats")
+            const playerStatsDiv = document.querySelector(".player-stats");
 
             const startTransition = () => {
-                playerStatsDiv.style.opacity = '0'
+                playerStatsDiv.style.opacity = '0';
                 loader.style.transform = "translateX(0%)";
                 setTimeout(() => {
                     loader.style.transform = "translateX(100%)"; // End position
-                    playerStatsDiv.style.opacity = '1'
+                    playerStatsDiv.style.opacity = '1';
                 }, 1000);
             };
 
-            // Continue with your existing script logic
+            // Insert the verifiers string into the #top-players element
             if (document.getElementById('index')) {
+                const topPlayersElement = document.getElementById('top-players');
+                if (topPlayersElement) {
+                    // Trim trailing comma and space from the string
+                    topVerifiersString = topVerifiersString.slice(0, -2);
+                    topPlayersElement.textContent = topVerifiersString; // Insert verifiers string
+                }
+
                 const top1ObbyistElement = document.querySelector('.top1-obbyist');
-                top1ObbyistElement.textContent = globaldata[0].verifier;
+                top1ObbyistElement.textContent = globaldata[0].verifier; // Example logic for top obbyist
                 let contributors = [
                     'itsmycrafted',
                     'galih_funfan',
