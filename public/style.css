@@ -989,6 +989,124 @@ header .info-text .scroll::before {
     }
 }
 
+.carousel-container {
+    background-color: #131314;
+    padding: 3rem;
+}
+
+.carousel {
+    display: flex;
+    overflow: hidden;
+    width: 75%;
+    position: relative;
+    margin: auto;
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+    width: 100%;
+}
+
+.carousel-item {
+    flex: 1 0 100%;
+    margin: 0 5px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: auto;
+    z-index: 1;
+}
+
+.carousel-overlay {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    transform: translateY(-50%);
+    color: white;
+}
+
+.carousel-overlay h3 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.carousel-overlay p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+}
+
+.carousel-blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    background-size: 150% 150%;
+}
+
+.carousel-blur::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 1), transparent);
+    z-index: 1;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.carousel-control-prev {
+    left: 10px;
+}
+
+.carousel-control-next {
+    right: 10px;
+}
+
+.carousel-control-prev.hidden, .carousel-control-next.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@media (min-width: 768px) {
+    .carousel-item {
+        flex: 1 0 50%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .carousel-item {
+        flex: 1 0 33.33%;
+    }
+}
+
 .contributors h2 {
     font-size: 2rem;
 }

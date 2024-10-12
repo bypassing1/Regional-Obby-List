@@ -4,20 +4,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const playerstatPrefix = 'playerstat';
     const prefixList = ['vndata', 'iddata', 'krdata', 'ukrdata', 'mysdata'];
     let topVerifiersString = '';
-
-    // Fetch the JSON data
     fetch(listBlobsApiUrl)
         .then(response => response.json())
         .then(data => {
-            // Find the blobs with the prefixes
             const globaldataBlob = data.blobs.find(blob => blob.pathname.startsWith(globaldataPrefix));
             const playerstatBlob = data.blobs.find(blob => blob.pathname.startsWith(playerstatPrefix));
-
             if (!globaldataBlob || !playerstatBlob) {
                 throw new Error('Required blobs not found.');
             }
-
-            // Fetch globaldata and playerstat JSON files
             return Promise.all([
                 fetch(globaldataBlob.url).then(response => response.json()),
                 fetch(playerstatBlob.url).then(response => response.json()),
@@ -25,7 +19,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     const blob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
                     if (blob) {
                         return fetch(blob.url).then(response => response.json()).then(listData => {
-                            // Add the verifier of the top item (first item) to the verifiers string
+                            if (listData.length > 0) {
+                                const topVerifier = listData[0].verifier;
+                                topVerifiersString += `${topVerifier}ㅤㅤㅤ`; 
+                                topVerifiersString += `${topVerifier}ㅤㅤㅤ`;
+                            }
                             if (listData.length > 0) {
                                 const topVerifier = listData[0].verifier;
                                 topVerifiersString += `${topVerifier}ㅤㅤㅤ`; 
@@ -37,20 +35,15 @@ document.addEventListener('DOMContentLoaded', function () {
             ]);
         })
         .then(([globaldata, playerstat]) => {
-            // Ensure globaldata has the points property
             let points = 300;
             for (let i = 0; i < globaldata.length; i++) {
                 globaldata[i].points = points.toFixed(2);
                 points -= 2.77;
             }
-
-            // Calculate player points for each player in playerstat
             playerstat.forEach(player => {
                 let totalPoints = 0;
                 let hardestObby = '';
                 let highestPoints = 0;
-    
-
                 player.beaten.forEach(obby => {
                     const obbyData = globaldata.find(data => data.title === obby);
                     if (obbyData && obbyData.points) {
@@ -62,17 +55,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     }
                 });
-
                 player.playerpoints = totalPoints.toFixed(2);
                 player.hardestobby = hardestObby;
             });
-
             playerstat.sort((a, b) => parseFloat(b.playerpoints) - parseFloat(a.playerpoints));
-
-            // Handle statistics display
             if (document.getElementById('statistics')) {
                 const scrollableDiv = document.getElementById('scrollable');
-
                 playerstat.forEach((player, index) => {
                     const playerDiv = document.createElement('a');
                     playerDiv.className = 'player-div';
@@ -89,10 +77,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     playerDiv.appendChild(playerName);
                     scrollableDiv.appendChild(playerDiv);
 
-                    // Add click event listener to each playerDiv
                     playerDiv.addEventListener('click', () => {
                         const playerStatsDiv = document.querySelector('.player-stats');
-                        playerStatsDiv.innerHTML = ''; // Clear previous content
+                        playerStatsDiv.innerHTML = '';
 
                         const nationality = player.region.toUpperCase();
 
@@ -139,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             </div>
                         `;
 
-                        playerStatsDiv.style.display = 'block'; // Show the player-stats div
+                        playerStatsDiv.style.display = 'block';
                         startTransition();
                     });
                 });
@@ -152,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 playerStatsDiv.style.opacity = '0';
                 loader.style.transform = "translateX(0%)";
                 setTimeout(() => {
-                    loader.style.transform = "translateX(100%)"; // End position
+                    loader.style.transform = "translateX(100%)";
                     playerStatsDiv.style.opacity = '1';
                 }, 1000);
             };
@@ -167,13 +154,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 const top1ObbyistElement = document.querySelector('.top1-obbyist');
-                top1ObbyistElement.textContent = globaldata[0].verifier; // Example logic for top obbyist
+                top1ObbyistElement.textContent = globaldata[0].verifier;
                 let contributors = [
                     'itsmycrafted',
                     'galih_funfan',
                     'lcknt',
                     'zayenzoo',
-                    'darkside_dammed'
+                    'infinicator'
                 ];
                 let contributorsContainer = document.querySelector('.contributors-text');
                 contributors.forEach(contributor => {
@@ -192,59 +179,49 @@ document.addEventListener('DOMContentLoaded', function () {
                     const videoId = item.link.split('v=')[1].split('&')[0];
                     const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-                    // Create card element
                     const card = document.createElement('div');
                     card.className = 'card';
 
-                    // Create background blur element
                     const bgblur = document.createElement('div');
                     bgblur.className = "background-blur";
                     bgblur.style.backgroundImage = `url(${thumbnailUrl})`;
                     card.appendChild(bgblur);
 
-                    // Create link overlay element
                     const link = document.createElement('a');
                     link.href = item.link;
                     link.target = "_blank";
                     link.className = "link-overlay";
                     card.appendChild(link);
 
-                    // Create image element
                     const img = document.createElement('img');
                     img.src = thumbnailUrl;
                     img.classList.add('thumbnail');
                     link.appendChild(img);
 
-                    // Create info container
                     const info = document.createElement('div');
                     info.className = 'info';
                     card.appendChild(info);
 
-                    // Create flag element
                     const flag = document.createElement('img');
                     flag.src = `assets/${item.region}.svg`;
                     flag.classList.add('flag');
                     info.appendChild(flag);
 
-                    // Create title element
                     const obby = document.createElement('h1');
                     obby.id = 'after-video';
                     obby.textContent = total < 101 ? `#${total} - ${item.title}` : `${item.title}`;
                     info.appendChild(obby);
 
-                    // Create verifier element
                     const verifier = document.createElement('p');
                     verifier.textContent = item.verifier;
                     info.appendChild(verifier);
 
-                    // Create game link element
                     const gamelink = document.createElement('a');
                     gamelink.href = item.gamelink;
                     gamelink.target = "_blank";
                     gamelink.textContent = `Game`;
                     info.appendChild(gamelink);
 
-                    // Append card to the appropriate container
                     if (total > 100) {
                         legacycontainer.appendChild(card);
                     } else {
@@ -275,59 +252,49 @@ document.addEventListener('DOMContentLoaded', function () {
                     const videoId = item.link.split('v=')[1].split('&')[0];
                     const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-                    // Create card element
                     const card = document.createElement('div');
                     card.className = 'card';
 
-                    // Create background blur element
                     const bgblur = document.createElement('div');
                     bgblur.className = "background-blur";
                     bgblur.style.backgroundImage = `url(${thumbnailUrl})`;
                     card.appendChild(bgblur);
 
-                    // Create link overlay element
                     const link = document.createElement('a');
                     link.href = item.link;
                     link.target = "_blank";
                     link.className = "link-overlay";
                     card.appendChild(link);
 
-                    // Create image element
                     const img = document.createElement('img');
                     img.src = thumbnailUrl;
                     img.classList.add('thumbnail');
                     link.appendChild(img);
 
-                    // Create info container
                     const info = document.createElement('div');
                     info.className = 'info';
                     card.appendChild(info);
 
-                    // Create flag element
                     const flag = document.createElement('img');
                     flag.src = `assets/vn.svg`;
                     flag.classList.add('flag');
                     info.appendChild(flag);
 
-                    // Create title element
                     const obby = document.createElement('h1');
                     obby.id = 'after-video';
                     obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
                     info.appendChild(obby);
 
-                    // Create verifier element
                     const verifier = document.createElement('p');
                     verifier.textContent = item.verifier;
                     info.appendChild(verifier);
 
-                    // Create game link element
                     const gamelink = document.createElement('a');
                     gamelink.href = item.gamelink;
                     gamelink.target = "_blank";
                     gamelink.textContent = `Game`;
                     info.appendChild(gamelink);
 
-                    // Append card to the appropriate container
                     if (total > 50) {
                         legacycontainer.appendChild(card);
                     } else {
@@ -358,59 +325,49 @@ document.addEventListener('DOMContentLoaded', function () {
                     const videoId = item.link.split('v=')[1].split('&')[0];
                     const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-                    // Create card element
                     const card = document.createElement('div');
                     card.className = 'card';
 
-                    // Create background blur element
                     const bgblur = document.createElement('div');
                     bgblur.className = "background-blur";
                     bgblur.style.backgroundImage = `url(${thumbnailUrl})`;
                     card.appendChild(bgblur);
 
-                    // Create link overlay element
                     const link = document.createElement('a');
                     link.href = item.link;
                     link.target = "_blank";
                     link.className = "link-overlay";
                     card.appendChild(link);
 
-                    // Create image element
                     const img = document.createElement('img');
                     img.src = thumbnailUrl;
                     img.classList.add('thumbnail');
                     link.appendChild(img);
 
-                    // Create info container
                     const info = document.createElement('div');
                     info.className = 'info';
                     card.appendChild(info);
 
-                    // Create flag element
                     const flag = document.createElement('img');
                     flag.src = `assets/id.svg`;
                     flag.classList.add('flag');
                     info.appendChild(flag);
 
-                    // Create title element
                     const obby = document.createElement('h1');
                     obby.id = 'after-video';
                     obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
                     info.appendChild(obby);
 
-                    // Create verifier element
                     const verifier = document.createElement('p');
                     verifier.textContent = item.verifier;
                     info.appendChild(verifier);
 
-                    // Create game link element
                     const gamelink = document.createElement('a');
                     gamelink.href = item.gamelink;
                     gamelink.target = "_blank";
                     gamelink.textContent = `Game`;
                     info.appendChild(gamelink);
 
-                    // Append card to the appropriate container
                     if (total > 50) {
                         legacycontainer.appendChild(card);
                     } else {
@@ -441,59 +398,49 @@ document.addEventListener('DOMContentLoaded', function () {
                     const videoId = item.link.split('v=')[1].split('&')[0];
                     const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-                    // Create card element
                     const card = document.createElement('div');
                     card.className = 'card';
 
-                    // Create background blur element
                     const bgblur = document.createElement('div');
                     bgblur.className = "background-blur";
                     bgblur.style.backgroundImage = `url(${thumbnailUrl})`;
                     card.appendChild(bgblur);
 
-                    // Create link overlay element
                     const link = document.createElement('a');
                     link.href = item.link;
                     link.target = "_blank";
                     link.className = "link-overlay";
                     card.appendChild(link);
 
-                    // Create image element
                     const img = document.createElement('img');
                     img.src = thumbnailUrl;
                     img.classList.add('thumbnail');
                     link.appendChild(img);
 
-                    // Create info container
                     const info = document.createElement('div');
                     info.className = 'info';
                     card.appendChild(info);
 
-                    // Create flag element
                     const flag = document.createElement('img');
                     flag.src = `assets/ukr.svg`;
                     flag.classList.add('flag');
                     info.appendChild(flag);
 
-                    // Create title element
                     const obby = document.createElement('h1');
                     obby.id = 'after-video';
                     obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
                     info.appendChild(obby);
 
-                    // Create verifier element
                     const verifier = document.createElement('p');
                     verifier.textContent = item.verifier;
                     info.appendChild(verifier);
 
-                    // Create game link element
                     const gamelink = document.createElement('a');
                     gamelink.href = item.gamelink;
                     gamelink.target = "_blank";
                     gamelink.textContent = `Game`;
                     info.appendChild(gamelink);
 
-                    // Append card to the appropriate container
                     if (total > 50) {
                         legacycontainer.appendChild(card);
                     } else {
@@ -524,59 +471,49 @@ document.addEventListener('DOMContentLoaded', function () {
                     const videoId = item.link.split('v=')[1].split('&')[0];
                     const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-                    // Create card element
                     const card = document.createElement('div');
                     card.className = 'card';
 
-                    // Create background blur element
                     const bgblur = document.createElement('div');
                     bgblur.className = "background-blur";
                     bgblur.style.backgroundImage = `url(${thumbnailUrl})`;
                     card.appendChild(bgblur);
 
-                    // Create link overlay element
                     const link = document.createElement('a');
                     link.href = item.link;
                     link.target = "_blank";
                     link.className = "link-overlay";
                     card.appendChild(link);
 
-                    // Create image element
                     const img = document.createElement('img');
                     img.src = thumbnailUrl;
                     img.classList.add('thumbnail');
                     link.appendChild(img);
 
-                    // Create info container
                     const info = document.createElement('div');
                     info.className = 'info';
                     card.appendChild(info);
 
-                    // Create flag element
                     const flag = document.createElement('img');
                     flag.src = `assets/kr.svg`;
                     flag.classList.add('flag');
                     info.appendChild(flag);
 
-                    // Create title element
                     const obby = document.createElement('h1');
                     obby.id = 'after-video';
                     obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
                     info.appendChild(obby);
 
-                    // Create verifier element
                     const verifier = document.createElement('p');
                     verifier.textContent = item.verifier;
                     info.appendChild(verifier);
 
-                    // Create game link element
                     const gamelink = document.createElement('a');
                     gamelink.href = item.gamelink;
                     gamelink.target = "_blank";
                     gamelink.textContent = `Game`;
                     info.appendChild(gamelink);
 
-                    // Append card to the appropriate container
                     if (total > 50) {
                         legacycontainer.appendChild(card);
                     } else {
@@ -607,59 +544,49 @@ document.addEventListener('DOMContentLoaded', function () {
                     const videoId = item.link.split('v=')[1].split('&')[0];
                     const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-                    // Create card element
                     const card = document.createElement('div');
                     card.className = 'card';
 
-                    // Create background blur element
                     const bgblur = document.createElement('div');
                     bgblur.className = "background-blur";
                     bgblur.style.backgroundImage = `url(${thumbnailUrl})`;
                     card.appendChild(bgblur);
 
-                    // Create link overlay element
                     const link = document.createElement('a');
                     link.href = item.link;
                     link.target = "_blank";
                     link.className = "link-overlay";
                     card.appendChild(link);
 
-                    // Create image element
                     const img = document.createElement('img');
                     img.src = thumbnailUrl;
                     img.classList.add('thumbnail');
                     link.appendChild(img);
 
-                    // Create info container
                     const info = document.createElement('div');
                     info.className = 'info';
                     card.appendChild(info);
 
-                    // Create flag element
                     const flag = document.createElement('img');
                     flag.src = `assets/mys.svg`;
                     flag.classList.add('flag');
                     info.appendChild(flag);
 
-                    // Create title element
                     const obby = document.createElement('h1');
                     obby.id = 'after-video';
                     obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
                     info.appendChild(obby);
 
-                    // Create verifier element
                     const verifier = document.createElement('p');
                     verifier.textContent = item.verifier;
                     info.appendChild(verifier);
 
-                    // Create game link element
                     const gamelink = document.createElement('a');
                     gamelink.href = item.gamelink;
                     gamelink.target = "_blank";
                     gamelink.textContent = `Game`;
                     info.appendChild(gamelink);
 
-                    // Append card to the appropriate container
                     if (total > 50) {
                         legacycontainer.appendChild(card);
                     } else {

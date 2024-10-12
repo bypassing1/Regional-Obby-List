@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     const prefixElement = document.getElementById('prefix-container');
     const prefix = prefixElement.getAttribute('data-prefix') || 'defaultPrefix';
+    const updateBlobUrl = 'https://pi3etbntstmdvlu5.public.blob.vercel-storage.com/update-qxGx8pZ9qcHZsiXtgbV2XPP4bIxJax.json'; // Update blob URL for update log
 
-    const listBlobsApiUrl = '/api/listBlobs';
     let blobUrl = '';
     let originalData = [];
     let editedData = [];
+    let updatesData = [];
     let currentItemIndex = null;
 
     const draggableList = document.getElementById('draggable-list');
@@ -13,7 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const moveUpButton = document.getElementById('move-up-btn');
     const moveDownButton = document.getElementById('move-down-btn');
 
-    fetch(listBlobsApiUrl)
+    // Fetch the obby list and the update log
+    fetch('/api/listBlobs')
         .then(response => response.json())
         .then(data => {
             const files = data.blobs || [];
@@ -31,9 +33,15 @@ document.addEventListener('DOMContentLoaded', () => {
             editedData = JSON.parse(JSON.stringify(data));
             loadList(editedData);
             addDragEvents();
+            return fetch(updateBlobUrl);  // Fetch the update log JSON
+        })
+        .then(response => response.json())
+        .then(data => {
+            updatesData = data || [];
         })
         .catch(error => console.error('Error fetching JSON:', error));
 
+    // Load the obby list into the UI
     function loadList(data) {
         draggableList.innerHTML = '';
         data.forEach((item, index) => {
@@ -58,156 +66,53 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    editForm.addEventListener('input', () => {
-        if (currentItemIndex !== null) {
-            editedData[currentItemIndex].title = editForm.title.value;
-            editedData[currentItemIndex].verifier = editForm.verifier.value;
-            editedData[currentItemIndex].link = editForm.link.value;
-            editedData[currentItemIndex].gamelink = editForm.gamelink.value;
-
-            const li = draggableList.querySelector(`.draggable[data-index='${currentItemIndex}']`);
-            li.textContent = `#${currentItemIndex + 1} - ${editedData[currentItemIndex].title}`;
-        }
-    });
-
-    function moveItem(oldIndex, newIndex) {
-        if (newIndex >= 0 && newIndex < editedData.length) {
-            const item = editedData.splice(oldIndex, 1)[0];
-            editedData.splice(newIndex, 0, item);
-            loadList(editedData);
-            addDragEvents();
-            currentItemIndex = newIndex;
-
-            editForm.title.value = item.title;
-            editForm.verifier.value = item.verifier;
-            editForm.link.value = item.link;
-            editForm.gamelink.value = item.gamelink;
-        }
-    }
-
-    moveUpButton.addEventListener('click', () => {
-        if (currentItemIndex !== null && currentItemIndex > 0) {
-            moveItem(currentItemIndex, currentItemIndex - 1);
-        }
-    });
-
-    moveDownButton.addEventListener('click', () => {
-        if (currentItemIndex !== null && currentItemIndex < editedData.length - 1) {
-            moveItem(currentItemIndex, currentItemIndex + 1);
-        }
-    });
-
-    // Drag and drop functionality
-    let draggables = [];
-    function addDragEvents() {
-        draggables = document.querySelectorAll('.draggable');
-
-        draggables.forEach(draggable => {
-            draggable.addEventListener('dragstart', () => {
-                draggable.classList.add('dragging');
-            });
-
-            draggable.addEventListener('dragend', () => {
-                draggable.classList.remove('dragging');
-                updateOrder();
-            });
-        });
-
-        draggableList.addEventListener('dragover', e => {
-            e.preventDefault();
-            const afterElement = getDragAfterElement(draggableList, e.clientY);
-            const draggable = document.querySelector('.dragging');
-            if (afterElement == null) {
-                draggableList.appendChild(draggable);
-            } else {
-                draggableList.insertBefore(draggable, afterElement);
-            }
-        });
-    }
-
-    function getDragAfterElement(container, y) {
-        const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')];
-
-        return draggableElements.reduce((closest, child) => {
-            const box = child.getBoundingClientRect();
-            const offset = y - box.top - box.height / 2;
-            if (offset < 0 && offset > closest.offset) {
-                return { offset: offset, element: child };
-            } else {
-                return closest;
-            }
-        }, { offset: Number.NEGATIVE_INFINITY }).element;
-    }
-
-    function updateOrder() {
-        const reorderedData = [];
-        const reorderedIndices = Array.from(draggableList.querySelectorAll('.draggable')).map(li => parseInt(li.dataset.index));
-
-        reorderedIndices.forEach(index => {
-            reorderedData.push(editedData[index]);
-        });
-
-        editedData = reorderedData;
-        loadList(editedData);
-        addDragEvents();
-    }
-
+    // Save functionality to handle both data and updates
     document.getElementById('save-btn').addEventListener('click', () => {
-        // Function to reformat YouTube links
-        function formatYouTubeLink(link) {
-            let videoId = '';
-            let extraParams = '';
+        // Prepare the update log entry
+        const list = prefix.replace('data', '').toUpperCase() + ' List';
+        const latestObby = editedData[0]; // Assuming the first one is the latest
+        const placement = 1; // Assuming the first position is #1
     
-            if (link.includes('youtu.be')) {
-                // Extract video ID from youtu.be link
-                videoId = link.split('/').pop().split('?')[0];  // Get the ID without parameters
-                extraParams = link.split('?')[1] || '';  // Get any extra parameters
-            } else if (link.includes('youtube.com/watch')) {
-                // Extract video ID from youtube.com/watch link
-                const urlParams = new URLSearchParams(link.split('?')[1]);
-                videoId = urlParams.get('v');
-                extraParams = link.split('&').slice(1).join('&'); // Preserve extra params if any
-            }
+        const newUpdate = {
+            thumbnail: `https://img.youtube.com/vi/${new URL(latestObby.link).searchParams.get('v')}/hqdefault.jpg`,
+            title: `${latestObby.title} on #${placement}.`,
+            caption: `${latestObby.title} has been placed #${placement} in ${list}.`
+        };
     
-            if (videoId) {
-                // Build the full YouTube URL and append any extra parameters
-                let formattedLink = `https://www.youtube.com/watch?v=${videoId}`;
-                if (extraParams) {
-                    formattedLink += `&${extraParams}`;
+        // Fetch and update the update log
+        fetch('/api/listBlobs')
+            .then(response => response.json())
+            .then(data => {
+                const files = data.blobs || [];
+                const matchedFile = files.find(file => file.pathname && file.pathname.startsWith('update'));
+                if (matchedFile) {
+                    return fetch(matchedFile.url).then(response => response.json());
+                } else {
+                    return []; // Start with an empty update log if none exists
                 }
-                return formattedLink;
-            }
+            })
+            .then(updateLog => {
+                // Add the new update at the top of the log
+                updateLog.unshift(newUpdate);
     
-            // If the link isn't a valid YouTube link, return it unchanged
-            return link;
-        }
-    
-        // Loop through the edited data and convert YouTube links
-        editedData.forEach(item => {
-            if (item.link) {
-                item.link = formatYouTubeLink(item.link);
-            }
-        });
-    
-        const updatedData = JSON.stringify(editedData, null, 2);
-        fetch('/api/saveJson', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ blobUrl, prefix, updatedData }),
-        })
-        .then(response => response.json())
-        .then(result => {
-            console.log('Update successful:', result);
-            alert('Update successful!');
-            originalData = JSON.parse(JSON.stringify(editedData));
-        })
-        .catch(error => console.error('Error updating JSON:', error));
+                // Save the updated update log
+                return fetch('/api/saveJson', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prefix: 'update', updatedData: JSON.stringify(updateLog) })
+                });
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Update log saved:', result);
+            })
+            .catch(error => console.error('Error updating log:', error));
     });
     
-    
 
+    // Cancel changes
     document.getElementById('cancel-btn').addEventListener('click', () => {
         editedData = JSON.parse(JSON.stringify(originalData));
         loadList(editedData);
@@ -217,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Changes canceled!');
     });
 
+    // Add new item functionality
     document.getElementById('add-btn').addEventListener('click', () => {
         const newItem = {
             title: "New Item",
@@ -225,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
             gamelink: ""
         };
 
-        editedData.unshift(newItem); // Add to the top
+        editedData.unshift(newItem);
         loadList(editedData);
         addDragEvents();
 

