@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let originalData = [];
     let editedData = [];
     let currentItemIndex = null;
+    let updateLog = [];  // Initialize the log
 
     const draggableList = document.getElementById('draggable-list');
     const editForm = document.getElementById('edit-form');
@@ -56,6 +57,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 li.classList.add('selected');
             });
         });
+    }
+
+    function logChange(action, item, index) {
+        const timestamp = new Date().toISOString();
+        const logEntry = {
+            timestamp,
+            action,
+            item: { ...item },
+            index,
+        };
+        
+        updateLog.unshift(logEntry); // Log new entries at the beginning
     }
 
     editForm.addEventListener('input', () => {
@@ -154,30 +167,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('del-btn').addEventListener('click', () => {
         if (currentItemIndex !== null) {
-            // Remove the selected item from editedData
-            editedData.splice(currentItemIndex, 1);
-    
+            const deletedItem = editedData[currentItemIndex]; // Capture the item to be deleted
+            editedData.splice(currentItemIndex, 1); // Remove the selected item from editedData
+
+            // Log the deletion
+            logChange('deleted', deletedItem, currentItemIndex + 1); // Log index + 1 for display
+
             // Reload the list with updated data
             loadList(editedData);
             addDragEvents();
-    
+
             // Reset the form and clear selection
             editForm.reset();
             currentItemIndex = null;
-    
+
             alert('Item deleted successfully!');
         } else {
             alert('No item selected to delete.');
         }
     });
-    
 
     document.getElementById('save-btn').addEventListener('click', () => {
         // Function to reformat YouTube links
         function formatYouTubeLink(link) {
             let videoId = '';
             let extraParams = '';
-    
+
             if (link.includes('youtu.be')) {
                 videoId = link.split('/').pop().split('?')[0];
                 extraParams = link.split('?')[1] || '';
@@ -186,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 videoId = urlParams.get('v');
                 extraParams = link.split('&').slice(1).join('&');
             }
-    
+
             if (videoId) {
                 let formattedLink = `https://www.youtube.com/watch?v=${videoId}`;
                 if (extraParams) {
@@ -194,17 +209,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 return formattedLink;
             }
-    
+
             return link;
         }
-    
+
         // Format all YouTube links in editedData
         editedData.forEach(item => {
             if (item.link) {
                 item.link = formatYouTubeLink(item.link);
             }
         });
-    
+
         // Save main updatedData
         const updatedData = JSON.stringify(editedData, null, 2);
         fetch('/api/saveJson', {
@@ -219,18 +234,18 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Update successful:', result);
             alert('Update successful!');
             originalData = JSON.parse(JSON.stringify(editedData));
-    
+
             // Proceed to save the update log
             const list = prefix.replace('data', '').toUpperCase() + ' List';
             const latestObby = editedData[0]; // Assuming the first one is the latest
             const placement = 1;
-    
+
             const newUpdate = {
                 thumbnail: `https://img.youtube.com/vi/${new URL(latestObby.link).searchParams.get('v')}/hqdefault.jpg`,
                 title: `${latestObby.title} on #${placement}.`,
                 caption: `${latestObby.title} has been placed #${placement} in ${list}.`
             };
-    
+
             // Fetch current update log
             return fetch('/api/listBlobs')
                 .then(response => response.json())
@@ -243,15 +258,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         return [];  // Return an empty log if no update.json exists yet
                     }
                 })
-                .then(updateLog => {
-                    if (!Array.isArray(updateLog)) {
-                        updateLog = [];  // Ensure updateLog is an array
+                .then(existingUpdateLog => {
+                    if (!Array.isArray(existingUpdateLog)) {
+                        existingUpdateLog = [];  // Ensure updateLog is an array
                     }
-    
-                    updateLog.unshift(newUpdate);
-    
+
+                    // Combine new log entries with the existing ones
+                    existingUpdateLog.unshift(newUpdate);
+
                     // Save the update log to update.json
-                    const updatedLogData = JSON.stringify(updateLog, null, 2);
+                    const updatedLogData = JSON.stringify(existingUpdateLog, null, 2);
                     return fetch('/api/saveJson', {
                         method: 'PUT',
                         headers: {
@@ -268,7 +284,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error updating JSON:', error));
     });
-    
 
     document.getElementById('cancel-btn').addEventListener('click', () => {
         editedData = JSON.parse(JSON.stringify(originalData));
@@ -288,6 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         editedData.unshift(newItem); // Add to the top
+        logChange('added', newItem, 1); // Log new additions with index 1 for display
         loadList(editedData);
         addDragEvents();
 
