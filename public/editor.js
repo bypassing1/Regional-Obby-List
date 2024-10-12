@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let originalData = [];
     let editedData = [];
     let currentItemIndex = null;
+    let updateLog = [];  // Initialize the log
 
     const draggableList = document.getElementById('draggable-list');
     const editForm = document.getElementById('edit-form');
@@ -56,6 +57,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 li.classList.add('selected');
             });
         });
+    }
+
+    function logChange(action, item, index) {
+        const timestamp = new Date().toISOString();
+        const logEntry = {
+            timestamp,
+            action,
+            item: { ...item },
+            index,
+        };
+        
+        updateLog.unshift(logEntry); // Log new entries at the beginning
     }
 
     editForm.addEventListener('input', () => {
@@ -154,21 +167,131 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('del-btn').addEventListener('click', () => {
         if (currentItemIndex !== null) {
-            // Remove the selected item from editedData
-            editedData.splice(currentItemIndex, 1);
-    
+            const deletedItem = editedData[currentItemIndex]; // Capture the item to be deleted
+            editedData.splice(currentItemIndex, 1); // Remove the selected item from editedData
+
+            // Log the deletion
+            logChange('deleted', deletedItem, currentItemIndex + 1); // Log index + 1 for display
+
             // Reload the list with updated data
             loadList(editedData);
             addDragEvents();
-    
+
             // Reset the form and clear selection
             editForm.reset();
             currentItemIndex = null;
-    
+
             alert('Item deleted successfully!');
         } else {
             alert('No item selected to delete.');
         }
+    });
+
+    document.getElementById('save-btn').addEventListener('click', () => {
+        // Function to reformat YouTube links
+        function formatYouTubeLink(link) {
+            let videoId = '';
+            let extraParams = '';
+
+            if (link.includes('youtu.be')) {
+                videoId = link.split('/').pop().split('?')[0];
+                extraParams = link.split('?')[1] || '';
+            } else if (link.includes('youtube.com/watch')) {
+                const urlParams = new URLSearchParams(link.split('?')[1]);
+                videoId = urlParams.get('v');
+                extraParams = link.split('&').slice(1).join('&');
+            }
+
+            if (videoId) {
+                let formattedLink = `https://www.youtube.com/watch?v=${videoId}`;
+                if (extraParams) {
+                    formattedLink += `&${extraParams}`;
+                }
+                return formattedLink;
+            }
+
+            return link;
+        }
+
+        // Format all YouTube links in editedData
+        editedData.forEach(item => {
+            if (item.link) {
+                item.link = formatYouTubeLink(item.link);
+            }
+        });
+
+        // Save main updatedData
+        const updatedData = JSON.stringify(editedData, null, 2);
+        fetch('/api/saveJson', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ prefix, updatedData }),
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log('Update successful:', result);
+            alert('Update successful!');
+            originalData = JSON.parse(JSON.stringify(editedData));
+
+            // Proceed to save the update log
+            const list = prefix.replace('data', '').toUpperCase() + ' List';
+            const latestObby = editedData[0]; // Assuming the first one is the latest
+            const placement = 1;
+
+            const newUpdate = {
+                thumbnail: `https://img.youtube.com/vi/${new URL(latestObby.link).searchParams.get('v')}/hqdefault.jpg`,
+                title: `${latestObby.title} on #${placement}.`,
+                caption: `${latestObby.title} has been placed #${placement} in ${list}.`
+            };
+
+            // Fetch current update log
+            return fetch('/api/listBlobs')
+                .then(response => response.json())
+                .then(data => {
+                    const files = data.blobs || [];
+                    const matchedFile = files.find(file => file.pathname && file.pathname.startsWith('update'));
+                    if (matchedFile) {
+                        return fetch(matchedFile.url).then(response => response.json());
+                    } else {
+                        return [];  // Return an empty log if no update.json exists yet
+                    }
+                })
+                .then(existingUpdateLog => {
+                    if (!Array.isArray(existingUpdateLog)) {
+                        existingUpdateLog = [];  // Ensure updateLog is an array
+                    }
+
+                    // Combine new log entries with the existing ones
+                    existingUpdateLog.unshift(newUpdate);
+
+                    // Save the update log to update.json
+                    const updatedLogData = JSON.stringify(existingUpdateLog, null, 2);
+                    return fetch('/api/saveJson', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ prefix: 'update', updatedData: updatedLogData }),
+                    });
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log('Update log saved successfully:', result);
+                })
+                .catch(error => console.error('Error updating log:', error));
+        })
+        .catch(error => console.error('Error updating JSON:', error));
+    });
+
+    document.getElementById('cancel-btn').addEventListener('click', () => {
+        editedData = JSON.parse(JSON.stringify(originalData));
+        loadList(editedData);
+        addDragEvents();
+        editForm.reset();
+        currentItemIndex = null;
+        alert('Changes canceled!');
     });
 
     document.getElementById('add-btn').addEventListener('click', () => {
@@ -180,6 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         editedData.unshift(newItem); // Add to the top
+        logChange('added', newItem, 1); // Log new additions with index 1 for display
         loadList(editedData);
         addDragEvents();
 
@@ -188,154 +312,5 @@ document.addEventListener('DOMContentLoaded', () => {
         editForm.verifier.value = newItem.verifier;
         editForm.link.value = newItem.link;
         editForm.gamelink.value = newItem.gamelink;
-
-        // Log the addition
-        const list = prefix.replace('data', '').toUpperCase() + ' List';
-        const newUpdate = {
-            thumbnail: '', // Optionally set a default thumbnail
-            title: `${newItem.title} has been added.`,
-            caption: `${newItem.title} has been added to ${list}.`
-        };
-
-        // Fetch current update log and save new log entry
-        fetch('/api/listBlobs')
-            .then(response => response.json())
-            .then(data => {
-                const files = data.blobs || [];
-                const matchedFile = files.find(file => file.pathname && file.pathname.startsWith('update'));
-                return matchedFile ? fetch(matchedFile.url) : Promise.resolve([]);
-            })
-            .then(updateLog => {
-                if (!Array.isArray(updateLog)) {
-                    updateLog = []; // Ensure updateLog is an array
-                }
-
-                updateLog.unshift(newUpdate);
-
-                // Save the update log to update.json
-                const updatedLogData = JSON.stringify(updateLog, null, 2);
-                return fetch('/api/saveJson', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ prefix: 'update', updatedData: updatedLogData }),
-                });
-            })
-            .then(response => response.json())
-            .then(result => {
-                console.log('Update log saved successfully:', result);
-            })
-            .catch(error => console.error('Error updating log:', error));
-    });
-
-    document.getElementById('save-btn').addEventListener('click', () => {
-        // Function to reformat YouTube links
-        function formatYouTubeLink(link) {
-            let videoId = '';
-            let extraParams = '';
-    
-            if (link.includes('youtu.be')) {
-                videoId = link.split('/').pop().split('?')[0];
-                extraParams = link.split('?')[1] || '';
-            } else if (link.includes('youtube.com/watch')) {
-                const urlParams = new URLSearchParams(link.split('?')[1]);
-                videoId = urlParams.get('v');
-                extraParams = link.split('&').slice(1).join('&');
-            }
-    
-            if (videoId) {
-                let formattedLink = `https://www.youtube.com/watch?v=${videoId}`;
-                if (extraParams) {
-                    formattedLink += `&${extraParams}`;
-                }
-                return formattedLink;
-            }
-    
-            return link;
-        }
-    
-        // Format all YouTube links in editedData
-        editedData.forEach(item => {
-            if (item.link) {
-                item.link = formatYouTubeLink(item.link);
-            }
-        });
-
-        // Save the edited data to the JSON file
-        fetch(blobUrl, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(editedData, null, 2),
-        })
-        .then(response => {
-            if (response.ok) {
-                alert('Data saved successfully!');
-                // Track changes to find the latest updated item
-                const previousData = JSON.parse(JSON.stringify(originalData));
-                let latestObby = null;
-
-                editedData.forEach((item, index) => {
-                    // Check if the current item is different from the previous data
-                    if (
-                        previousData[index] && 
-                        (item.title !== previousData[index].title ||
-                        item.verifier !== previousData[index].verifier ||
-                        item.link !== previousData[index].link ||
-                        item.gamelink !== previousData[index].gamelink)
-                    ) {
-                        latestObby = item; // Mark it as the latest updated item
-                    }
-                });
-
-                // Proceed to save the update log if there is a latestObby
-                if (latestObby) {
-                    const list = prefix.replace('data', '').toUpperCase() + ' List';
-                    const placement = editedData.indexOf(latestObby) + 1; // Position of the latest updated item
-
-                    const newUpdate = {
-                        thumbnail: `https://img.youtube.com/vi/${new URL(latestObby.link).searchParams.get('v')}/hqdefault.jpg`,
-                        title: `${latestObby.title} has been updated.`,
-                        caption: `${latestObby.title} has been moved to #${placement} in ${list}.`
-                    };
-
-                    // Fetch current update log and save new log entry
-                    fetch('/api/listBlobs')
-                        .then(response => response.json())
-                        .then(data => {
-                            const files = data.blobs || [];
-                            const matchedFile = files.find(file => file.pathname && file.pathname.startsWith('update'));
-                            return matchedFile ? fetch(matchedFile.url) : Promise.resolve([]);
-                        })
-                        .then(updateLog => {
-                            if (!Array.isArray(updateLog)) {
-                                updateLog = []; // Ensure updateLog is an array
-                            }
-
-                            updateLog.unshift(newUpdate);
-
-                            // Save the update log to update.json
-                            const updatedLogData = JSON.stringify(updateLog, null, 2);
-                            return fetch('/api/saveJson', {
-                                method: 'PUT',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({ prefix: 'update', updatedData: updatedLogData }),
-                            });
-                        })
-                        .then(response => response.json())
-                        .then(result => {
-                            console.log('Update log saved successfully:', result);
-                        })
-                        .catch(error => console.error('Error updating log:', error));
-                }
-            } else {
-                alert('Failed to save data.');
-            }
-        })
-        .catch(error => console.error('Error saving data:', error));
     });
 });
