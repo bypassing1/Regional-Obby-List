@@ -18,18 +18,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 ...prefixList.map(prefix => {
                     const blob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
                     if (blob) {
-                        return fetch(blob.url)
-                            .then(response => response.json())
-                            .then(listData => {
-                                if (listData.length > 0) {
-                                    for (let i = 0; i < 2; i++) {
-                                        listData.forEach(item => {
-                                            const topVerifier = item.verifier;
-                                            topVerifiersString += `${topVerifier}ㅤㅤㅤ`;
-                                        });
-                                    }
-                                }
-                            });
+                        return fetch(blob.url).then(response => response.json()).then(listData => {
+                            if (listData.length > 0) {
+                                const topVerifier = listData[0].verifier;
+                                topVerifiersString += `${topVerifier}ㅤㅤㅤ`; 
+                            }
+                        });
                     }
                 })
             ]);
@@ -237,14 +231,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
         fetch(listBlobsApiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
-                if (!dataBlob) {
-                    throw new Error(`Blob with the prefix ${prefix} not found.`);
-                }
-                return fetch(dataBlob.url);
-            })
+        .then(response => response.json())
+        .then(data => {
+            const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
+            if (!dataBlob) {
+                throw new Error(`Blob with the prefix ${prefix} not found.`);
+            }
+            return fetch(dataBlob.url);
+        })
             .then(response => response.json())
             .then(vndata => {
                 vndata.forEach(item => {
@@ -310,14 +304,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
         fetch(listBlobsApiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
-                if (!dataBlob) {
-                    throw new Error(`Blob with the prefix ${prefix} not found.`);
-                }
-                return fetch(dataBlob.url);
-            })
+        .then(response => response.json())
+        .then(data => {
+            const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
+            if (!dataBlob) {
+                throw new Error(`Blob with the prefix ${prefix} not found.`);
+            }
+            return fetch(dataBlob.url);
+        })
             .then(response => response.json())
             .then(iddata => {
                 iddata.forEach(item => {
@@ -383,14 +377,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
         fetch(listBlobsApiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
-                if (!dataBlob) {
-                    throw new Error(`Blob with the prefix ${prefix} not found.`);
-                }
-                return fetch(dataBlob.url);
-            })
+        .then(response => response.json())
+        .then(data => {
+            const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
+            if (!dataBlob) {
+                throw new Error(`Blob with the prefix ${prefix} not found.`);
+            }
+            return fetch(dataBlob.url);
+        })
             .then(response => response.json())
             .then(ukrdata => {
                 ukrdata.forEach(item => {
@@ -456,14 +450,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
         fetch(listBlobsApiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
-                if (!dataBlob) {
-                    throw new Error(`Blob with the prefix ${prefix} not found.`);
-                }
-                return fetch(dataBlob.url);
-            })
+        .then(response => response.json())
+        .then(data => {
+            const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
+            if (!dataBlob) {
+                throw new Error(`Blob with the prefix ${prefix} not found.`);
+            }
+            return fetch(dataBlob.url);
+        })
             .then(response => response.json())
             .then(ukrdata => {
                 ukrdata.forEach(item => {
@@ -529,14 +523,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const container = document.getElementById('cards-container');
         const legacycontainer = document.getElementById('legacy-container');
         fetch(listBlobsApiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
-                if (!dataBlob) {
-                    throw new Error(`Blob with the prefix ${prefix} not found.`);
-                }
-                return fetch(dataBlob.url);
-            })
+        .then(response => response.json())
+        .then(data => {
+            const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
+            if (!dataBlob) {
+                throw new Error(`Blob with the prefix ${prefix} not found.`);
+            }
+            return fetch(dataBlob.url);
+        })
             .then(response => response.json())
             .then(ukrdata => {
                 ukrdata.forEach(item => {
