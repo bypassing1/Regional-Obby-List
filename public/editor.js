@@ -73,6 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     editForm.addEventListener('input', () => {
         if (currentItemIndex !== null) {
+            const previousItem = { ...editedData[currentItemIndex] }; // Store previous item for logging
+            
             editedData[currentItemIndex].title = editForm.title.value;
             editedData[currentItemIndex].verifier = editForm.verifier.value;
             editedData[currentItemIndex].link = editForm.link.value;
@@ -80,6 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const li = draggableList.querySelector(`.draggable[data-index='${currentItemIndex}']`);
             li.textContent = `#${currentItemIndex + 1} - ${editedData[currentItemIndex].title}`;
+            
+            // Log if the item was edited
+            logChange('edited', previousItem, currentItemIndex + 1);
         }
     });
 
@@ -95,6 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
             editForm.verifier.value = item.verifier;
             editForm.link.value = item.link;
             editForm.gamelink.value = item.gamelink;
+
+            // Log the movement
+            logChange('moved', item, newIndex + 1); // Log the new index + 1 for display
         }
     }
 
@@ -237,80 +245,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Proceed to save the update log
             const list = prefix.replace('data', '').toUpperCase() + ' List';
-            const latestObby = editedData[0]; // Assuming the first one is the latest
-            const placement = 1;
 
-            const newUpdate = {
-                thumbnail: `https://img.youtube.com/vi/${new URL(latestObby.link).searchParams.get('v')}/hqdefault.jpg`,
-                title: `${latestObby.title} on #${placement}.`,
-                caption: `${latestObby.title} has been placed #${placement} in ${list}.`
-            };
+            // Determine the latest updated item
+            const latestUpdatedItem = editedData.find((item, index) => {
+                // Check if this item has a corresponding log entry in the updateLog
+                return updateLog.some(log => log.item.title === item.title && log.index === index + 1);
+            });
 
-            // Fetch current update log
-            return fetch('/api/listBlobs')
-                .then(response => response.json())
-                .then(data => {
-                    const files = data.blobs || [];
-                    const matchedFile = files.find(file => file.pathname && file.pathname.startsWith('update'));
-                    if (matchedFile) {
-                        return fetch(matchedFile.url).then(response => response.json());
-                    } else {
-                        return [];  // Return an empty log if no update.json exists yet
-                    }
-                })
-                .then(existingUpdateLog => {
-                    if (!Array.isArray(existingUpdateLog)) {
-                        existingUpdateLog = [];  // Ensure updateLog is an array
-                    }
+            if (latestUpdatedItem) {
+                const placement = editedData.indexOf(latestUpdatedItem) + 1; // Get new index
+                const newUpdate = {
+                    thumbnail: `https://img.youtube.com/vi/${new URL(latestUpdatedItem.link).searchParams.get('v')}/hqdefault.jpg`,
+                    title: `${latestUpdatedItem.title} on #${placement}.`,
+                    caption: `${latestUpdatedItem.title} has been placed #${placement} in ${list}.`
+                };
 
-                    // Combine new log entries with the existing ones
-                    existingUpdateLog.unshift(newUpdate);
+                // Save newUpdate or send it to the appropriate logging API
+                console.log('Logging new update:', newUpdate);
+                // You can implement a fetch call here to save newUpdate to your server
 
-                    // Save the update log to update.json
-                    const updatedLogData = JSON.stringify(existingUpdateLog, null, 2);
-                    return fetch('/api/saveJson', {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ prefix: 'update', updatedData: updatedLogData }),
-                    });
-                })
-                .then(response => response.json())
-                .then(result => {
-                    console.log('Update log saved successfully:', result);
-                })
-                .catch(error => console.error('Error updating log:', error));
+            } else {
+                console.warn('No updates to log.');
+            }
         })
-        .catch(error => console.error('Error updating JSON:', error));
-    });
-
-    document.getElementById('cancel-btn').addEventListener('click', () => {
-        editedData = JSON.parse(JSON.stringify(originalData));
-        loadList(editedData);
-        addDragEvents();
-        editForm.reset();
-        currentItemIndex = null;
-        alert('Changes canceled!');
-    });
-
-    document.getElementById('add-btn').addEventListener('click', () => {
-        const newItem = {
-            title: "New Item",
-            verifier: "",
-            link: "",
-            gamelink: ""
-        };
-
-        editedData.unshift(newItem); // Add to the top
-        logChange('added', newItem, 1); // Log new additions with index 1 for display
-        loadList(editedData);
-        addDragEvents();
-
-        currentItemIndex = 0;
-        editForm.title.value = newItem.title;
-        editForm.verifier.value = newItem.verifier;
-        editForm.link.value = newItem.link;
-        editForm.gamelink.value = newItem.gamelink;
+        .catch(error => console.error('Error saving JSON:', error));
     });
 });
