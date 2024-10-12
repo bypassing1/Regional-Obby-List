@@ -1031,6 +1031,7 @@ header .info-text .scroll::before {
     display: flex;
     transition: transform 0.3s ease-in-out;
     width: 100%;
+    height: 12.5rem;
 }
 
 .carousel-item {
@@ -1079,7 +1080,7 @@ header .info-text .scroll::before {
     bottom: 0;
     background-size: cover;
     background-position: center;
-    background-size: 150% 150%;
+    background-size: 150% 200%;
 }
 
 .carousel-blur::after {
