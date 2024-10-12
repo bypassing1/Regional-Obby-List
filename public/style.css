@@ -931,6 +931,31 @@ header .info-text .scroll::before {
     background-color: #235392;
 }
 
+#del-btn {
+    margin: 10px;
+    background-color: #a73728;
+    /* Green background */
+    color: white;
+    /* White text */
+    padding: 10px 20px;
+    /* Padding for size */
+    border: none;
+    /* Remove border */
+    border-radius: 5px;
+    /* Rounded corners */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+    font-size: 16px;
+    /* Font size */
+    font-weight: bold;
+    /* Bold text */
+    transition: .25s ease;
+}
+
+#del-btn:hover {
+    background-color: #923023;
+}
+
 #json-editor {
     width: 70%;
 }

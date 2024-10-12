@@ -152,6 +152,26 @@ document.addEventListener('DOMContentLoaded', () => {
         addDragEvents();
     }
 
+    document.getElementById('del-btn').addEventListener('click', () => {
+        if (currentItemIndex !== null) {
+            // Remove the selected item from editedData
+            editedData.splice(currentItemIndex, 1);
+    
+            // Reload the list with updated data
+            loadList(editedData);
+            addDragEvents();
+    
+            // Reset the form and clear selection
+            editForm.reset();
+            currentItemIndex = null;
+    
+            alert('Item deleted successfully!');
+        } else {
+            alert('No item selected to delete.');
+        }
+    });
+    
+
     document.getElementById('save-btn').addEventListener('click', () => {
         // Function to reformat YouTube links
         function formatYouTubeLink(link) {
