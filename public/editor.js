@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let originalData = [];
     let editedData = [];
     let currentItemIndex = null;
-    let updateLog = [];  // Initialize the log
 
     const draggableList = document.getElementById('draggable-list');
     const editForm = document.getElementById('edit-form');
@@ -59,22 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function logChange(action, item, index) {
-        const timestamp = new Date().toISOString();
-        const logEntry = {
-            timestamp,
-            action,
-            item: { ...item },
-            index,
-        };
-        
-        updateLog.unshift(logEntry); // Log new entries at the beginning
-    }
-
     editForm.addEventListener('input', () => {
         if (currentItemIndex !== null) {
-            const previousItem = { ...editedData[currentItemIndex] }; // Store previous item for logging
-            
             editedData[currentItemIndex].title = editForm.title.value;
             editedData[currentItemIndex].verifier = editForm.verifier.value;
             editedData[currentItemIndex].link = editForm.link.value;
@@ -82,9 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const li = draggableList.querySelector(`.draggable[data-index='${currentItemIndex}']`);
             li.textContent = `#${currentItemIndex + 1} - ${editedData[currentItemIndex].title}`;
-            
-            // Log if the item was edited
-            logChange('edited', previousItem, currentItemIndex + 1);
         }
     });
 
@@ -100,9 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
             editForm.verifier.value = item.verifier;
             editForm.link.value = item.link;
             editForm.gamelink.value = item.gamelink;
-
-            // Log the movement
-            logChange('moved', item, newIndex + 1); // Log the new index + 1 for display
         }
     }
 
@@ -175,24 +154,79 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('del-btn').addEventListener('click', () => {
         if (currentItemIndex !== null) {
-            const deletedItem = editedData[currentItemIndex]; // Capture the item to be deleted
-            editedData.splice(currentItemIndex, 1); // Remove the selected item from editedData
-
-            // Log the deletion
-            logChange('deleted', deletedItem, currentItemIndex + 1); // Log index + 1 for display
-
+            // Remove the selected item from editedData
+            editedData.splice(currentItemIndex, 1);
+    
             // Reload the list with updated data
             loadList(editedData);
             addDragEvents();
-
+    
             // Reset the form and clear selection
             editForm.reset();
             currentItemIndex = null;
-
+    
             alert('Item deleted successfully!');
         } else {
             alert('No item selected to delete.');
         }
+    });
+
+    document.getElementById('add-btn').addEventListener('click', () => {
+        const newItem = {
+            title: "New Item",
+            verifier: "",
+            link: "",
+            gamelink: ""
+        };
+
+        editedData.unshift(newItem); // Add to the top
+        loadList(editedData);
+        addDragEvents();
+
+        currentItemIndex = 0;
+        editForm.title.value = newItem.title;
+        editForm.verifier.value = newItem.verifier;
+        editForm.link.value = newItem.link;
+        editForm.gamelink.value = newItem.gamelink;
+
+        // Log the addition
+        const list = prefix.replace('data', '').toUpperCase() + ' List';
+        const newUpdate = {
+            thumbnail: '', // Optionally set a default thumbnail
+            title: `${newItem.title} has been added.`,
+            caption: `${newItem.title} has been added to ${list}.`
+        };
+
+        // Fetch current update log and save new log entry
+        fetch('/api/listBlobs')
+            .then(response => response.json())
+            .then(data => {
+                const files = data.blobs || [];
+                const matchedFile = files.find(file => file.pathname && file.pathname.startsWith('update'));
+                return matchedFile ? fetch(matchedFile.url) : Promise.resolve([]);
+            })
+            .then(updateLog => {
+                if (!Array.isArray(updateLog)) {
+                    updateLog = []; // Ensure updateLog is an array
+                }
+
+                updateLog.unshift(newUpdate);
+
+                // Save the update log to update.json
+                const updatedLogData = JSON.stringify(updateLog, null, 2);
+                return fetch('/api/saveJson', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prefix: 'update', updatedData: updatedLogData }),
+                });
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Update log saved successfully:', result);
+            })
+            .catch(error => console.error('Error updating log:', error));
     });
 
     document.getElementById('save-btn').addEventListener('click', () => {
@@ -200,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
         function formatYouTubeLink(link) {
             let videoId = '';
             let extraParams = '';
-
+    
             if (link.includes('youtu.be')) {
                 videoId = link.split('/').pop().split('?')[0];
                 extraParams = link.split('?')[1] || '';
@@ -209,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 videoId = urlParams.get('v');
                 extraParams = link.split('&').slice(1).join('&');
             }
-
+    
             if (videoId) {
                 let formattedLink = `https://www.youtube.com/watch?v=${videoId}`;
                 if (extraParams) {
@@ -217,10 +251,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 return formattedLink;
             }
-
+    
             return link;
         }
-
+    
         // Format all YouTube links in editedData
         editedData.forEach(item => {
             if (item.link) {
@@ -228,46 +262,80 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Save main updatedData
-        const updatedData = JSON.stringify(editedData, null, 2);
-        fetch('/api/saveJson', {
+        // Save the edited data to the JSON file
+        fetch(blobUrl, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ prefix, updatedData }),
+            body: JSON.stringify(editedData, null, 2),
         })
-        .then(response => response.json())
-        .then(result => {
-            console.log('Update successful:', result);
-            alert('Update successful!');
-            originalData = JSON.parse(JSON.stringify(editedData));
+        .then(response => {
+            if (response.ok) {
+                alert('Data saved successfully!');
+                // Track changes to find the latest updated item
+                const previousData = JSON.parse(JSON.stringify(originalData));
+                let latestObby = null;
 
-            // Proceed to save the update log
-            const list = prefix.replace('data', '').toUpperCase() + ' List';
+                editedData.forEach((item, index) => {
+                    // Check if the current item is different from the previous data
+                    if (
+                        previousData[index] && 
+                        (item.title !== previousData[index].title ||
+                        item.verifier !== previousData[index].verifier ||
+                        item.link !== previousData[index].link ||
+                        item.gamelink !== previousData[index].gamelink)
+                    ) {
+                        latestObby = item; // Mark it as the latest updated item
+                    }
+                });
 
-            // Determine the latest updated item
-            const latestUpdatedItem = editedData.find((item, index) => {
-                // Check if this item has a corresponding log entry in the updateLog
-                return updateLog.some(log => log.item.title === item.title && log.index === index + 1);
-            });
+                // Proceed to save the update log if there is a latestObby
+                if (latestObby) {
+                    const list = prefix.replace('data', '').toUpperCase() + ' List';
+                    const placement = editedData.indexOf(latestObby) + 1; // Position of the latest updated item
 
-            if (latestUpdatedItem) {
-                const placement = editedData.indexOf(latestUpdatedItem) + 1; // Get new index
-                const newUpdate = {
-                    thumbnail: `https://img.youtube.com/vi/${new URL(latestUpdatedItem.link).searchParams.get('v')}/hqdefault.jpg`,
-                    title: `${latestUpdatedItem.title} on #${placement}.`,
-                    caption: `${latestUpdatedItem.title} has been placed #${placement} in ${list}.`
-                };
+                    const newUpdate = {
+                        thumbnail: `https://img.youtube.com/vi/${new URL(latestObby.link).searchParams.get('v')}/hqdefault.jpg`,
+                        title: `${latestObby.title} has been updated.`,
+                        caption: `${latestObby.title} has been moved to #${placement} in ${list}.`
+                    };
 
-                // Save newUpdate or send it to the appropriate logging API
-                console.log('Logging new update:', newUpdate);
-                // You can implement a fetch call here to save newUpdate to your server
+                    // Fetch current update log and save new log entry
+                    fetch('/api/listBlobs')
+                        .then(response => response.json())
+                        .then(data => {
+                            const files = data.blobs || [];
+                            const matchedFile = files.find(file => file.pathname && file.pathname.startsWith('update'));
+                            return matchedFile ? fetch(matchedFile.url) : Promise.resolve([]);
+                        })
+                        .then(updateLog => {
+                            if (!Array.isArray(updateLog)) {
+                                updateLog = []; // Ensure updateLog is an array
+                            }
 
+                            updateLog.unshift(newUpdate);
+
+                            // Save the update log to update.json
+                            const updatedLogData = JSON.stringify(updateLog, null, 2);
+                            return fetch('/api/saveJson', {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ prefix: 'update', updatedData: updatedLogData }),
+                            });
+                        })
+                        .then(response => response.json())
+                        .then(result => {
+                            console.log('Update log saved successfully:', result);
+                        })
+                        .catch(error => console.error('Error updating log:', error));
+                }
             } else {
-                console.warn('No updates to log.');
+                alert('Failed to save data.');
             }
         })
-        .catch(error => console.error('Error saving JSON:', error));
+        .catch(error => console.error('Error saving data:', error));
     });
 });
