@@ -152,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
         addDragEvents();
     }
 
-    // Single save button functionality
     document.getElementById('save-btn').addEventListener('click', () => {
         // Function to reformat YouTube links
         function formatYouTubeLink(link) {
@@ -225,6 +224,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 })
                 .then(updateLog => {
+                    if (!Array.isArray(updateLog)) {
+                        updateLog = [];  // Ensure updateLog is an array
+                    }
+    
                     updateLog.unshift(newUpdate);
     
                     // Save the update log to update.json
