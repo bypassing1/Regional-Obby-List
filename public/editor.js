@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const editForm = document.getElementById('edit-form');
     const moveUpButton = document.getElementById('move-up-btn');
     const moveDownButton = document.getElementById('move-down-btn');
+    
+    let latestObby = null;  // Track the latestObby
 
     fetch(listBlobsApiUrl)
         .then(response => response.json())
@@ -237,16 +239,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Proceed to save the update log
             const list = prefix.replace('data', '').toUpperCase() + ' List';
-            const latestObby = editedData[0]; // Assuming the first one is the latest
-            const placement = 1;
+
+            // Use the latestObby variable as the first entry for the update log
+            const latestObbyIndex = editedData.indexOf(latestObby); // Get index of latestObby
+            const placement = `#${latestObbyIndex + 1}`;  // Index starts from 0, so +1 for display
 
             const newUpdate = {
                 thumbnail: `https://img.youtube.com/vi/${new URL(latestObby.link).searchParams.get('v')}/hqdefault.jpg`,
-                title: `${latestObby.title} on #${placement}.`,
-                caption: `${latestObby.title} has been placed #${placement} in ${list}.`
+                title: `${latestObby.title} on ${placement}.`,
+                caption: `${latestObby.title} verified by ${latestObby.verifier} is now placed at ${placement}.`,
+                link: latestObby.link || '',
             };
 
-            // Fetch current update log
+            // Fetch existing update log first
             return fetch('/api/listBlobs')
                 .then(response => response.json())
                 .then(data => {
@@ -302,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
             gamelink: ""
         };
 
-        editedData.unshift(newItem); // Add to the top
+        editedData.unshift(newItem);
         logChange('added', newItem, 1); // Log new additions with index 1 for display
         loadList(editedData);
         addDragEvents();
@@ -312,5 +317,8 @@ document.addEventListener('DOMContentLoaded', () => {
         editForm.verifier.value = newItem.verifier;
         editForm.link.value = newItem.link;
         editForm.gamelink.value = newItem.gamelink;
+
+        // Set the new item as the latestObby
+        latestObby = newItem;
     });
 });
