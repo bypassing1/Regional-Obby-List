@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://obbylist.vercel.app/</loc>
+  <lastmod>2024-10-13T12:06:48+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://obbylist.vercel.app/universal-list</loc>
+  <lastmod>2024-10-13T12:06:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://obbylist.vercel.app/eio-list</loc>
+  <lastmod>2024-10-13T12:06:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://obbylist.vercel.app/voc-list</loc>
+  <lastmod>2024-10-13T12:06:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://obbylist.vercel.app/ukr-list</loc>
+  <lastmod>2024-10-13T12:06:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://obbylist.vercel.app/koc-list</loc>
+  <lastmod>2024-10-13T12:06:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://obbylist.vercel.app/mys-list</loc>
+  <lastmod>2024-10-13T12:06:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://obbylist.vercel.app/statistics</loc>
+  <lastmod>2024-10-13T12:06:48+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+
+
+</urlset>
