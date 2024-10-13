@@ -157,15 +157,26 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateOrder() {
         const reorderedData = [];
         const reorderedIndices = Array.from(draggableList.querySelectorAll('.draggable')).map(li => parseInt(li.dataset.index));
-
+    
         reorderedIndices.forEach(index => {
             reorderedData.push(editedData[index]);
         });
-
+    
         editedData = reorderedData;
         loadList(editedData);
         addDragEvents();
+    
+        // Update currentItemIndex based on new item position
+        if (currentItemIndex !== null) {
+            const currentSelectedItem = editedData[currentItemIndex];
+            currentItemIndex = editedData.indexOf(currentSelectedItem); // Get the new index of the selected item
+        }
     }
+    
+    draggableList.addEventListener('dragend', () => {
+        updateOrder(); // Call updateOrder() after drag-and-drop finishes
+    });
+    
 
     document.getElementById('del-btn').addEventListener('click', () => {
         if (currentItemIndex !== null) {
