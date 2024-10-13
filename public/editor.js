@@ -8,13 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let editedData = [];
     let currentItemIndex = null;
     let updateLog = [];  // Initialize the log
+    let latestObby = null;
 
     const draggableList = document.getElementById('draggable-list');
     const editForm = document.getElementById('edit-form');
     const moveUpButton = document.getElementById('move-up-btn');
     const moveDownButton = document.getElementById('move-down-btn');
-    
-    let latestObby = null;  // Track the latestObby
 
     fetch(listBlobsApiUrl)
         .then(response => response.json())
@@ -157,26 +156,23 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateOrder() {
         const reorderedData = [];
         const reorderedIndices = Array.from(draggableList.querySelectorAll('.draggable')).map(li => parseInt(li.dataset.index));
-    
+
         reorderedIndices.forEach(index => {
             reorderedData.push(editedData[index]);
         });
-    
+
         editedData = reorderedData;
         loadList(editedData);
         addDragEvents();
-    
-        // Update currentItemIndex based on new item position
+
+        // Update currentItemIndex to reflect the new position after drag
         if (currentItemIndex !== null) {
-            const currentSelectedItem = editedData[currentItemIndex];
-            currentItemIndex = editedData.indexOf(currentSelectedItem); // Get the new index of the selected item
+            const draggedItem = editedData.findIndex((item, i) => i === currentItemIndex);
+            if (draggedItem !== -1) {
+                currentItemIndex = draggedItem;
+            }
         }
     }
-    
-    draggableList.addEventListener('dragend', () => {
-        updateOrder(); // Call updateOrder() after drag-and-drop finishes
-    });
-    
 
     document.getElementById('del-btn').addEventListener('click', () => {
         if (currentItemIndex !== null) {
@@ -250,86 +246,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Proceed to save the update log
             const list = prefix.replace('data', '').toUpperCase() + ' List';
-
-            // Use the latestObby variable as the first entry for the update log
-            const latestObbyIndex = editedData.indexOf(latestObby); // Get index of latestObby
-            const placement = `#${latestObbyIndex + 1}`;  // Index starts from 0, so +1 for display
+            const placement = editedData.findIndex(item => item === latestObby) + 1;
 
             const newUpdate = {
                 thumbnail: `https://img.youtube.com/vi/${new URL(latestObby.link).searchParams.get('v')}/hqdefault.jpg`,
-                title: `${latestObby.title} on ${placement}.`,
-                caption: `${latestObby.title} verified by ${latestObby.verifier} is now placed at ${placement}.`,
-                link: latestObby.link || '',
+                title: `${latestObby.title} on #${placement}.`,
+                caption: `${latestObby.title} has been placed #${placement} in ${list}.`
             };
 
-            // Fetch existing update log first
+            // Fetch current update log
             return fetch('/api/listBlobs')
                 .then(response => response.json())
                 .then(data => {
                     const files = data.blobs || [];
-                    const matchedFile = files.find(file => file.pathname && file.pathname.startsWith('update'));
-                    if (matchedFile) {
-                        return fetch(matchedFile.url).then(response => response.json());
+                    const updateFile = files.find(file => file.pathname.includes('update'));
+                    if (updateFile) {
+                        return fetch(updateFile.url);
                     } else {
-                        return [];  // Return an empty log if no update.json exists yet
+                        throw new Error('No update file found.');
                     }
                 })
-                .then(existingUpdateLog => {
-                    if (!Array.isArray(existingUpdateLog)) {
-                        existingUpdateLog = [];  // Ensure updateLog is an array
-                    }
-
-                    // Combine new log entries with the existing ones
-                    existingUpdateLog.unshift(newUpdate);
-
-                    // Save the update log to update.json
-                    const updatedLogData = JSON.stringify(existingUpdateLog, null, 2);
-                    return fetch('/api/saveJson', {
+                .then(response => response.json())
+                .then(updateLogData => {
+                    updateLogData.push(newUpdate);
+                    return fetch('/api/saveUpdate', {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ prefix: 'update', updatedData: updatedLogData }),
+                        body: JSON.stringify({ updateLogData }),
                     });
-                })
-                .then(response => response.json())
-                .then(result => {
-                    console.log('Update log saved successfully:', result);
-                })
-                .catch(error => console.error('Error updating log:', error));
+                });
         })
-        .catch(error => console.error('Error updating JSON:', error));
+        .catch(error => {
+            console.error('Error saving data:', error);
+            alert('Error saving data.');
+        });
     });
 
-    document.getElementById('cancel-btn').addEventListener('click', () => {
-        editedData = JSON.parse(JSON.stringify(originalData));
-        loadList(editedData);
-        addDragEvents();
-        editForm.reset();
-        currentItemIndex = null;
-        alert('Changes canceled!');
-    });
-
+    // Add functionality for add button
     document.getElementById('add-btn').addEventListener('click', () => {
         const newItem = {
-            title: "New Item",
-            verifier: "",
-            link: "",
-            gamelink: ""
+            title: 'New Item',
+            verifier: '',
+            link: '',
+            gamelink: ''
         };
 
-        editedData.unshift(newItem);
-        logChange('added', newItem, 1); // Log new additions with index 1 for display
-        loadList(editedData);
-        addDragEvents();
+        editedData.unshift(newItem); // Add to the top of the list
+        loadList(editedData);        // Reload list
+        addDragEvents();             // Reinitialize drag events
 
-        currentItemIndex = 0;
-        editForm.title.value = newItem.title;
-        editForm.verifier.value = newItem.verifier;
-        editForm.link.value = newItem.link;
-        editForm.gamelink.value = newItem.gamelink;
-
-        // Set the new item as the latestObby
-        latestObby = newItem;
+        logChange('added', newItem, 1); // Log the addition
     });
 });
