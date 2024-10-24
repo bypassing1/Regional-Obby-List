@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let originalData = [];
     let editedData = [];
     let currentItemIndex = null;
-    let updateLog = [];  // Initialize the log
+    const updates = []; // Array to hold the updates
 
     const draggableList = document.getElementById('draggable-list');
     const editForm = document.getElementById('edit-form');
@@ -57,18 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 li.classList.add('selected');
             });
         });
-    }
-
-    function logChange(action, item, index) {
-        const timestamp = new Date().toISOString();
-        const logEntry = {
-            timestamp,
-            action,
-            item: { ...item },
-            index,
-        };
-        
-        updateLog.unshift(logEntry); // Log new entries at the beginning
     }
 
     editForm.addEventListener('input', () => {
@@ -165,37 +153,37 @@ document.addEventListener('DOMContentLoaded', () => {
         addDragEvents();
     }
 
-    document.getElementById('del-btn').addEventListener('click', () => {
-        if (currentItemIndex !== null) {
-            const deletedItem = editedData[currentItemIndex]; // Capture the item to be deleted
-            editedData.splice(currentItemIndex, 1); // Remove the selected item from editedData
-
-            // Log the deletion
-            logChange('deleted', deletedItem, currentItemIndex + 1); // Log index + 1 for display
-
-            // Reload the list with updated data
-            loadList(editedData);
-            addDragEvents();
-
-            // Reset the form and clear selection
-            editForm.reset();
-            currentItemIndex = null;
-
-            alert('Item deleted successfully!');
-        } else {
-            alert('No item selected to delete.');
+    // Function to generate the thumbnail URL
+    function getThumbnail(link) {
+        let videoId = '';
+        if (link.includes('youtu.be')) {
+            videoId = link.split('/').pop();
+        } else if (link.includes('youtube.com/watch')) {
+            const urlParams = new URLSearchParams(link.split('?')[1]);
+            videoId = urlParams.get('v');
         }
-    });
+        return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
+    }
 
+    // Function to create an update object
+    function createUpdateObject(obby, placement) {
+        const list = prefix.replace('data', '').toUpperCase() + ' List';
+        return {
+            thumbnail: getThumbnail(obby.link),
+            title: obby.title,
+            caption: `${obby.title} has been placed ${placement} in ${list}.`,
+        };
+    }
+
+    // Handle saving data and generating JSON for new updates
     document.getElementById('save-btn').addEventListener('click', () => {
-        // Function to reformat YouTube links
         function formatYouTubeLink(link) {
             let videoId = '';
             let extraParams = '';
 
             if (link.includes('youtu.be')) {
-                videoId = link.split('/').pop().split('?')[0];
-                extraParams = link.split('?')[1] || '';
+                videoId = link.split('/').pop().split('?')[0]; 
+                extraParams = link.split('?')[1] || ''; 
             } else if (link.includes('youtube.com/watch')) {
                 const urlParams = new URLSearchParams(link.split('?')[1]);
                 videoId = urlParams.get('v');
@@ -203,6 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (videoId) {
+                // Build the full YouTube URL and append any extra parameters
                 let formattedLink = `https://www.youtube.com/watch?v=${videoId}`;
                 if (extraParams) {
                     formattedLink += `&${extraParams}`;
@@ -213,74 +202,25 @@ document.addEventListener('DOMContentLoaded', () => {
             return link;
         }
 
-        // Format all YouTube links in editedData
         editedData.forEach(item => {
             if (item.link) {
                 item.link = formatYouTubeLink(item.link);
             }
         });
 
-        // Save main updatedData
         const updatedData = JSON.stringify(editedData, null, 2);
         fetch('/api/saveJson', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ prefix, updatedData }),
+            body: JSON.stringify({ blobUrl, prefix, updatedData }),
         })
         .then(response => response.json())
         .then(result => {
             console.log('Update successful:', result);
             alert('Update successful!');
             originalData = JSON.parse(JSON.stringify(editedData));
-
-            // Proceed to save the update log
-            const list = prefix.replace('data', '').toUpperCase() + ' List';
-            const latestObby = editedData[0]; // Assuming the first one is the latest
-            const placement = 1;
-
-            const newUpdate = {
-                thumbnail: `https://img.youtube.com/vi/${new URL(latestObby.link).searchParams.get('v')}/hqdefault.jpg`,
-                title: `${latestObby.title} on #${placement}.`,
-                caption: `${latestObby.title} has been placed #${placement} in ${list}.`
-            };
-
-            // Fetch current update log
-            return fetch('/api/listBlobs')
-                .then(response => response.json())
-                .then(data => {
-                    const files = data.blobs || [];
-                    const matchedFile = files.find(file => file.pathname && file.pathname.startsWith('update'));
-                    if (matchedFile) {
-                        return fetch(matchedFile.url).then(response => response.json());
-                    } else {
-                        return [];  // Return an empty log if no update.json exists yet
-                    }
-                })
-                .then(existingUpdateLog => {
-                    if (!Array.isArray(existingUpdateLog)) {
-                        existingUpdateLog = [];  // Ensure updateLog is an array
-                    }
-
-                    // Combine new log entries with the existing ones
-                    existingUpdateLog.unshift(newUpdate);
-
-                    // Save the update log to update.json
-                    const updatedLogData = JSON.stringify(existingUpdateLog, null, 2);
-                    return fetch('/api/saveJson', {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ prefix: 'update', updatedData: updatedLogData }),
-                    });
-                })
-                .then(response => response.json())
-                .then(result => {
-                    console.log('Update log saved successfully:', result);
-                })
-                .catch(error => console.error('Error updating log:', error));
         })
         .catch(error => console.error('Error updating JSON:', error));
     });
@@ -295,18 +235,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('add-btn').addEventListener('click', () => {
+        const title = editForm.title.value;
+        const link = editForm.link.value;
+        const placement = editedData.length + 1; // New placement based on the current length
+
         const newItem = {
-            title: "New Item",
+            title: title || "New Item",
             verifier: "",
-            link: "",
+            link: link || "",
             gamelink: ""
         };
 
-        editedData.unshift(newItem); // Add to the top
-        logChange('added', newItem, 1); // Log new additions with index 1 for display
+        editedData.unshift(newItem);
         loadList(editedData);
         addDragEvents();
 
+        // Create and log the update JSON object
+        const updateObject = createUpdateObject(newItem, placement);
+        console.log('New Update JSON:', updateObject);
+        
+        // Reset the form for the new item
         currentItemIndex = 0;
         editForm.title.value = newItem.title;
         editForm.verifier.value = newItem.verifier;
