@@ -65,11 +65,10 @@
 
 <script>
     function toggleDropdown() {
-        const dropdownContent = document.getElementById("dropdownContent");
+        const dropdownContent = document.querySelector("#dropdownContent");
         dropdownContent.classList.toggle("show");
     }
-
-    const loader = document.getElementsByClassName("loader");
+    const loader = document.querySelector(".loader");
 
     loader.style.transform = "translateX(100%)";
 </script>
