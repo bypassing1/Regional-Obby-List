@@ -1,62 +1,10 @@
 {
     "version": 2,
     "cleanUrls": true,
-    "redirects": [
-        {
-            "source": "/id-editor",
-            "destination": "/404",
-            "permanent": false
-        },
-        {
-            "source": "/vn-editor",
-            "destination": "/404",
-            "permanent": false
-        },
-        {
-            "source": "/mys-editor",
-            "destination": "/404",
-            "permanent": false
-        },
-        {
-            "source": "/ukr-editor",
-            "destination": "/404",
-            "permanent": false
-        },
-        {
-            "source": "/kr-editor",
-            "destination": "/404",
-            "permanent": false
-        },
-        {
-            "source": "/layout/:path*",
-            "destination": "/",
-            "permanent": false
-        }
-    ],
     "rewrites": [
         {
             "source": "/api/:path*",
             "destination": "https://pi3etbntstmdvlu5.public.blob.vercel-storage.com/:path*"
-        },
-        {
-            "source": "/CUmENgiZiU1ZiFGm4lik",
-            "destination": "/id-editor"
-        },
-        {
-            "source": "/eMv84e9xbpzigfyifDoa",
-            "destination": "/vn-editor"
-        },
-        {
-            "source": "/BcGgN1pHw2587WB",
-            "destination": "/mys-editor"
-        },
-        {
-            "source": "/zXZSXdFIBVsC1Fn",
-            "destination": "/ukr-editor"
-        },
-        {
-            "source": "/rgDx3q1Xoo3iNLE",
-            "destination": "/kr-editor"
         }
     ],
     "headers": [
@@ -82,4 +30,5 @@
             ]
         }
     ]
+    
 }
