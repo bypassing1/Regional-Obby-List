@@ -15,13 +15,13 @@
         content="List editor, self explanatory.">
     <meta property="og:url" content="https://obbylist.vercel.app/">
     <meta property="og:image" id="og-image"
-        content="https://cdn.discordapp.com/attachments/1246327728588849162/1251096242075860992/image.png?ex=666d55ac&is=666c042c&hm=1673e30fb92b931a8db05c2793e8c374acdfc3acea0928abc6aff203b0d87349&">
+        content="https://cdn.discordapp.com/attachments/876171286282383450/1312699817213952032/image.png?ex=674d7279&is=674c20f9&hm=87363ea9a0f7a3e4117627dd99cc5919d8e3dad05dd064ded63535c02c5a3f2c&">
     <meta property="og:type" content="website">
 </head>
 
 <body>
     <div id="header-container"></div>
-    <div id="prefix-container" title="List Editor" data-prefix="mysdata"></div>
+    <div id="prefix-container" data-prefix="mysdata"></div>
     <section class="editor-section">
         <div class="editor-container">
             <h1>Edit Malaysian List</h1>
@@ -79,8 +79,8 @@
         }
     
         document.addEventListener("DOMContentLoaded", () => {
-            loadHTML("../layout/header.html", "header-container");
-            loadHTML("../layout/footer.html", "footer-container");
+            loadHTML("layout/header.html", "header-container");
+            loadHTML("layout/footer.html", "footer-container");
         });
     </script>
     <div id="footer-container"></div>
