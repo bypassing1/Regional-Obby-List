@@ -160,17 +160,16 @@ document.addEventListener('DOMContentLoaded', () => {
     
             if (link.includes('youtu.be')) {
                 // Extract video ID from youtu.be link
-                videoId = link.split('/').pop().split('?')[0];  // Get the ID without parameters
-                extraParams = link.split('?')[1] || '';  // Get any extra parameters
+                videoId = link.split('/').pop().split('?')[0];
+                extraParams = link.split('?')[1] || '';
             } else if (link.includes('youtube.com/watch')) {
                 // Extract video ID from youtube.com/watch link
                 const urlParams = new URLSearchParams(link.split('?')[1]);
                 videoId = urlParams.get('v');
-                extraParams = link.split('&').slice(1).join('&'); // Preserve extra params if any
+                extraParams = link.split('&').slice(1).join('&');
             }
     
             if (videoId) {
-                // Build the full YouTube URL and append any extra parameters
                 let formattedLink = `https://www.youtube.com/watch?v=${videoId}`;
                 if (extraParams) {
                     formattedLink += `&${extraParams}`;
@@ -178,11 +177,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 return formattedLink;
             }
     
-            // If the link isn't a valid YouTube link, return it unchanged
+            
             return link;
         }
     
-        // Loop through the edited data and convert YouTube links
+        
         editedData.forEach(item => {
             if (item.link) {
                 item.link = formatYouTubeLink(item.link);
@@ -225,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
             gamelink: ""
         };
 
-        editedData.unshift(newItem); // Add to the top
+        editedData.unshift(newItem);
         loadList(editedData);
         addDragEvents();
 

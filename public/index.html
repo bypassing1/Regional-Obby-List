@@ -190,7 +190,7 @@
 
             if (currentIndex < items.length - visibleItems) {
                 currentIndex++;
-                carousel.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+                carousel.style.transform = `translateX(-${currentIndex * itemWidth+10}px)`;
             }
             updateButtons();
         });
@@ -202,7 +202,7 @@
 
             if (currentIndex > 0) {
                 currentIndex--;
-                carousel.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+                carousel.style.transform = `translateX(-${currentIndex * itemWidth+10}px)`;
             }
             updateButtons();
         });

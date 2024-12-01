@@ -19,6 +19,7 @@ html {
 }
 
 * {
+    max-width: 100vw;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -332,11 +333,15 @@ header .info-text .scroll::before {
 .loader {
     position: fixed;
     inset: 0;
-    z-index: 5;
+    z-index: 10;
     background-color: #252525;
     transform: translatex(0%);
     transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1) 0.5s;
     will-change: transform;
+    background-image: url(assets/circular_progress_indicator_square_large.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 5%;
 }
 
 .main,
@@ -1036,7 +1041,7 @@ header .info-text .scroll::before {
 
 .carousel-item {
     flex: 1 0 100%;
-    margin: 0 5px;
+    margin-left:5px;
     position: relative;
     display: flex;
     justify-content: center;
@@ -1103,7 +1108,7 @@ header .info-text .scroll::before {
     color: white;
     padding: 10px;
     cursor: pointer;
-    z-index: 1000;
+    z-index: 5;
     opacity: 1;
     transition: opacity 0.5s ease;
 }
@@ -1285,18 +1290,11 @@ header .info-text .scroll::before {
     .icons:hover,
     #features .feature-cards .card .info a:hover::after {
         transition: none;
-        /* Disable transition */
         background-color: inherit !important;
-        /* Reset background color */
         opacity: 1 !important;
-        /* Reset opacity */
         filter: brightness(100%) !important;
-        /* Reset brightness filter */
         border-color: initial !important;
-        /* Reset border color */
         box-shadow: initial !important;
-        /* Reset box shadow */
         transform: initial !important;
-        /* Reset transform */
     }
 }
