@@ -69,15 +69,9 @@
         dropdownContent.classList.toggle("show");
     }
 
-    const loader = document.querySelector(".loader");
+    const loader = document.getElementsByClassName("loader");
 
-    const startTransition = () => {
-        loader.style.transform = "translateX(100%)";
-    };
-
-    window.addEventListener("load", () => {
-        setTimeout(startTransition, 2000);
-    });
+    loader.style.transform = "translateX(100%)";
 </script>
 <footer>
     <p>© Copyright 2024-2024 Elite Indonesian Obbyist</p>
