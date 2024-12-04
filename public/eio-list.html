@@ -20,67 +20,8 @@
 </head>
 
 <body>
-    <div class="img"></div>
-    <header>
-        <div class="nav-container">
-            <div class="info-text">
-                <a href="index">Elite <span>Indonesian</span> Obbyist List</a>
-            </div>
-            <div class="nav-group">
-                <div class="nav" id="home">
-                    <a href="index">
-                        <img src="assets/home.svg" class="flag-icon">
-                        <h3 class="nav-title">Home</h3>
-                    </a>
-                </div>
-                <div class="dropdown">
-                    <button class="dropbtn" onclick="toggleDropdown()">
-                        <img src="assets/country.svg" class="flag-icon" />
-                        <h3 class="nav-title">Universal List</h3>
-                    </button>
-                    <div class="dropdown-content" id="dropdownContent">
-                        <a href="universal-list">Universal List</a>
-                        <a href="eio-list">Indonesian List</a>
-                        <a href="voc-list">Vietnamese List</a>
-                        <a href="ukr-list">Ukraine List</a>
-                        <a href="koc-list">Korean List</a>
-                        <a href="mys-list">Malaysian List</a>
-                    </div>
-                </div>
-                <div class="nav">
-                    <a href="statistics" target="_blank">
-                        <img src="assets/stats.svg" class="flag-icon" />
-                        <h3 class="nav-title">Player Stats</h3>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </header>
-    <div class="top-block"></div>
-    <nav class="lists">
-        <div>
-            <a href="" onClick=" onRouteClick('a'); return false; ">
-                <h1>Main List</h1>
-            </a>
-        </div>
-        <div>
-            <a href="" onClick=" onRouteClick('b'); return false; ">
-                <h1>Legacy List</h1>
-            </a>
-        </div>
-    </nav>
     <div class="loader"></div>
-    <section class="option">
-        <div class="title">
-            <h1 id="type-list">MAIN LIST</h1>
-        </div>
-    </section>
-    <div id="features" class="main">
-        <div class="feature-cards" id="cards-container"></div>
-    </div>
-    <div id="features" class="legacy">
-        <div class="feature-cards" id="legacy-container"></div>
-    </div>
+    <div id="header-container"></div>
     <script src="script.js" id="eio-list"></script>
     <script>
         window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };

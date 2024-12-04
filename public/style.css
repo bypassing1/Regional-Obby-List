@@ -338,10 +338,60 @@ header .info-text .scroll::before {
     transform: translatex(0%);
     transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1) 0.5s;
     will-change: transform;
-    background-image: url(assets/circular_progress_indicator_square_large.gif);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 5%;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader::after {
+    content: "";
+    --c: no-repeat linear-gradient(rgb(61, 113, 226) 0 0);
+    background: var(--c), var(--c), var(--c), var(--c), var(--c), var(--c), var(--c), var(--c), var(--c);
+    background-size: 16px 16px;
+    animation:
+        l32-1 1s infinite,
+        l32-2 1s infinite;
+}
+@keyframes l32-1 {
+    0%,
+    100% {
+        width: 45px;
+        height: 45px;
+    }
+    35%,
+    65% {
+        width: 65px;
+        height: 65px;
+    }
+}
+@keyframes l32-2 {
+    0%,
+    40% {
+        background-position:
+            0 0,
+            0 50%,
+            0 100%,
+            50% 100%,
+            100% 100%,
+            100% 50%,
+            100% 0,
+            50% 0,
+            50% 50%;
+    }
+    60%,
+    100% {
+        background-position:
+            0 50%,
+            0 100%,
+            50% 100%,
+            100% 100%,
+            100% 50%,
+            100% 0,
+            50% 0,
+            0 0,
+            50% 50%;
+    }
 }
 
 .main,
@@ -426,7 +476,6 @@ header .info-text .scroll::before {
 }
 
 @keyframes pulse {
-
     0%,
     100% {
         opacity: 0;
@@ -555,27 +604,25 @@ header .info-text .scroll::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: linear-gradient(45deg,
-            rgba(255, 255, 255, 1) 25%,
-            transparent 25%,
-            transparent 50%,
-            rgba(255, 255, 255, 1) 50%,
-            rgba(255, 255, 255, 1) 75%,
-            transparent 75%,
-            transparent);
+    background-image: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 1) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 1) 50%,
+        rgba(255, 255, 255, 1) 75%,
+        transparent 75%,
+        transparent
+    );
     background-size: 10px 10px;
-    /* Increase the size of the lines */
     opacity: 1;
-    /* Increase the opacity of the lines */
     z-index: 1;
 }
 
 .card .info {
     position: relative;
     z-index: 1;
-    /* Ensure content is above the background */
     background: transparent;
-    /* Transparent background to show blurred image behind */
     border-radius: 20px;
 }
 
@@ -751,7 +798,6 @@ header .info-text .scroll::before {
     display: flex;
     align-items: center;
     gap: 10px;
-    /* Space between the image and the heading */
     justify-content: center;
 }
 
@@ -805,7 +851,8 @@ header .info-text .scroll::before {
     width: 100%;
 }
 
-#draggable-list, .property-panel {
+#draggable-list,
+.property-panel {
     padding: 20px;
     width: 40%;
 }
@@ -864,72 +911,55 @@ header .info-text .scroll::before {
 #save-btn {
     margin: 10px;
     background-color: #28a745;
-    /* Green background */
     color: white;
-    /* White text */
     padding: 10px 20px;
-    /* Padding for size */
     border: none;
-    /* Remove border */
     border-radius: 5px;
-    /* Rounded corners */
     cursor: pointer;
-    /* Pointer cursor on hover */
     font-size: 16px;
-    /* Font size */
     font-weight: bold;
-    /* Bold text */
-    transition: .25s ease;
+    transition: 0.25s ease;
 }
 
 #save-btn:hover {
     background-color: #218838;
-    /* Darker green on hover */
 }
 
 #cancel-btn {
     margin: 10px;
     background-color: #f8f9fa;
-    /* Light gray background */
     color: #343a40;
-    /* Dark gray text */
     padding: 10px 20px;
-    /* Padding for size */
     border: 1px solid #ced4da;
-    /* Light gray border */
     border-radius: 5px;
-    /* Rounded corners */
     cursor: pointer;
-    /* Pointer cursor on hover */
     font-size: 16px;
-    /* Font size */
-    transition: .25s ease;
+    transition: 0.25s ease;
 }
 
 #cancel-btn:hover {
     background-color: #b4b8bb;
-    /* Slightly darker gray on hover */
 }
 
 #add-btn {
     margin: 10px;
     background-color: #285fa7;
-    /* Green background */
+
     color: white;
-    /* White text */
+
     padding: 10px 20px;
-    /* Padding for size */
+
     border: none;
-    /* Remove border */
+
     border-radius: 5px;
-    /* Rounded corners */
+
     cursor: pointer;
-    /* Pointer cursor on hover */
+
     font-size: 16px;
-    /* Font size */
+
     font-weight: bold;
-    /* Bold text */
-    transition: .25s ease;
+
+    transition: 0.25s ease;
 }
 
 #add-btn:hover {
@@ -954,7 +984,7 @@ header .info-text .scroll::before {
     /* Font size */
     font-weight: bold;
     /* Bold text */
-    transition: .25s ease;
+    transition: 0.25s ease;
 }
 
 #del-btn:hover {
@@ -1006,16 +1036,16 @@ header .info-text .scroll::before {
 
 .content {
     display: inline-block;
-    white-space: nowrap; /* Prevents line breaks */
-    animation: marquee 25s linear infinite; /* Adjust timing as needed */
+    white-space: nowrap;
+    animation: marquee 25s linear infinite;
 }
 
 @keyframes marquee {
     0% {
-        transform: translateX(0); /* Start position */
+        transform: translateX(0);
     }
     100% {
-        transform: translateX(-50%); /* Move left to cover half of the content */
+        transform: translateX(-50%);
     }
 }
 
@@ -1041,7 +1071,7 @@ header .info-text .scroll::before {
 
 .carousel-item {
     flex: 1 0 100%;
-    margin-left:5px;
+    margin-left: 5px;
     position: relative;
     display: flex;
     justify-content: center;
@@ -1099,7 +1129,8 @@ header .info-text .scroll::before {
     z-index: 1;
 }
 
-.carousel-control-prev, .carousel-control-next {
+.carousel-control-prev,
+.carousel-control-next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -1121,7 +1152,8 @@ header .info-text .scroll::before {
     right: 10px;
 }
 
-.carousel-control-prev.hidden, .carousel-control-next.hidden {
+.carousel-control-prev.hidden,
+.carousel-control-next.hidden {
     opacity: 0;
     pointer-events: none;
 }
@@ -1260,7 +1292,8 @@ header .info-text .scroll::before {
         height: 60%;
     }
 
-    #draggable-list, .property-panel {
+    #draggable-list,
+    .property-panel {
         width: 100%;
     }
 

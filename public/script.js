@@ -138,11 +138,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 }, 1000);
             };
 
-            // Insert the verifiers string into the #top-players element
             if (document.getElementById('index')) {
                 const topPlayersElement = document.getElementById('top-players');
                 if (topPlayersElement) {
-                    // Trim trailing comma and space from the string
                     topVerifiersString = topVerifiersString.slice(0, -2);
                     topPlayersElement.textContent = topVerifiersString;
                 }

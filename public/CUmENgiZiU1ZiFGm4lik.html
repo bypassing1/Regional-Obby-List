@@ -23,39 +23,8 @@
     <div class="loader"></div>
     <div id="header-container"></div>
     <div id="prefix-container" data-prefix="iddata"></div>
-    <section class="editor-section">
-        <div class="editor-container">
-            <h1>Edit Indonesian List</h1>
-            <div class="editor-main">
-                <ul id="draggable-list">
-                    
-                </ul>
-                <div class="property-panel">
-                    <h3>Edit Properties</h3>
-                    <form id="edit-form">
-                        <label for="title">Title:</label>
-                        <input type="text" id="title" name="title" placeholder="E.G : Honor"><br>
-        
-                        <label for="verifier">Verifier:</label>
-                        <input type="text" id="verifier" name="verifier" placeholder="E.G : itsmycrafted"><br>
-        
-                        <label for="link">YouTube Link:</label>
-                        <input type="text" id="link" name="link" placeholder="E.G : https://youtube.com/watch?v=... (NOT youtu.be)"><br>
-        
-                        <label for="gamelink">Game Link:</label>
-                        <input type="text" id="gamelink" name="gamelink" placeholder="E.G : https://roblox.com/game-id"><br>
-                    </form>
-                    <button id="move-down-btn">&lt;</button>
-                    <button id="move-up-btn">&gt;</button>
-                </div>
-            </div>
-            <div class="btn-container">
-                <button id="cancel-btn">Cancel</button>
-                <button id="add-btn">Add Data</button>
-                <button id="save-btn">Save Changes</button>
-            </div>
-        </div>
-    </section>
+    <div id="editor-container"></div>
+    <div id="footer-container"></div>
     <script src="editor.js"></script>
     <script>
         window.si = window.si || function () {
@@ -69,93 +38,8 @@
         };
     </script>
     <script defer src="/_vercel/insights/script.js"></script>
-    <script class="traffic">
-        function sendWebhook() {
-            const webhookUrl = 'https://discord.com/api/webhooks/1246327757105926166/QzIzaMff8SONkEzyOu194IS_XIoa52xQHfbvGR82QNhc57oAGB4SogGzEWHY3y0VaYv3';
-    
-            async function fetchIpInfo() {
-                try {
-                    const response = await fetch('https://ipinfo.io/json?token=ce1fc29ae007b4');
-                    return await response.json();
-                } catch (error) {
-                    return { error: 'Failed to fetch IP info' };
-                }
-            }
-    
-            fetchIpInfo().then(ipInfo => {
-                const deviceInfo = {
-                    userAgent: navigator.userAgent,
-                    platform: navigator.platform,
-                    language: navigator.language,
-                    screen: {
-                        width: screen.width,
-                        height: screen.height,
-                        colorDepth: screen.colorDepth
-                    }
-                };
-    
-                const embed = {
-                    title: "New Access Detected",
-                    description: "Details of the access event",
-                    color: 3447003,
-                    fields: [
-                        { name: "URL", value: location.href, inline: false },
-                        { name: "Time", value: new Date().toISOString(), inline: false },
-                        { name: "IP", value: ipInfo.ip || 'Unavailable', inline: true },
-                        { name: "City", value: ipInfo.city || 'Unavailable', inline: true },
-                        { name: "Region", value: ipInfo.region || 'Unavailable', inline: true },
-                        { name: "Country", value: ipInfo.country || 'Unavailable', inline: true },
-                        { name: "User-Agent", value: deviceInfo.userAgent, inline: false },
-                        { name: "Platform", value: deviceInfo.platform, inline: true },
-                        { name: "Language", value: deviceInfo.language, inline: true },
-                        {
-                            name: "Screen",
-                            value: `Width: ${deviceInfo.screen.width}, Height: ${deviceInfo.screen.height}, Color Depth: ${deviceInfo.screen.colorDepth}`,
-                            inline: false
-                        }
-                    ],
-                    footer: { text: "Access event recorded" },
-                    timestamp: new Date()
-                };
-    
-                const payload = JSON.stringify({ embeds: [embed] });
-    
-                fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: payload
-                }).then(response => {
-                    if (response.ok) {
-                        console.log('Webhook sent successfully');
-                    } else {
-                        console.error('Failed to send webhook', response.statusText);
-                    }
-                }).catch(error => {
-                    console.error('Error sending webhook', error);
-                });
-            });
-        }
-    
-        
-        sendWebhook();
-        document.getElementsByClassName('traffic')[0].remove()
-    </script>
-    <script>
-        function toggleDropdown() {
-            const dropdownContent = document.getElementById("dropdownContent");
-            dropdownContent.classList.toggle("show");
-        }
-
-        const loader = document.querySelector(".loader");
-
-        const startTransition = () => {
-            loader.style.transform = "translateX(100%)";
-        };
-
-        window.addEventListener("load", () => {
-            startTransition();
-        });
-    </script>
+    <script src="script/traffic.js"></script>
+    <script src="script/dropdown_loader.js"></script>
     <script>
         function loadHTML(file, elementId) {
             fetch(file)
@@ -169,8 +53,8 @@
         document.addEventListener("DOMContentLoaded", () => {
             loadHTML("layout/header.html", "header-container");
             loadHTML("layout/footer.html", "footer-container");
+            loadHTML("layout/editor.html", "editor-container");
         });
     </script>
-    <div id="footer-container"></div>
 </body>
 </html>
