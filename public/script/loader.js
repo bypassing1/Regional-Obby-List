@@ -1,4 +1,3 @@
-await setTimeout(5000);
 const loader = document.getElementsByClassName("loader")[0];
 
     const startTransition = () => {
