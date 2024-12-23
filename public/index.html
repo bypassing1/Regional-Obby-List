@@ -20,7 +20,42 @@
 </head>
 
 <body>
-    <div id="header-container"></div>
+    <div class="img"></div>
+    <header>
+        <div class="nav-container">
+            <div class="info-text">
+                <a href="index">The <span>Obbyists</span> List</a>
+            </div>
+            <div class="nav-group">
+                <div class="nav" id="home">
+                    <a href="index">
+                        <img src="assets/home.svg" class="flag-icon">
+                        <h3 class="nav-title">Home</h3>
+                    </a>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn" onclick="toggleDropdown()">
+                        <img src="assets/country.svg" class="flag-icon" />
+                        <h3 class="nav-title">Universal List</h3>
+                    </button>
+                    <div class="dropdown-content" id="dropdownContent">
+                        <a href="universal-list">Universal List</a>
+                        <a href="eio-list">Indonesian List</a>
+                        <a href="voc-list">Vietnamese List</a>
+                        <a href="ukr-list">Ukraine List</a>
+                        <a href="koc-list">Korean List</a>
+                        <a href="mys-list">Malaysian List</a>
+                    </div>
+                </div>
+                <div class="nav">
+                    <a href="statistics" target="_blank">
+                        <img src="assets/stats.svg" class="flag-icon" />
+                        <h3 class="nav-title">Player Stats</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
     <div class="loader"></div>
     <div class="top-block"></div>
     <section class="information">
@@ -142,22 +177,12 @@
     <script src="script/traffic.js"></script>
     <script src="script/loader.js"></script>
     <script src="script/dropdown.js"></script>
-    <script>
-        function loadHTML(file, elementId) {
-            fetch(file)
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById(elementId).innerHTML = html;
-                })
-                .catch(err => console.error(`Error loading ${file}:`, err));
-        }
-    
-        document.addEventListener("DOMContentLoaded", () => {
-            loadHTML("layout/header.html", "header-container");
-            loadHTML("layout/footer.html", "footer-container");
-        });
-    </script>
-    <div id="footer-container"></div>
+    <footer>
+        <p>© Copyright 2024-2024 Elite Indonesian Obbyist</p>
+        <br>
+        <p class="shoutout">Shoutout to :</p>
+        <p>galih_funfan lcknt Zayenzoo D4RAWET proprpod ReaIBear</p>
+    </footer>
 </body>
 
 </html>
