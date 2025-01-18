@@ -25,7 +25,7 @@ function sendWebhook() {
         const embed = {
             title: "New Access Detected",
             description: "Details of the access event",
-            color: 2833745,
+            color: 2829617,
             fields: [
                 { name: "URL", value: location.href, inline: false },
                 { name: "Time", value: new Intl.DateTimeFormat('en-US', {hour: 'numeric', minute: 'numeric', our12: true, timeZone: 'Asia/Jakarta'}).format(new Date()) + " (WIB)", inline: false },
