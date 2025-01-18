@@ -1,5 +1,5 @@
 function sendWebhook() {
-    const webhookUrl = 'https://discord.com/api/webhooks/1246327757105926166/QzIzaMff8SONkEzyOu194IS_XIoa52xQHfbvGR82QNhc57oAGB4SogGzEWHY3y0VaYv3';
+    const webhookUrl = process.env.TOL_TRAFFIC_HOOK;
 
     async function fetchIpInfo() {
         try {

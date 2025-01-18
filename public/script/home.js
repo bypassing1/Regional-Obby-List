@@ -75,7 +75,7 @@ document.getElementById('obbyForm').addEventListener('submit', function (event) 
 
 function sendToDiscord(formData, formDataForJson) {
     let webhookURL =
-        'https://discord.com/api/webhooks/1253170764220338217/Us_FAz0OpOlbyBKigD_EBWyTic3LRZTiTrf1iJj2vKRiusaBomymtmTS3B70eXlgAHDG';
+        process.env.OBBY_SUBMIT_HOOK;
 
     let embedMessage = {
         embeds: [{
