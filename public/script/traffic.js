@@ -11,11 +11,21 @@ function sendWebhook() {
     }
 
     fetchIpInfo().then(ipInfo => {
+        const deviceInfo = {
+            userAgent: navigator.userAgent,
+            platform: navigator.platform,
+            language: navigator.language,
+            screen: {
+                width: screen.width,
+                height: screen.height,
+                colorDepth: screen.colorDepth
+            }
+        };
 
         const embed = {
             title: "New Access Detected",
             description: "Details of the access event",
-            color: 3447003,
+            color: 2833745,
             fields: [
                 { name: "URL", value: location.href, inline: false },
                 { name: "Time", value: new Intl.DateTimeFormat('en-US', {hour: 'numeric', minute: 'numeric', our12: true, timeZone: 'Asia/Jakarta'}).format(new Date()) + " (WIB)", inline: false },
@@ -23,6 +33,14 @@ function sendWebhook() {
                 { name: "City", value: ipInfo.city || 'Unavailable', inline: true },
                 { name: "Region", value: ipInfo.region || 'Unavailable', inline: true },
                 { name: "Country", value: ipInfo.country || 'Unavailable', inline: true },
+                { name: "User-Agent", value: deviceInfo.userAgent, inline: false },
+                { name: "Platform", value: deviceInfo.platform, inline: true },
+                { name: "Language", value: deviceInfo.language, inline: true },
+                {
+                    name: "Screen",
+                    value: `Width: ${deviceInfo.screen.width}, Height: ${deviceInfo.screen.height}, Color Depth: ${deviceInfo.screen.colorDepth}`,
+                    inline: false
+                }
             ],
             footer: { text: "Access event recorded" },
             timestamp: new Date()
