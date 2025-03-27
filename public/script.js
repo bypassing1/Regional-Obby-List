@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const flagSrc = prefix.replace('data', '');
             fetch(listBlobsApiUrl)
             .then(response => response.json())
-            .then(dataList => {
+            .then(data => {
                 const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix))
                 if (!dataBlob) {
                     throw new Error(`Blob with the prefix ${prefix} not found.`);
