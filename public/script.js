@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         return fetch(blob.url).then(response => response.json()).then(listData => {
                             if (listData.length > 0) {
                                 const topVerifier = listData[0].verifier;
-                                topVerifiersString += `${topVerifier}ㅤㅤㅤ`; 
+                                topVerifiersString += `${topVerifier}ㅤㅤ`; 
                             }
                         });
                     }
