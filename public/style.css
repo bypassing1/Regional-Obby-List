@@ -87,13 +87,16 @@ footer {
     padding-right: calc(50% - 1072px / 2);
     width: 100%;
     height: 9rem;
-    background-color: #1e1f20;
+    background-image: url(assets/layered-waves-haikei.svg);
+    background-size: cover;
+    background-position-y: 25%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 2;
     color: #e3e3e3;
+    border-top: 1px solid #e3e3e3;
 }
 
 footer p {
@@ -430,7 +433,7 @@ header .info-text .scroll::before {
 #bg-grid{
     position: absolute;
     width: 100%;
-    height: 36.8rem;
+    height: 38.5rem;
     background-color: #000000;
     background-image: url(assets/ooorganize.svg);
     background-size: 5%;
@@ -714,8 +717,8 @@ header .info-text .scroll::before {
 }
 
 .stats-viewer-container {
-    background-color: #0f0f0f;
     display: flex;
+    background-color: #0f0f0f;
     background-image: url(assets/transition.svg);
     background-size: cover;
     justify-content: center;
@@ -837,12 +840,15 @@ header .info-text .scroll::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #131314;
+    background-color: #0f0f0f;
+    background-image: url(assets/transition.svg);
+    background-size: cover;
 }
 
 .editor-container {
     background-color: #1e1f22;
     margin: 20px;
+    border: 2px solid #e3e3e3;
     padding: 10px;
     display: flex;
     justify-content: center;
@@ -904,7 +910,9 @@ header .info-text .scroll::before {
     width: 100%;
     padding: 5px;
     margin-bottom: 10px;
-    border: none;
+    background-color: #131314;
+    border: 1px solid #050505;
+    color: #e3e3e3;
     border-radius: 4px;
 }
 
@@ -1032,6 +1040,8 @@ header .info-text .scroll::before {
     flex-direction: column;
     align-items: center;
     padding: 25px;
+    border-bottom: 1px solid #353535;
+    border-top: 1px solid #353535;
 }
 
 .marquee {
