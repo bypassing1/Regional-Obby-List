@@ -2,6 +2,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const listBlobsApiUrl = '/api/listBlobs';
     const globaldataPrefix = 'globaldata';
     const playerstatPrefix = 'playerstat';
+    const prefixData = [
+        { scriptId: "voc-list", prefix: "vndata" },
+        { scriptId: "eio-list", prefix: "iddata" },
+        { scriptId: "ukr-list", prefix: "ukrdata" },
+        { scriptId: "koc-list", prefix: "krdata" },
+        { scriptId: "mys-list", prefix: "mysdata" }
+    ];
     const prefixList = ['vndata', 'iddata', 'krdata', 'ukrdata', 'mysdata'];
     let topVerifiersString = '';
     fetch(listBlobsApiUrl)
@@ -139,11 +146,10 @@ document.addEventListener('DOMContentLoaded', function () {
             };
 
             if (document.getElementById('index')) {
-                const topPlayersElement = document.getElementById('top-players');
-                if (topPlayersElement) {
-                    topVerifiersString = topVerifiersString.slice(0, -2);
-                    topPlayersElement.textContent = topVerifiersString;
-                }
+                const topPlayersElements = document.querySelectorAll('[id="top-players"]');
+                topPlayersElements.forEach(element => {
+                    element.textContent = topVerifiersString.slice(0, -2);
+                });
 
                 const top1ObbyistElement = document.querySelector('.top1-obbyist');
                 top1ObbyistElement.textContent = globaldata[0].verifier;
@@ -223,70 +229,70 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         })
         .catch(error => console.error('Error fetching data:', error));
-    if (document.getElementById('voc-list')) {
-        let total = 0;
-        const prefix = 'vndata';
-        const container = document.getElementById('cards-container');
-        const legacycontainer = document.getElementById('legacy-container');
-        fetch(listBlobsApiUrl)
-        .then(response => response.json())
-        .then(data => {
-            const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
-            if (!dataBlob) {
-                throw new Error(`Blob with the prefix ${prefix} not found.`);
-            }
-            return fetch(dataBlob.url);
-        })
+        function loadList(prefix) {
+            let total = 0
+            const container = document.getElementById('cards-container')
+            const legacycontainer = document.getElementById('legacy-container')
+            const flagSrc = prefix.replace('data', '');
+            fetch(listBlobsApiUrl)
             .then(response => response.json())
-            .then(vndata => {
-                vndata.forEach(item => {
+            .then(dataList => {
+                const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix))
+                if (!dataBlob) {
+                    throw new Error(`Blob with the prefix ${prefix} not found.`);
+                }
+                return fetch(dataBlob.url)
+            })
+            .then(response => response.json())
+            .then(dataList => {
+                dataList.forEach(item => {
                     total += 1;
                     const videoId = item.link.split('v=')[1].split('&')[0];
                     const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-
+    
                     const card = document.createElement('div');
                     card.className = 'card';
-
+    
                     const bgblur = document.createElement('div');
                     bgblur.className = "background-blur";
                     bgblur.style.backgroundImage = `url(${thumbnailUrl})`;
                     card.appendChild(bgblur);
-
+    
                     const link = document.createElement('a');
                     link.href = item.link;
                     link.target = "_blank";
                     link.className = "link-overlay";
                     card.appendChild(link);
-
+    
                     const img = document.createElement('img');
                     img.src = thumbnailUrl;
                     img.classList.add('thumbnail');
                     link.appendChild(img);
-
+    
                     const info = document.createElement('div');
                     info.className = 'info';
                     card.appendChild(info);
-
+    
                     const flag = document.createElement('img');
-                    flag.src = `assets/vn.svg`;
+                    flag.src = `assets/${flagSrc}.svg`;
                     flag.classList.add('flag');
                     info.appendChild(flag);
-
+    
                     const obby = document.createElement('h1');
                     obby.id = 'after-video';
                     obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
                     info.appendChild(obby);
-
+    
                     const verifier = document.createElement('p');
                     verifier.textContent = item.verifier;
                     info.appendChild(verifier);
-
+    
                     const gamelink = document.createElement('a');
                     gamelink.href = item.gamelink;
                     gamelink.target = "_blank";
                     gamelink.textContent = `Game`;
                     info.appendChild(gamelink);
-
+    
                     if (total > 50) {
                         legacycontainer.appendChild(card);
                     } else {
@@ -295,297 +301,376 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             })
             .catch(error => console.error('Error fetching the JSON data:', error));
-    }
-    if (document.getElementById('eio-list')) {
-        let total = 0;
-        const prefix = 'iddata';
-        const container = document.getElementById('cards-container');
-        const legacycontainer = document.getElementById('legacy-container');
-        fetch(listBlobsApiUrl)
-        .then(response => response.json())
-        .then(data => {
-            const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
-            if (!dataBlob) {
-                throw new Error(`Blob with the prefix ${prefix} not found.`);
-            }
-            return fetch(dataBlob.url);
-        })
-            .then(response => response.json())
-            .then(iddata => {
-                iddata.forEach(item => {
-                    total += 1;
-                    const videoId = item.link.split('v=')[1].split('&')[0];
-                    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+        }
+        const scriptId = document.currentScript.id;
+        const found = prefixData.find(item => item.scriptId === scriptId);
 
-                    const card = document.createElement('div');
-                    card.className = 'card';
+        if (found) {
+            loadList(found.prefix);
+        }
+    // if (document.getElementById('voc-list')) {
+    //     let total = 0;
+    //     const prefix = 'vndata';
+    //     const container = document.getElementById('cards-container');
+    //     const legacycontainer = document.getElementById('legacy-container');
+    //     fetch(listBlobsApiUrl)
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
+    //         if (!dataBlob) {
+    //             throw new Error(`Blob with the prefix ${prefix} not found.`);
+    //         }
+    //         return fetch(dataBlob.url);
+    //     })
+    //         .then(response => response.json())
+    //         .then(vndata => {
+    //             vndata.forEach(item => {
+    //                 total += 1;
+    //                 const videoId = item.link.split('v=')[1].split('&')[0];
+    //                 const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-                    const bgblur = document.createElement('div');
-                    bgblur.className = "background-blur";
-                    bgblur.style.backgroundImage = `url(${thumbnailUrl})`;
-                    card.appendChild(bgblur);
+    //                 const card = document.createElement('div');
+    //                 card.className = 'card';
 
-                    const link = document.createElement('a');
-                    link.href = item.link;
-                    link.target = "_blank";
-                    link.className = "link-overlay";
-                    card.appendChild(link);
+    //                 const bgblur = document.createElement('div');
+    //                 bgblur.className = "background-blur";
+    //                 bgblur.style.backgroundImage = `url(${thumbnailUrl})`;
+    //                 card.appendChild(bgblur);
 
-                    const img = document.createElement('img');
-                    img.src = thumbnailUrl;
-                    img.classList.add('thumbnail');
-                    link.appendChild(img);
+    //                 const link = document.createElement('a');
+    //                 link.href = item.link;
+    //                 link.target = "_blank";
+    //                 link.className = "link-overlay";
+    //                 card.appendChild(link);
 
-                    const info = document.createElement('div');
-                    info.className = 'info';
-                    card.appendChild(info);
+    //                 const img = document.createElement('img');
+    //                 img.src = thumbnailUrl;
+    //                 img.classList.add('thumbnail');
+    //                 link.appendChild(img);
 
-                    const flag = document.createElement('img');
-                    flag.src = `assets/id.svg`;
-                    flag.classList.add('flag');
-                    info.appendChild(flag);
+    //                 const info = document.createElement('div');
+    //                 info.className = 'info';
+    //                 card.appendChild(info);
 
-                    const obby = document.createElement('h1');
-                    obby.id = 'after-video';
-                    obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
-                    info.appendChild(obby);
+    //                 const flag = document.createElement('img');
+    //                 flag.src = `assets/vn.svg`;
+    //                 flag.classList.add('flag');
+    //                 info.appendChild(flag);
 
-                    const verifier = document.createElement('p');
-                    verifier.textContent = item.verifier;
-                    info.appendChild(verifier);
+    //                 const obby = document.createElement('h1');
+    //                 obby.id = 'after-video';
+    //                 obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
+    //                 info.appendChild(obby);
 
-                    const gamelink = document.createElement('a');
-                    gamelink.href = item.gamelink;
-                    gamelink.target = "_blank";
-                    gamelink.textContent = `Game`;
-                    info.appendChild(gamelink);
+    //                 const verifier = document.createElement('p');
+    //                 verifier.textContent = item.verifier;
+    //                 info.appendChild(verifier);
 
-                    if (total > 50) {
-                        legacycontainer.appendChild(card);
-                    } else {
-                        container.appendChild(card);
-                    }
-                });
-            })
-            .catch(error => console.error('Error fetching the JSON data:', error));
-    }
-    if (document.getElementById('ukr-list')) {
-        let total = 0;
-        const prefix = 'ukrdata'
-        const container = document.getElementById('cards-container');
-        const legacycontainer = document.getElementById('legacy-container');
-        fetch(listBlobsApiUrl)
-        .then(response => response.json())
-        .then(data => {
-            const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
-            if (!dataBlob) {
-                throw new Error(`Blob with the prefix ${prefix} not found.`);
-            }
-            return fetch(dataBlob.url);
-        })
-            .then(response => response.json())
-            .then(ukrdata => {
-                ukrdata.forEach(item => {
-                    total += 1;
-                    const videoId = item.link.split('v=')[1].split('&')[0];
-                    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+    //                 const gamelink = document.createElement('a');
+    //                 gamelink.href = item.gamelink;
+    //                 gamelink.target = "_blank";
+    //                 gamelink.textContent = `Game`;
+    //                 info.appendChild(gamelink);
 
-                    const card = document.createElement('div');
-                    card.className = 'card';
+    //                 if (total > 50) {
+    //                     legacycontainer.appendChild(card);
+    //                 } else {
+    //                     container.appendChild(card);
+    //                 }
+    //             });
+    //         })
+    //         .catch(error => console.error('Error fetching the JSON data:', error));
+    // }
+    // if (document.getElementById('eio-list')) {
+    //     let total = 0;
+    //     const prefix = 'iddata';
+    //     const container = document.getElementById('cards-container');
+    //     const legacycontainer = document.getElementById('legacy-container');
+    //     fetch(listBlobsApiUrl)
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
+    //         if (!dataBlob) {
+    //             throw new Error(`Blob with the prefix ${prefix} not found.`);
+    //         }
+    //         return fetch(dataBlob.url);
+    //     })
+    //         .then(response => response.json())
+    //         .then(iddata => {
+    //             iddata.forEach(item => {
+    //                 total += 1;
+    //                 const videoId = item.link.split('v=')[1].split('&')[0];
+    //                 const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-                    const bgblur = document.createElement('div');
-                    bgblur.className = "background-blur";
-                    bgblur.style.backgroundImage = `url(${thumbnailUrl})`;
-                    card.appendChild(bgblur);
+    //                 const card = document.createElement('div');
+    //                 card.className = 'card';
 
-                    const link = document.createElement('a');
-                    link.href = item.link;
-                    link.target = "_blank";
-                    link.className = "link-overlay";
-                    card.appendChild(link);
+    //                 const bgblur = document.createElement('div');
+    //                 bgblur.className = "background-blur";
+    //                 bgblur.style.backgroundImage = `url(${thumbnailUrl})`;
+    //                 card.appendChild(bgblur);
 
-                    const img = document.createElement('img');
-                    img.src = thumbnailUrl;
-                    img.classList.add('thumbnail');
-                    link.appendChild(img);
+    //                 const link = document.createElement('a');
+    //                 link.href = item.link;
+    //                 link.target = "_blank";
+    //                 link.className = "link-overlay";
+    //                 card.appendChild(link);
 
-                    const info = document.createElement('div');
-                    info.className = 'info';
-                    card.appendChild(info);
+    //                 const img = document.createElement('img');
+    //                 img.src = thumbnailUrl;
+    //                 img.classList.add('thumbnail');
+    //                 link.appendChild(img);
 
-                    const flag = document.createElement('img');
-                    flag.src = `assets/ukr.svg`;
-                    flag.classList.add('flag');
-                    info.appendChild(flag);
+    //                 const info = document.createElement('div');
+    //                 info.className = 'info';
+    //                 card.appendChild(info);
 
-                    const obby = document.createElement('h1');
-                    obby.id = 'after-video';
-                    obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
-                    info.appendChild(obby);
+    //                 const flag = document.createElement('img');
+    //                 flag.src = `assets/id.svg`;
+    //                 flag.classList.add('flag');
+    //                 info.appendChild(flag);
 
-                    const verifier = document.createElement('p');
-                    verifier.textContent = item.verifier;
-                    info.appendChild(verifier);
+    //                 const obby = document.createElement('h1');
+    //                 obby.id = 'after-video';
+    //                 obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
+    //                 info.appendChild(obby);
 
-                    const gamelink = document.createElement('a');
-                    gamelink.href = item.gamelink;
-                    gamelink.target = "_blank";
-                    gamelink.textContent = `Game`;
-                    info.appendChild(gamelink);
+    //                 const verifier = document.createElement('p');
+    //                 verifier.textContent = item.verifier;
+    //                 info.appendChild(verifier);
 
-                    if (total > 50) {
-                        legacycontainer.appendChild(card);
-                    } else {
-                        container.appendChild(card);
-                    }
-                });
-            })
-            .catch(error => console.error('Error fetching the JSON data:', error));
-    }
-    if (document.getElementById('koc-list')) {
-        let total = 0;
-        const prefix = 'krdata'
-        const container = document.getElementById('cards-container');
-        const legacycontainer = document.getElementById('legacy-container');
-        fetch(listBlobsApiUrl)
-        .then(response => response.json())
-        .then(data => {
-            const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
-            if (!dataBlob) {
-                throw new Error(`Blob with the prefix ${prefix} not found.`);
-            }
-            return fetch(dataBlob.url);
-        })
-            .then(response => response.json())
-            .then(ukrdata => {
-                ukrdata.forEach(item => {
-                    total += 1;
-                    const videoId = item.link.split('v=')[1].split('&')[0];
-                    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+    //                 const gamelink = document.createElement('a');
+    //                 gamelink.href = item.gamelink;
+    //                 gamelink.target = "_blank";
+    //                 gamelink.textContent = `Game`;
+    //                 info.appendChild(gamelink);
 
-                    const card = document.createElement('div');
-                    card.className = 'card';
+    //                 if (total > 50) {
+    //                     legacycontainer.appendChild(card);
+    //                 } else {
+    //                     container.appendChild(card);
+    //                 }
+    //             });
+    //         })
+    //         .catch(error => console.error('Error fetching the JSON data:', error));
+    // }
+    // if (document.getElementById('ukr-list')) {
+    //     let total = 0;
+    //     const prefix = 'ukrdata'
+    //     const container = document.getElementById('cards-container');
+    //     const legacycontainer = document.getElementById('legacy-container');
+    //     fetch(listBlobsApiUrl)
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
+    //         if (!dataBlob) {
+    //             throw new Error(`Blob with the prefix ${prefix} not found.`);
+    //         }
+    //         return fetch(dataBlob.url);
+    //     })
+    //         .then(response => response.json())
+    //         .then(ukrdata => {
+    //             ukrdata.forEach(item => {
+    //                 total += 1;
+    //                 const videoId = item.link.split('v=')[1].split('&')[0];
+    //                 const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-                    const bgblur = document.createElement('div');
-                    bgblur.className = "background-blur";
-                    bgblur.style.backgroundImage = `url(${thumbnailUrl})`;
-                    card.appendChild(bgblur);
+    //                 const card = document.createElement('div');
+    //                 card.className = 'card';
 
-                    const link = document.createElement('a');
-                    link.href = item.link;
-                    link.target = "_blank";
-                    link.className = "link-overlay";
-                    card.appendChild(link);
+    //                 const bgblur = document.createElement('div');
+    //                 bgblur.className = "background-blur";
+    //                 bgblur.style.backgroundImage = `url(${thumbnailUrl})`;
+    //                 card.appendChild(bgblur);
 
-                    const img = document.createElement('img');
-                    img.src = thumbnailUrl;
-                    img.classList.add('thumbnail');
-                    link.appendChild(img);
+    //                 const link = document.createElement('a');
+    //                 link.href = item.link;
+    //                 link.target = "_blank";
+    //                 link.className = "link-overlay";
+    //                 card.appendChild(link);
 
-                    const info = document.createElement('div');
-                    info.className = 'info';
-                    card.appendChild(info);
+    //                 const img = document.createElement('img');
+    //                 img.src = thumbnailUrl;
+    //                 img.classList.add('thumbnail');
+    //                 link.appendChild(img);
 
-                    const flag = document.createElement('img');
-                    flag.src = `assets/kr.svg`;
-                    flag.classList.add('flag');
-                    info.appendChild(flag);
+    //                 const info = document.createElement('div');
+    //                 info.className = 'info';
+    //                 card.appendChild(info);
 
-                    const obby = document.createElement('h1');
-                    obby.id = 'after-video';
-                    obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
-                    info.appendChild(obby);
+    //                 const flag = document.createElement('img');
+    //                 flag.src = `assets/ukr.svg`;
+    //                 flag.classList.add('flag');
+    //                 info.appendChild(flag);
 
-                    const verifier = document.createElement('p');
-                    verifier.textContent = item.verifier;
-                    info.appendChild(verifier);
+    //                 const obby = document.createElement('h1');
+    //                 obby.id = 'after-video';
+    //                 obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
+    //                 info.appendChild(obby);
 
-                    const gamelink = document.createElement('a');
-                    gamelink.href = item.gamelink;
-                    gamelink.target = "_blank";
-                    gamelink.textContent = `Game`;
-                    info.appendChild(gamelink);
+    //                 const verifier = document.createElement('p');
+    //                 verifier.textContent = item.verifier;
+    //                 info.appendChild(verifier);
 
-                    if (total > 50) {
-                        legacycontainer.appendChild(card);
-                    } else {
-                        container.appendChild(card);
-                    }
-                });
-            })
-            .catch(error => console.error('Error fetching the JSON data:', error));
-    }
-    if (document.getElementById('mys-list')) {
-        let total = 0;
-        const prefix = 'mysdata'
-        const container = document.getElementById('cards-container');
-        const legacycontainer = document.getElementById('legacy-container');
-        fetch(listBlobsApiUrl)
-        .then(response => response.json())
-        .then(data => {
-            const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
-            if (!dataBlob) {
-                throw new Error(`Blob with the prefix ${prefix} not found.`);
-            }
-            return fetch(dataBlob.url);
-        })
-            .then(response => response.json())
-            .then(ukrdata => {
-                ukrdata.forEach(item => {
-                    total += 1;
-                    const videoId = item.link.split('v=')[1].split('&')[0];
-                    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+    //                 const gamelink = document.createElement('a');
+    //                 gamelink.href = item.gamelink;
+    //                 gamelink.target = "_blank";
+    //                 gamelink.textContent = `Game`;
+    //                 info.appendChild(gamelink);
 
-                    const card = document.createElement('div');
-                    card.className = 'card';
+    //                 if (total > 50) {
+    //                     legacycontainer.appendChild(card);
+    //                 } else {
+    //                     container.appendChild(card);
+    //                 }
+    //             });
+    //         })
+    //         .catch(error => console.error('Error fetching the JSON data:', error));
+    // }
+    // if (document.getElementById('koc-list')) {
+    //     let total = 0;
+    //     const prefix = 'krdata'
+    //     const container = document.getElementById('cards-container');
+    //     const legacycontainer = document.getElementById('legacy-container');
+    //     fetch(listBlobsApiUrl)
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
+    //         if (!dataBlob) {
+    //             throw new Error(`Blob with the prefix ${prefix} not found.`);
+    //         }
+    //         return fetch(dataBlob.url);
+    //     })
+    //         .then(response => response.json())
+    //         .then(ukrdata => {
+    //             ukrdata.forEach(item => {
+    //                 total += 1;
+    //                 const videoId = item.link.split('v=')[1].split('&')[0];
+    //                 const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-                    const bgblur = document.createElement('div');
-                    bgblur.className = "background-blur";
-                    bgblur.style.backgroundImage = `url(${thumbnailUrl})`;
-                    card.appendChild(bgblur);
+    //                 const card = document.createElement('div');
+    //                 card.className = 'card';
 
-                    const link = document.createElement('a');
-                    link.href = item.link;
-                    link.target = "_blank";
-                    link.className = "link-overlay";
-                    card.appendChild(link);
+    //                 const bgblur = document.createElement('div');
+    //                 bgblur.className = "background-blur";
+    //                 bgblur.style.backgroundImage = `url(${thumbnailUrl})`;
+    //                 card.appendChild(bgblur);
 
-                    const img = document.createElement('img');
-                    img.src = thumbnailUrl;
-                    img.classList.add('thumbnail');
-                    link.appendChild(img);
+    //                 const link = document.createElement('a');
+    //                 link.href = item.link;
+    //                 link.target = "_blank";
+    //                 link.className = "link-overlay";
+    //                 card.appendChild(link);
 
-                    const info = document.createElement('div');
-                    info.className = 'info';
-                    card.appendChild(info);
+    //                 const img = document.createElement('img');
+    //                 img.src = thumbnailUrl;
+    //                 img.classList.add('thumbnail');
+    //                 link.appendChild(img);
 
-                    const flag = document.createElement('img');
-                    flag.src = `assets/mys.svg`;
-                    flag.classList.add('flag');
-                    info.appendChild(flag);
+    //                 const info = document.createElement('div');
+    //                 info.className = 'info';
+    //                 card.appendChild(info);
 
-                    const obby = document.createElement('h1');
-                    obby.id = 'after-video';
-                    obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
-                    info.appendChild(obby);
+    //                 const flag = document.createElement('img');
+    //                 flag.src = `assets/kr.svg`;
+    //                 flag.classList.add('flag');
+    //                 info.appendChild(flag);
 
-                    const verifier = document.createElement('p');
-                    verifier.textContent = item.verifier;
-                    info.appendChild(verifier);
+    //                 const obby = document.createElement('h1');
+    //                 obby.id = 'after-video';
+    //                 obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
+    //                 info.appendChild(obby);
 
-                    const gamelink = document.createElement('a');
-                    gamelink.href = item.gamelink;
-                    gamelink.target = "_blank";
-                    gamelink.textContent = `Game`;
-                    info.appendChild(gamelink);
+    //                 const verifier = document.createElement('p');
+    //                 verifier.textContent = item.verifier;
+    //                 info.appendChild(verifier);
 
-                    if (total > 50) {
-                        legacycontainer.appendChild(card);
-                    } else {
-                        container.appendChild(card);
-                    }
-                });
-            })
-            .catch(error => console.error('Error fetching the JSON data:', error));
-    }
+    //                 const gamelink = document.createElement('a');
+    //                 gamelink.href = item.gamelink;
+    //                 gamelink.target = "_blank";
+    //                 gamelink.textContent = `Game`;
+    //                 info.appendChild(gamelink);
+
+    //                 if (total > 50) {
+    //                     legacycontainer.appendChild(card);
+    //                 } else {
+    //                     container.appendChild(card);
+    //                 }
+    //             });
+    //         })
+    //         .catch(error => console.error('Error fetching the JSON data:', error));
+    // }
+    // if (document.getElementById('mys-list')) {
+    //     let total = 0;
+    //     const prefix = 'mysdata'
+    //     const container = document.getElementById('cards-container');
+    //     const legacycontainer = document.getElementById('legacy-container');
+    //     fetch(listBlobsApiUrl)
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix));
+    //         if (!dataBlob) {
+    //             throw new Error(`Blob with the prefix ${prefix} not found.`);
+    //         }
+    //         return fetch(dataBlob.url);
+    //     })
+    //         .then(response => response.json())
+    //         .then(ukrdata => {
+    //             ukrdata.forEach(item => {
+    //                 total += 1;
+    //                 const videoId = item.link.split('v=')[1].split('&')[0];
+    //                 const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+
+    //                 const card = document.createElement('div');
+    //                 card.className = 'card';
+
+    //                 const bgblur = document.createElement('div');
+    //                 bgblur.className = "background-blur";
+    //                 bgblur.style.backgroundImage = `url(${thumbnailUrl})`;
+    //                 card.appendChild(bgblur);
+
+    //                 const link = document.createElement('a');
+    //                 link.href = item.link;
+    //                 link.target = "_blank";
+    //                 link.className = "link-overlay";
+    //                 card.appendChild(link);
+
+    //                 const img = document.createElement('img');
+    //                 img.src = thumbnailUrl;
+    //                 img.classList.add('thumbnail');
+    //                 link.appendChild(img);
+
+    //                 const info = document.createElement('div');
+    //                 info.className = 'info';
+    //                 card.appendChild(info);
+
+    //                 const flag = document.createElement('img');
+    //                 flag.src = `assets/mys.svg`;
+    //                 flag.classList.add('flag');
+    //                 info.appendChild(flag);
+
+    //                 const obby = document.createElement('h1');
+    //                 obby.id = 'after-video';
+    //                 obby.textContent = total < 51 ? `#${total} - ${item.title}` : `${item.title}`;
+    //                 info.appendChild(obby);
+
+    //                 const verifier = document.createElement('p');
+    //                 verifier.textContent = item.verifier;
+    //                 info.appendChild(verifier);
+
+    //                 const gamelink = document.createElement('a');
+    //                 gamelink.href = item.gamelink;
+    //                 gamelink.target = "_blank";
+    //                 gamelink.textContent = `Game`;
+    //                 info.appendChild(gamelink);
+
+    //                 if (total > 50) {
+    //                     legacycontainer.appendChild(card);
+    //                 } else {
+    //                     container.appendChild(card);
+    //                 }
+    //             });
+    //         })
+    //         .catch(error => console.error('Error fetching the JSON data:', error));
+    // }
 });
