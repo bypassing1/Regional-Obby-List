@@ -148,10 +148,22 @@ document.addEventListener('DOMContentLoaded', function () {
             };
 
             if (document.getElementById('index')) {
-                const topPlayersElements = document.querySelectorAll('[id="top-players"]');
-                topPlayersElements.forEach(element => {
-                    element.textContent = topVerifiersString.slice(0, -2);
-                });
+                const topPlayersContainer = document.getElementById('top-players');
+    topPlayersContainer.innerHTML = "";
+
+    const topVerifiersArray = topVerifiersString.split("ㅤㅤ");
+
+    topVerifiersArray.forEach(verifier => {
+        if (verifier.trim() !== "") {
+            const playerDiv = document.createElement("div");
+            playerDiv.className = "content";
+            playerDiv.id = "top-players";
+            playerDiv.textContent = verifier;
+            topPlayersContainer.parentNode.appendChild(playerDiv);
+        }
+    });
+
+    topPlayersContainer.remove();
 
                 const top1ObbyistElement = document.querySelector('.top1-obbyist');
                 top1ObbyistElement.textContent = globaldata[0].verifier;
