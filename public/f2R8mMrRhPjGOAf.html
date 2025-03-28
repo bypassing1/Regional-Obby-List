@@ -20,43 +20,8 @@
 </head>
 
 <body>
-    <div class="img"></div>
-    <header>
-        <div class="nav-container">
-            <div class="info-text">
-                <a href="index"><span>Data</span> Editor</a>
-            </div>
-            <div class="nav-group">
-                <div class="nav" id="home">
-                    <a href="index">
-                        <img src="assets/home.svg" class="flag-icon">
-                        <h3 class="nav-title">Home</h3>
-                    </a>
-                </div>
-                <div class="dropdown">
-                    <button class="dropbtn" onclick="toggleDropdown()">
-                        <img src="assets/country.svg" class="flag-icon" />
-                        <h3 class="nav-title">Universal List</h3>
-                    </button>
-                    <div class="dropdown-content" id="dropdownContent">
-                        <a href="universal-list">Universal List</a>
-                        <a href="eio-list">Indonesian List</a>
-                        <a href="voc-list">Vietnamese List</a>
-                        <a href="ukr-list">Ukraine List</a>
-                        <a href="koc-list">Korean List</a>
-                        <a href="mys-list">Malaysian List</a>
-                    </div>
-                </div>
-                <div class="nav">
-                    <a href="https://discord.gg/XXCk8EDF6r" target="_blank">
-                        <img src="assets/discord.svg" class="flag-icon" />
-                        <h3 class="nav-title">Discord Server</h3>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </header>
-    <div class="top-block"></div>
+    <div class="loader"></div>
+    <div id="header-container"></div>
     <section class="editor-section">
         <div class="editor-container">
             <h1>Edit Player Completion Data</h1>
@@ -67,7 +32,6 @@
             </div>
         </div>
     </section>
-    <div class="loader"></div>
     <script>
         const prefix = 'playerstat';
         const listBlobsApiUrl = '/api/listBlobs';
@@ -127,28 +91,8 @@
     </script>
     <script defer src="/_vercel/insights/script.js"></script>
     <script src="script/traffic.js"></script>
-    <script>
-        function toggleDropdown() {
-            const dropdownContent = document.getElementById("dropdownContent");
-            dropdownContent.classList.toggle("show");
-        }
-
-        const loader = document.querySelector(".loader");
-
-        const startTransition = () => {
-            loader.style.transform = "translateX(100%)";
-        };
-
-        window.addEventListener("load", () => {
-            startTransition();
-        });
-    </script>
-    <footer>
-        <p>© Copyright 2024-2024 Elite Indonesian Obbyist</p>
-        <br>
-        <p class="shoutout">Shoutout to :</p>
-        <p>galih_funfan lcknt Zayenzoo D4RAWET proprpod ReaIBear</p>
-    </footer>
+    <script src="script/loader.js"></script>
+    <div id="footer-container"></div>
 </body>
 
 </html>

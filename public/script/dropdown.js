@@ -1,5 +1,7 @@
-const dropbutton = document.getElementsByClassName('dropbtn')[0]
-dropbutton.addEventListener('click', () => {
-    const dropdownContent = document.getElementsByClassName('dropdown-content')[0];
-    dropdownContent.classList.toggle('show');
+document.addEventListener('click', (event) => {
+    const button = event.target.closest('.dropbtn');
+    if (button) {
+        const dropdownContent = button.nextElementSibling;
+        dropdownContent.classList.toggle('show');
+    }
 });
