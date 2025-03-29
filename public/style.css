@@ -780,7 +780,7 @@ header .info-text .scroll::before {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: background-color 0.25s ease;
-    margin-right: 1rem;
+    margin-right: 10px;
 }
 
 .player-div:hover {
