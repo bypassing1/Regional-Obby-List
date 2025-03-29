@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (document.getElementById('statistics')) {
                 const scrollableDiv = document.getElementById('scrollable');
                 playerstat.forEach((player, index) => {
-                    const playerDiv = document.createElement('a');
+                    const playerDiv = document.createElement('li');
                     playerDiv.className = 'player-div';
 
                     const playerFlag = document.createElement('img');

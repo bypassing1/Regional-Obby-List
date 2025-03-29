@@ -780,6 +780,7 @@ header .info-text .scroll::before {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: background-color 0.25s ease;
+    margin-right: 1rem;
 }
 
 .player-div:hover {
@@ -853,26 +854,27 @@ header .info-text .scroll::before {
 }
 
 .editor-container {
-    background-color: #1e1f22;
     margin: 20px;
-    border: 2px solid #e3e3e3;
     padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    border-radius: 10px;
     width: 75%;
-    height: 100vh;
 }
 
 .editor-container h1 {
     margin: 20px;
     color: white;
     font-size: 30px;
+    background-color: #1e1f22;
+    border: 2px solid #e3e3e3;
+    border-radius: 8px;
+    padding: 15px;
 }
 
 .editor-main {
+    gap: 1rem;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -881,6 +883,9 @@ header .info-text .scroll::before {
 
 #draggable-list,
 .property-panel {
+    background-color: #1e1f22;
+    border: 2px solid #e3e3e3;
+    border-radius: 8px;
     padding: 20px;
     width: 40%;
 }
@@ -927,6 +932,9 @@ header .info-text .scroll::before {
     margin: 5px;
     padding: 10px 10px;
     border-radius: 5px;
+    background-color: #131314;
+    border: 1px solid #050505;
+    color: #e3e3e3;
     border: none;
     cursor: pointer;
     font-weight: bold;
@@ -936,6 +944,10 @@ header .info-text .scroll::before {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin-top: 1rem;
+    background-color: #1e1f22;
+    border: 2px solid #e3e3e3;
+    border-radius: 8px;
 }
 
 #save-btn {
