@@ -739,6 +739,7 @@ header .info-text .scroll::before {
     align-items: center;
     flex-wrap: wrap;
     padding: 20px;
+    gap: 4rem;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 80%;
@@ -806,7 +807,6 @@ header .info-text .scroll::before {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     color: #e3e3e3;
     height: auto;
-    margin-left: 4rem;
     min-height: 40rem;
     width: 25rem;
     transition: 0.5s ease;
