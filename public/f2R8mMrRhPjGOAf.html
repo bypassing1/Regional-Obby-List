@@ -22,17 +22,38 @@
 <body>
     <div class="loader"></div>
     <div id="header-container"></div>
+    <div id="prefix-container" data-prefix="playerstat"></div>
     <section class="editor-section">
         <div class="editor-container">
             <h1>Edit Player Completion Data</h1>
-            <textarea id="json-editor" rows="65" cols="100"></textarea>
+            <div class="editor-main">
+                <ul id="draggable-list">
+                    
+                </ul>
+                <div class="property-panel">
+                    <h3>Edit Properties</h3>
+                    <form id="edit-form">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" placeholder="E.G : Itsmycrafted"><br>
+        
+                        <label for="region">Region:</label>
+                        <input type="text" id="region" name="region" placeholder="E.G : ID"><br>
+        
+                        <label for="beaten">Beaten:</label>
+                        <input type="text" id="beaten" name="beaten" placeholder="E.G : Honor"><br>
+                    </form>
+                    <button id="add-beaten-btn">+</button>
+                </div>
+            </div>
             <div class="btn-container">
                 <button id="cancel-btn">Cancel</button>
+                <button id="add-btn">Add Data</button>
                 <button id="save-btn">Save Changes</button>
             </div>
         </div>
     </section>
-    <script>
+    <script src="stat-editor.js"></script>
+    <!-- <script>
         const prefix = 'playerstat';
         const listBlobsApiUrl = '/api/listBlobs';
         let blobUrl = '';
@@ -77,7 +98,7 @@
         document.getElementById('cancel-btn').addEventListener('click', () => {
             document.getElementById('json-editor').value = originalData;
         });
-    </script>
+    </script> -->
     <script>
         window.si = window.si || function () {
             (window.siq = window.siq || []).push(arguments);

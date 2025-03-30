@@ -915,6 +915,8 @@ header .info-text .scroll::before {
 }
 
 .property-panel {
+    overflow: auto;
+    max-height: 40rem;
     color: white;
 }
 
