@@ -54,8 +54,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadBeatenInputs(beatenList) {
+        if (!beatenContainer) {
+            console.error("Error: 'beaten-container' not found in DOM.");
+            return;
+        }
+
         beatenContainer.innerHTML = '';
-        beatenList.forEach((beaten, index) => {
+        beatenList.filter(beaten => beaten.trim() !== '').forEach((beaten, index) => {
             const input = document.createElement('input');
             input.type = 'text';
             input.name = `beaten-${index}`;
@@ -90,7 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('save-btn').addEventListener('click', () => {
         if (currentItemIndex !== null) {
-            const updatedBeaten = Array.from(beatenContainer.children).map(input => input.value);
+            const updatedBeaten = Array.from(beatenContainer.children)
+                .map(input => input.value.trim())
+                .filter(value => value !== '');
             editedData[currentItemIndex].name = editForm.name.value;
             editedData[currentItemIndex].region = editForm.region.value;
             editedData[currentItemIndex].beaten = updatedBeaten;
