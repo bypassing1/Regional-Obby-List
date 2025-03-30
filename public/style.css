@@ -512,11 +512,12 @@ header .info-text .scroll::before {
     justify-content: center;
     align-items: flex-start;
     flex-wrap: wrap;
+    gap: 4rem;
+    padding: 2rem;
 }
 
 .form-container {
     color: #e3e3e3;
-    margin: 4rem;
     background-color: #1e1f22;
     border: #e3e3e3 2px solid;
     padding: 20px;
