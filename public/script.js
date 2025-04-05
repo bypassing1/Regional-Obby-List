@@ -148,22 +148,22 @@ document.addEventListener('DOMContentLoaded', function () {
             };
 
             if (document.getElementById('index')) {
-                const topPlayersContainer = document.getElementById('top-players');
-    topPlayersContainer.innerHTML = "";
+                const topPlayersContainer = document.getElementById('top-players-container');
+topPlayersContainer.innerHTML = "";
 
-    const topVerifiersArray = topVerifiersString.split("ㅤㅤ");
+const topVerifiersArray = topVerifiersString.split("ㅤㅤ");
 
-    topVerifiersArray.forEach(verifier => {
-        if (verifier.trim() !== "") {
-            const playerDiv = document.createElement("div");
-            playerDiv.className = "content";
-            playerDiv.id = "top-players";
-            playerDiv.textContent = verifier;
-            topPlayersContainer.parentNode.appendChild(playerDiv);
-        }
-    });
+topVerifiersArray.forEach(verifier => {
+    if (verifier.trim() !== "") {
+        const playerDiv = document.createElement("div");
+        playerDiv.className = "content";
+        playerDiv.textContent = verifier;
+        topPlayersContainer.appendChild(playerDiv);
+    }
+});
 
-    topPlayersContainer.remove();
+topPlayersContainer.innerHTML += topPlayersContainer.innerHTML;
+
 
                 const top1ObbyistElement = document.querySelector('.top1-obbyist');
                 top1ObbyistElement.textContent = globaldata[0].verifier;
