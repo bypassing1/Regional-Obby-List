@@ -434,7 +434,7 @@ header .info-text .scroll::before {
 #bg-grid{
     position: absolute;
     width: 100%;
-    height: 38.5rem;
+    height: 100%;
     background-color: #000000;
     background-image: url(assets/ooorganize.svg);
     background-size: 5%;
@@ -1084,7 +1084,7 @@ header .info-text .scroll::before {
     gap: 2rem;
     display: flex;
     width: max-content;
-    animation: marquee 10s linear infinite;
+    animation: marquee 15s linear infinite;
     will-change: transform;
 }
 

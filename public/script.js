@@ -159,7 +159,11 @@ topPlayersContainer.innerHTML += topPlayersContainer.innerHTML;
                     'galih_funfan',
                     'lcknt',
                     'zayenzoo',
-                    'infinicator'
+                    'infinicator',
+                    'Junebread',
+                    'Banjo',
+                    'AAAFanboy',
+                    'vikkstar413424trt'
                 ];
                 let contributorsContainer = document.querySelector('.contributors-text');
                 contributors.forEach(contributor => {
