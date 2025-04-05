@@ -1091,7 +1091,6 @@ header .info-text .scroll::before {
 .content {
     display: inline-block;
     white-space: nowrap;
-    animation: marquee 25s linear infinite;
 }
 
 @keyframes marquee {
