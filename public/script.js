@@ -163,7 +163,10 @@ topPlayersContainer.innerHTML += topPlayersContainer.innerHTML;
                     'Junebread',
                     'Banjo',
                     'AAAFanboy',
-                    'vikkstar413424trt'
+                    'vikkstar413424trt',
+                    'jacky123456789000',
+                    'Katozai18',
+                    'jankeration'
                 ];
                 let contributorsContainer = document.querySelector('.contributors-text');
                 contributors.forEach(contributor => {
