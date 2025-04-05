@@ -512,11 +512,12 @@ header .info-text .scroll::before {
     justify-content: center;
     align-items: flex-start;
     flex-wrap: wrap;
+    gap: 4rem;
+    padding: 2rem;
 }
 
 .form-container {
     color: #e3e3e3;
-    margin: 4rem;
     background-color: #1e1f22;
     border: #e3e3e3 2px solid;
     padding: 20px;
@@ -738,6 +739,7 @@ header .info-text .scroll::before {
     align-items: center;
     flex-wrap: wrap;
     padding: 20px;
+    gap: 4rem;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 80%;
@@ -805,7 +807,6 @@ header .info-text .scroll::before {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     color: #e3e3e3;
     height: auto;
-    margin-left: 4rem;
     min-height: 40rem;
     width: 25rem;
     transition: 0.5s ease;
@@ -915,6 +916,8 @@ header .info-text .scroll::before {
 }
 
 .property-panel {
+    overflow: auto;
+    max-height: 40rem;
     color: white;
 }
 

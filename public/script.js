@@ -130,22 +130,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         `;
 
                         playerStatsDiv.style.display = 'block';
-                        startTransition();
                     });
                 });
             }
-
-            const loader = document.querySelector(".loader");
-            const playerStatsDiv = document.querySelector(".player-stats");
-
-            const startTransition = () => {
-                playerStatsDiv.style.opacity = '0';
-                loader.style.transform = "translateX(0%)";
-                setTimeout(() => {
-                    loader.style.transform = "translateX(100%)";
-                    playerStatsDiv.style.opacity = '1';
-                }, 1000);
-            };
 
             if (document.getElementById('index')) {
                 const topPlayersContainer = document.getElementById('top-players-container');
