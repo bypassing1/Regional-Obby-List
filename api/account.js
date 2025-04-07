@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     const { mode, username, password, region } = req.body;
     const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
 
-    if (!mode || !username || !password || (mode === 'register' && !region)) {
+    if (!mode || !username) {
         return res.status(400).json({ message: 'Missing fields' });
     }
 
@@ -18,43 +18,37 @@ export default async function handler(req, res) {
         });
 
         const playerstatBlob = listResult.blobs.find(blob => blob.pathname.endsWith('playerstat.json'));
+        const pendingBlob = listResult.blobs.find(blob => blob.pathname.endsWith('pending.json'));
 
-        if (!playerstatBlob) {
-            return res.status(404).json({ message: 'playerstat.json not found' });
-        }
+        // Ensure playerstat.json exists
+        if (!playerstatBlob) return res.status(404).json({ message: 'playerstat.json not found' });
 
-        const response = await fetch(playerstatBlob.url);
-        const data = await response.json();
-
-        let players = Array.isArray(data) ? data : [];
+        const playerData = await fetch(playerstatBlob.url).then(res => res.json());
+        let players = Array.isArray(playerData) ? playerData : [];
 
         if (mode === 'login') {
             const user = players.find(p => p.name === username && p.password === password);
-
-            if (!user) {
-                return res.status(401).json({ message: 'Invalid username or password' });
-            }
-
+            if (!user) return res.status(401).json({ message: 'Invalid username or password' });
             return res.status(200).json({ message: 'Login successful', user });
         }
 
         if (mode === 'register') {
-            const userExists = players.some(p => p.name === username);
+            if (!password || !region) return res.status(400).json({ message: 'Missing password or region' });
 
-            if (userExists) {
-                return res.status(409).json({ message: 'Username already exists' });
+            const userExists = players.some(p => p.name === username);
+            if (userExists) return res.status(409).json({ message: 'Username already exists' });
+
+            // Load pending.json or create empty
+            let pending = [];
+            if (pendingBlob) {
+                const pendingData = await fetch(pendingBlob.url).then(res => res.json());
+                pending = Array.isArray(pendingData) ? pendingData : [];
             }
 
-            const newUser = {
-                name: username,
-                password,
-                region,
-                beaten: []
-            };
+            // Add to pending.json
+            pending.push({ name: username, password, region });
 
-            players.push(newUser);
-
-            const result = await put('playerstat.json', JSON.stringify(players, null, 2), {
+            await put('pending.json', JSON.stringify(pending, null, 2), {
                 headers: {
                     'Authorization': `Bearer ${blobToken}`,
                     'Content-Type': 'application/json',
@@ -62,7 +56,39 @@ export default async function handler(req, res) {
                 access: 'public',
             });
 
-            return res.status(201).json({ message: 'Registration successful', user: newUser, url: result.url });
+            return res.status(202).json({ message: 'Pending verification. Please join the game to verify!' });
+        }
+
+        if (mode === 'verify') {
+            // Verification from Roblox server
+            const pendingData = await fetch(pendingBlob.url).then(res => res.json());
+            const pending = Array.isArray(pendingData) ? pendingData : [];
+
+            const pendingUser = pending.find(p => p.name === username);
+            if (!pendingUser) return res.status(404).json({ message: 'No pending registration for this username' });
+
+            players.push({ ...pendingUser, beaten: [] });
+
+            // Update playerstat.json
+            await put('playerstat.json', JSON.stringify(players, null, 2), {
+                headers: {
+                    'Authorization': `Bearer ${blobToken}`,
+                    'Content-Type': 'application/json',
+                },
+                access: 'public',
+            });
+
+            // Remove from pending
+            const updatedPending = pending.filter(p => p.name !== username);
+            await put('pending.json', JSON.stringify(updatedPending, null, 2), {
+                headers: {
+                    'Authorization': `Bearer ${blobToken}`,
+                    'Content-Type': 'application/json',
+                },
+                access: 'public',
+            });
+
+            return res.status(200).json({ message: 'Verification successful! Account created.' });
         }
 
         return res.status(400).json({ message: 'Invalid mode' });
