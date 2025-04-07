@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" class="account-html">
+<head class="account-head">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Login & Register</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2277894072143897"
+        crossorigin="anonymous"></script>
+    <meta name="author" content="bypassing1" />
+    <meta property="og:title" content="Elite Indonesian Obbyist List" />
+    <meta property="og:description"
+        content="You can login or register your account on obbylist here!" />
+    <meta property="og:url" content="https://bypassing1.github.io/The-Obbyist-List/eio-list.html" />
+    <meta property="og:image" id="og-image"
+        content="https://cdn.discordapp.com/attachments/1246327728588849162/1251096040204140596/image.png?ex=666d557c&is=666c03fc&hm=a8381dedaf892f4986a3aaf37147c81cb90227077ce3f5dd5ea650d0f64787b2&" />
+    <meta property="og:type" content="website" />
+</head>
+<body>
+    <div class="img"></div>
+    <header>
+        <div class="nav-container">
+            <div class="info-text">
+                <a href="index">The <span>Obbyists</span> List</a>
+            </div>
+            <div class="nav-group">
+                <div class="nav" id="home">
+                    <a href="index">
+                        <img src="assets/home.svg" class="flag-icon">
+                        <h3 class="nav-title">Home</h3>
+                    </a>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn" onclick="toggleDropdown()">
+                        <img src="assets/country.svg" class="flag-icon" />
+                        <h3 class="nav-title">Universal List</h3>
+                    </button>
+                    <div class="dropdown-content" id="dropdownContent">
+                        <a href="universal-list">Universal List</a>
+                        <a href="eio-list">Indonesian List</a>
+                        <a href="voc-list">Vietnamese List</a>
+                        <a href="ukr-list">Ukraine List</a>
+                        <a href="koc-list">Korean List</a>
+                        <a href="mys-list">Malaysian List</a>
+                    </div>
+                </div>
+                <div class="nav">
+                    <a href="statistics">
+                        <img src="assets/stats.svg" class="flag-icon" />
+                        <h3 class="nav-title">Player Stats</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="loader"></div>
+    <div class="top-block"></div>
+    <div class="account-body">
+    <div class="account-container">
+        <div class="account-tabs">
+            <div class="account-tab active" id="login-tab">Login</div>
+            <div class="account-tab" id="register-tab">Register</div>
+        </div>
+        
+        <div class="account-form-container">
+            <form class="account-form active" id="login-form">
+                <div class="account-form-group">
+                    <label class="account-label" for="login-username">Username ( ROBLOX USERNAME )</label>
+                    <input class="account-input" type="text" id="login-username" placeholder="Enter your username" required>
+                    <div class="account-error-message" id="login-username-error"></div>
+                </div>
+                
+                <div class="account-form-group">
+                    <label class="account-label" for="login-password">Password</label>
+                    <input class="account-input" type="password" id="login-password" placeholder="Enter your password" required>
+                    <div class="account-error-message" id="login-password-error"></div>
+                </div>
+                
+                <button type="submit" class="account-button account-login-button">Login</button>
+                <div class="account-success-message" id="login-success">Login successful!</div>
+            </form>
+            
+            <form class="account-form" id="register-form">
+                <div class="account-form-group">
+                    <label class="account-label" for="register-username">Username ( ROBLOX USERNAME )</label>
+                    <input class="account-input" type="text" id="register-username" placeholder="Choose a username" required>
+                    <div class="account-error-message" id="register-username-error"></div>
+                </div>
+                
+                <div class="account-form-group">
+                    <label class="account-label" for="register-region">Region</label>
+                    <select class="account-select" id="register-region" required>
+                        <option class="account-option" value="" disabled selected>Select your region</option>
+                        <option class="account-option" value="id">Indonesia</option>
+                        <option class="account-option" value="vn">Vietnam</option>
+                        <option class="account-option" value="ukr">Ukraine</option>
+                        <option class="account-option" value="kr">Malaysia</option>
+                    </select>
+                    <div class="account-error-message" id="register-region-error"></div>
+                </div>
+                
+                <div class="account-form-group">
+                    <label class="account-label" for="register-password">Password</label>
+                    <input class="account-input" type="password" id="register-password" placeholder="Create a password" required>
+                    <div class="account-error-message" id="register-password-error"></div>
+                </div>
+                
+                <button type="submit" class="account-button account-register-button">Register</button>
+                <div class="account-success-message" id="register-success">Registration successful!</div>
+            </form>
+        </div>
+    </div>
+</div>
+    <script class="account-script">
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+        });
+
+        registerTab.addEventListener('click', () => {
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+            registerForm.classList.add('active');
+            loginForm.classList.remove('active');
+        });
+
+        document.getElementById('login-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+
+    const response = await fetch('/api/account', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'login', username, password })
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+        document.getElementById('login-success').textContent = result.message;
+        console.log('Logged in user:', result.user);
+        // Do something with user data
+    } else {
+        alert(result.message);
+    }
+});
+
+document.getElementById('register-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const username = document.getElementById('register-username').value;
+    const password = document.getElementById('register-password').value;
+    const region = document.getElementById('register-region').value;
+
+    const response = await fetch('/api/account', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'register', username, password, region })
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+        alert('Registration successful! You can now log in.');
+        console.log('Registered user:', result.user);
+    } else {
+        alert(result.message);
+    }
+});
+
+    </script>
+    <script src="script/loader.js"></script>
+</body>
+</html>

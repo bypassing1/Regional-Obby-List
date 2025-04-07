@@ -1,62 +1,199 @@
 [
     {
-        "name" : "itsmycrafted",
-        "region" : "id",
-        "beaten" : ["Frostbite" , "Tower of Vacant Hindrances", "Honor", "Tower of Terse Persecution", "Magnetic", "The Nightmare", "Tower of Honor", "Asiruuus", "Comatose", "Tower of Glory", "Site0", "Tower of Upended Vapor", "Tower of Abandoned Pillars", "Ice", "Another World", "Rise of Colors", "Tower of Maltael", "Epiphany"]
+        "name": "BoomSasok",
+        "password": "anotherpassword",
+        "region": "ukr",
+        "beaten": [
+            "Back There Benjamin"
+        ]
     },
     {
-        "name" : "galih_funfan",
-        "region" : "id",
-        "beaten" : ["Frostbite","Dysphoria", "Tower of Cruel Punishment", "Arcrux", "Tower of Champion's Road", "Cobalt Paradox", "Comatose", "Tower of Glory","Somewhere in Nowhere.", "Refraction", "TARTARUS", "Divine Intervention", "Cosmic Dismay","Desolate", "Tower of Malefic Nuisances"]
+        "name": "vikkstar413424trt",
+        "password": "anotherpassword",
+        "region": "mys",
+        "beaten": [
+            "Tower of Vacant Hindrances",
+            "Tower of Cruel Punishment",
+            "Tower of Eternal Void"
+        ]
     },
     {
-        "name" : "infinicator",
-        "region" : "vn",
-        "beaten": ["Sundarkened World", "Shinku no Naraku", "Somewhere in Nowhere.", "Moonlit Cosmos", "Haze", "Tower of Vacant Hindrances"]
+        "name": "Zayenzoo",
+        "password": "anotherpassword",
+        "region": "id",
+        "beaten": [
+            "Epiphany"
+        ]
     },
     {
-        "name" : "proprpod",
-        "region" :"id",
-        "beaten" :["Anata wa Horobimasu", "Longhopping", "The Conquering", "The Nightmare", "Hope for Amendment", "Forgotten Obby 2", "Shinku no Naraku"]
+        "name": "itsmycrafted",
+        "password": "anotherpassword",
+        "region": "id",
+        "beaten": [
+            "Frostbite",
+            "Tower of Vacant Hindrances",
+            "Honor",
+            "Tower of Terse Persecution",
+            "Magnetic",
+            "The Nightmare",
+            "Tower of Honor",
+            "Asiruuus",
+            "Comatose",
+            "Tower of Glory",
+            "Site0",
+            "Tower of Upended Vapor",
+            "Tower of Abandoned Pillars",
+            "Ice",
+            "Another World",
+            "Rise of Colors",
+            "Tower of Maltael",
+            "Epiphany"
+        ]
     },
     {
-        "name" : "toweroftest",
-        "region" :"id",
-        "beaten":["Bluestification", "Tower of Glory"]
+        "name": "galih_funfan",
+        "password": "anotherpassword",
+        "region": "id",
+        "beaten": [
+            "Frostbite",
+            "Dysphoria",
+            "Tower of Cruel Punishment",
+            "Arcrux",
+            "Tower of Champion's Road",
+            "Cobalt Paradox",
+            "Comatose",
+            "Tower of Glory",
+            "Somewhere in Nowhere.",
+            "Refraction",
+            "TARTARUS",
+            "Divine Intervention",
+            "Cosmic Dismay",
+            "Desolate",
+            "Tower of Malefic Nuisances"
+        ]
     },
     {
-        "name" : "Ariouss",
-        "region" : "id",
-        "beaten":["Tower of Jabberwock Jagger", "Tower of Cruel Punishment", "Tower of Elongated Runs", "Comatose","Moonlit Cosmos","Scarlet Paracosm", "Site0"]
-    },
-    {
-        "name" : "Marvel2232",
-        "region" : "id",
-        "beaten":["Room of Rose", "rh", "Somewhere in Nowhere.", "Refraction", "Tritanopia", "A Monolith", "Desolate", "Denial", "Cupid Delight", "Lucid Dream", "Bluestification", "Neptune", "Site0"]
-    },
-    {
-        "name" : "R96Fsa",
-        "region" :"id",
-        "beaten" : ["Tower of Glory"]
-    },
-    {
-        "name" : "sxn_nyeo",
-        "region" : "ukr",
-        "beaten" :["Pillars : Hardcore","Anata wa Horobimasu", "Enigmatic Void", "The Conquering", "Shinku no Naraku", "Hope for Amendment", "Nescience","Forgotten Obby 2","FOR THE; Sakura","Honor"]
-    },
-    {
-        "name":"jankeration",
+        "name": "infinicator",
+        "password": "anotherpassword",
         "region": "vn",
-        "beaten" : ["Tower of Malefic Nuisances"]
+        "beaten": [
+            "Sundarkened World",
+            "Shinku no Naraku",
+            "Somewhere in Nowhere.",
+            "Moonlit Cosmos",
+            "Haze",
+            "Tower of Vacant Hindrances",
+            "Tower of Champion's Road"
+        ]
     },
     {
-        "name":"Junebread",
+        "name": "proprpod",
+        "password": "anotherpassword",
+        "region": "id",
+        "beaten": [
+            "Anata wa Horobimasu",
+            "Longhopping",
+            "The Conquering",
+            "The Nightmare",
+            "Hope for Amendment",
+            "Forgotten Obby 2",
+            "Shinku no Naraku"
+        ]
+    },
+    {
+        "name": "toweroftest",
+        "password": "anotherpassword",
+        "region": "id",
+        "beaten": [
+            "Bluestification",
+            "Tower of Glory"
+        ]
+    },
+    {
+        "name": "Ariouss",
+        "password": "anotherpassword",
+        "region": "id",
+        "beaten": [
+            "Tower of Jabberwock Jagger",
+            "Tower of Cruel Punishment",
+            "Tower of Elongated Runs",
+            "Comatose",
+            "Moonlit Cosmos",
+            "Scarlet Paracosm",
+            "Site0"
+        ]
+    },
+    {
+        "name": "Marvel2232",
+        "password": "anotherpassword",
+        "region": "id",
+        "beaten": [
+            "Room of Rose",
+            "rh",
+            "Somewhere in Nowhere.",
+            "Refraction",
+            "Tritanopia",
+            "A Monolith",
+            "Desolate",
+            "Denial",
+            "Cupid Delight",
+            "Lucid Dream",
+            "Bluestification",
+            "Neptune",
+            "Site0"
+        ]
+    },
+    {
+        "name": "R96Fsa",
+        "password": "anotherpassword",
+        "region": "id",
+        "beaten": [
+            "Tower of Glory"
+        ]
+    },
+    {
+        "name": "sxn_nyeo",
+        "password": "anotherpassword",
+        "region": "ukr",
+        "beaten": [
+            "Pillars : Hardcore",
+            "Anata wa Horobimasu",
+            "Enigmatic Void",
+            "The Conquering",
+            "Shinku no Naraku",
+            "Hope for Amendment",
+            "Nescience",
+            "Forgotten Obby 2",
+            "FOR THE; Sakura",
+            "Honor"
+        ]
+    },
+    {
+        "name": "jankeration",
+        "password": "anotherpassword",
+        "region": "vn",
+        "beaten": [
+            "Tower of Malefic Nuisances"
+        ]
+    },
+    {
+        "name": "Junebread",
+        "password": "anotherpassword",
         "region": "kr",
-        "beaten": ["Honor", "Towero f Gunga Ginga", "Nebula"]
+        "beaten": [
+            "Honor",
+            "Towero f Gunga Ginga",
+            "Nebula"
+        ]
     },
     {
         "name": "Azusa_iz",
-        "region":"kr",
-        "beaten": ["Frostbite", "Eau de Nil"]
+        "password": "anotherpassword",
+        "region": "kr",
+        "beaten": [
+            "Frostbite",
+            "Eau de nil",
+            "Tower of Malefic Nuisances"
+        ]
     }
 ]
