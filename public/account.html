@@ -147,11 +147,10 @@
     const result = await response.json();
 
     if (response.ok) {
-        document.getElementById('login-success').textContent = result.message;
-        console.log('Logged in user:', result.user);
+        checkmark('Logged in!')
         // Do something with user data
     } else {
-        alert(result.message);
+        fail('Login Failed!')
     }
 });
 
@@ -180,5 +179,7 @@ document.getElementById('register-form').addEventListener('submit', async functi
 
     </script>
     <script src="script/loader.js"></script>
+    <script src="script/dropdown.js"></script>
+    <script src="script/animation.js"></script>
 </body>
 </html>
