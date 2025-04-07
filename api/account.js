@@ -45,7 +45,7 @@ export default async function handler(req, res) {
 
             pending.push({ name: username, password, region });
 
-            // ⛔ DELETE old pending.json first
+            // 🧹 Clean up old pending.json blobs
             const matchingPendingBlobs = listResult.blobs.filter(blob => blob.pathname.startsWith('pending'));
             for (const blob of matchingPendingBlobs) {
                 await del(blob.url, {
@@ -62,21 +62,23 @@ export default async function handler(req, res) {
                 access: 'public',
             });
 
-            return res.status(202).json({ message: 'Pending verification. Please join the game to verify!' });
+            return res.status(202).json({ message: 'Pending verification. Please join the Discord server for verification.' });
         }
 
         if (mode === 'verify') {
-            if (!pendingBlob) return res.status(404).json({ message: 'pending.json not found' });
+            if (!password || !region) return res.status(400).json({ message: 'Missing password or region' });
+            if (!pendingBlob) return res.status(404).json({ message: 'No pending registrations' });
 
             const pendingData = await fetch(pendingBlob.url).then(res => res.json());
             const pending = Array.isArray(pendingData) ? pendingData : [];
 
-            const pendingUser = pending.find(p => p.name === username);
-            if (!pendingUser) return res.status(404).json({ message: 'No pending registration for this username' });
+            const index = pending.findIndex(p => p.name === username);
+            if (index === -1) return res.status(404).json({ message: 'User not found in pending' });
 
-            players.push({ ...pendingUser, beaten: [] });
+            const verifiedUser = pending.splice(index, 1)[0];
+            players.push(verifiedUser);
 
-            // ⛔ DELETE old playerstat.json first
+            // 🧹 Delete old playerstat.json blobs
             const matchingPlayerstatBlobs = listResult.blobs.filter(blob => blob.pathname.startsWith('playerstat'));
             for (const blob of matchingPlayerstatBlobs) {
                 await del(blob.url, {
@@ -93,13 +95,21 @@ export default async function handler(req, res) {
                 access: 'public',
             });
 
-            return res.status(200).json({ message: 'Verification successful! Player added.' });
+            // 🧹 Clean up pending.json after verification
+            const matchingPendingBlobs = listResult.blobs.filter(blob => blob.pathname.startsWith('pending'));
+            for (const blob of matchingPendingBlobs) {
+                await del(blob.url, {
+                    headers: { 'Authorization': `Bearer ${blobToken}` }
+                });
+            }
+
+            return res.status(200).json({ message: 'User verified successfully!' });
         }
 
         return res.status(400).json({ message: 'Invalid mode' });
 
     } catch (error) {
         console.error('Server error:', error);
-        return res.status(500).json({ message: 'Server error', error: error.message });
+        return res.status(500).json({ message: 'Server error.', error: error.message });
     }
 }
