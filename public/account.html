@@ -159,6 +159,10 @@
             loginForm.classList.remove('active');
         });
 
+        closePopupBtn.addEventListener('click', () => {
+            verificationPopup.classList.remove('active');
+        });
+        
         document.getElementById('login-form').addEventListener('submit', async function (e) {
     e.preventDefault();
 
