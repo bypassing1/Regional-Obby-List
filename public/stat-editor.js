@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(result => {
             console.log('Update successful:', result);
-            alert('Update successful!');
+            checkmark('Data Edited!');
             originalData = JSON.parse(JSON.stringify(editedData));
         })
         .catch(error => console.error('Error updating JSON:', error));

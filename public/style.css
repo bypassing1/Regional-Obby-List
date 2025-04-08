@@ -993,6 +993,7 @@ header .info-text .scroll::before {
     background-color: #0f0f0f;
     background-image: url(assets/transition.svg);
     background-size: cover;
+    height: 90vh;
 }
 
 .editor-container {

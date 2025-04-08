@@ -67,31 +67,47 @@ export default async function handler(req, res) {
 
         if (mode === 'verify') {
             if (!pendingBlob) return res.status(404).json({ message: 'pending.json not found' });
-
+        
             const pendingData = await fetch(pendingBlob.url).then(res => res.json());
             const pending = Array.isArray(pendingData) ? pendingData : [];
-
+        
             const pendingUser = pending.find(p => p.name === username);
             if (!pendingUser) return res.status(404).json({ message: 'No pending registration for this username' });
-
+        
+            // Add to playerstat
             players.push({ ...pendingUser, beaten: [] });
-
+        
+            // Remove verified player from pending list
+            const updatedPending = pending.filter(p => p.name !== username);
+        
+            // Delete old pending.json
             const matchingPendingBlobs = listResult.blobs.filter(blob => blob.pathname.startsWith('pending'));
             for (const blob of matchingPendingBlobs) {
                 await del(blob.url, {
                     headers: { 'Authorization': `Bearer ${blobToken}` }
                 });
             }
-
-            // ⛔ DELETE old playerstat.json first
+        
+            // Upload updated pending.json (if there are still pending users)
+            if (updatedPending.length > 0) {
+                await put('pending.json', JSON.stringify(updatedPending, null, 2), {
+                    headers: {
+                        'Authorization': `Bearer ${blobToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                    access: 'public',
+                });
+            }
+        
+            // Delete old playerstat.json
             const matchingPlayerstatBlobs = listResult.blobs.filter(blob => blob.pathname.startsWith('playerstat'));
             for (const blob of matchingPlayerstatBlobs) {
                 await del(blob.url, {
                     headers: { 'Authorization': `Bearer ${blobToken}` }
                 });
             }
-
-            // ✅ Upload fresh playerstat.json
+        
+            // Upload fresh playerstat.json
             await put('playerstat.json', JSON.stringify(players, null, 2), {
                 headers: {
                     'Authorization': `Bearer ${blobToken}`,
@@ -99,9 +115,10 @@ export default async function handler(req, res) {
                 },
                 access: 'public',
             });
-
+        
             return res.status(200).json({ message: 'Verification successful! Player added.' });
         }
+        
 
         return res.status(400).json({ message: 'Invalid mode' });
 
