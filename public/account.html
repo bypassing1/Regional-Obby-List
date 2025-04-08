@@ -107,7 +107,7 @@
                 </div>
                 
                 <button type="submit" class="account-button account-register-button">Register</button>
-                <div class="account-success-message" id="register-success">Registration successful!</div>
+                <div class="account-success-message" id="register-success">User added to pending, Verify to login</div>
             </form>
         </div>
     </div>
@@ -143,6 +143,7 @@
         const registerTab = document.getElementById('register-tab');
         const loginForm = document.getElementById('login-form');
         const verificationPopup = document.getElementById('verification-popup');
+        const closePopupBtn = document.getElementById('close-popup');
         const registerForm = document.getElementById('register-form');
 
         loginTab.addEventListener('click', () => {
@@ -162,7 +163,13 @@
         closePopupBtn.addEventListener('click', () => {
             verificationPopup.classList.remove('active');
         });
-        
+
+        verificationPopup.addEventListener('click', (e) => {
+            if (e.target === verificationPopup) {
+                verificationPopup.classList.remove('active');
+            }
+        });
+
         document.getElementById('login-form').addEventListener('submit', async function (e) {
     e.preventDefault();
 
