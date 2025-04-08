@@ -34,7 +34,7 @@ export default async function handler(req, res) {
         if (mode === 'register') {
             if (!password || !region) return res.status(400).json({ message: 'Missing password or region' });
 
-            const userExists = players.some(p => p.name === username);
+            const userExists = players.some(p => p.name.toLowerCase() === username.toLowerCase());
             if (userExists) return res.status(409).json({ message: 'Username already exists' });
 
             let pending = [];

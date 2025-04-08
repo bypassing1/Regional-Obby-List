@@ -138,6 +138,16 @@
         </div>
     </div>
 </div>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    if (loggedInUser) {
+        alert(`Welcome back, ${loggedInUser}!`);
+
+        window.location.href = '/dashboard';
+    }
+});
+</script>
     <script>
         const loginTab = document.getElementById('login-tab');
         const registerTab = document.getElementById('register-tab');
@@ -186,7 +196,8 @@
 
     if (response.ok) {
         checkmark('Logged in!')
-        
+        localStorage.setItem('loggedInUser', username);
+        window.location.href = '/dashboard';
     } else {
         fail('Login Failed!')
     }
