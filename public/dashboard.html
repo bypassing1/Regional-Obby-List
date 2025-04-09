@@ -365,6 +365,7 @@ const universeIdCache = {};
             renderGames(games);
         })
         .catch(error => console.error('Error loading data:', error));
+        
         document.getElementById('dashboard-modal-close').addEventListener('click', () => closeModal('dashboard-game-modal-overlay'));
 
         document.getElementById('dashboard-game-modal-overlay').addEventListener('click', (e) => {
