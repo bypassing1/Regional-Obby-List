@@ -72,6 +72,7 @@
                 <img src="/placeholder.svg" alt="" class="dashboard-modal-image" id="dashboard-modal-image">
                 <h2 class="dashboard-modal-title" id="dashboard-modal-title"></h2>
                 <div class="dashboard-modal-tier">Tier: <span id="dashboard-modal-tier"></span></div>
+                <a href="#" class="dashboard-modal-game-link" id="dashboard-modal-game-link" target="_blank" rel="noopener noreferrer">Play on Roblox</a>
                 <button class="dashboard-modal-close" id="dashboard-modal-close">×</button>
             </div>
             <div class="dashboard-modal-content">
@@ -388,11 +389,13 @@
             const modalImage = document.getElementById('dashboard-modal-image');
             const modalTitle = document.getElementById('dashboard-modal-title');
             const modalTier = document.getElementById('dashboard-modal-tier');
+            const modalLink = document.getElementById('dashboard-modal-game-link')
             const playersList = document.getElementById('dashboard-players-list');
             
             modalImage.src = game.image;
             modalTitle.textContent = game.title;
             modalTier.textContent = game.tier;
+            modalLink.href = game.gamelink
             playersList.innerHTML = '';
             
             if (game.players.length > 0) {
