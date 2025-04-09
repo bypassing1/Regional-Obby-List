@@ -395,17 +395,18 @@
             modalTier.textContent = game.tier;
             playersList.innerHTML = '';
             
-            // if (game.players.length > 0) {
-            //     game.players.forEach(player => {
-            //         const playerItem = document.createElement('div');
-            //         playerItem.textContent = player;
-            //         playersList.appendChild(playerItem);
-            //     });
-            // } else {
-            //     playersList.innerHTML = '<div>No players have beaten this obby yet.</div>';
-            // }
+            if (game.players.length > 0) {
+                game.players.forEach(player => {
+                    const playerItem = document.createElement('div');
+                    playerItem.textContent = player;
+                    playersList.appendChild(playerItem);
+                });
+            } else {
+                playersList.innerHTML = '<div>No players have beaten this obby yet.</div>';
+            }
             
-            modalOverlay.style.display = 'flex';
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
         }
         
         // Close modal
