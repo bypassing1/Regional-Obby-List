@@ -295,10 +295,11 @@ async function getThumbnailUrl(placeId) {
     try {
         const response = await fetch(`/api/thumbnail?placeId=${placeId}`);
         const data = await response.json();
+        const url = data?.imageUrl;
 
-        if (data.imageUrl) {
-            thumbnailCache[placeId] = data.imageUrl;
-            return data.imageUrl;
+        if (url) {
+            thumbnailCache[placeId] = url;
+            return url;
         } else {
             throw new Error('Thumbnail URL not found');
         }
@@ -307,6 +308,7 @@ async function getThumbnailUrl(placeId) {
         return 'https://via.placeholder.com/512'; // fallback image
     }
 }
+
 
 function extractPlaceId(gamelink) {
     const match = gamelink.match(/games\/(\d+)/);
