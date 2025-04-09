@@ -357,91 +357,88 @@
         });
     </script>
     <script>
-        const globaldataPrefix = 'globaldata';
-        const playerstatPrefix = 'playerstat';
-        const obbiesPrefix = 'obbies';
-        fetch(listBlobsApiUrl)
-    .then(response => response.json())
-    .then(data => {
-        const globaldataBlob = data.blobs.find(blob => blob.pathname.startsWith(globaldataPrefix));
-        const obbiesBlob = data.blobs.find(blob => blob.pathname.startsWith(obbiesPrefix));
-        const playerstatBlob = data.blobs.find(blob => blob.pathname.startsWith(playerstatPrefix));
-
-        if (!globaldataBlob || !obbiesBlob || !playerstatBlob) {
-            throw new Error('Required blobs not found.');
-        }
-
-        return Promise.all([
+        fetch('/api/listBlobs')
+        .then(response => response.json())
+        .then(data => {
+            const globaldataBlob = data.blobs.find(blob => blob.pathname.startsWith('globaldata'));
+            const obbiesBlob = data.blobs.find(blob => blob.pathname.startsWith('obbies'));
+            const playerstatBlob = data.blobs.find(blob => blob.pathname.startsWith('playerstat'));
+            
+            if (!globaldataBlob || !obbiesBlob || !playerstatBlob) {
+                throw new Error('Required blobs not found.');
+            }
+            
+            return Promise.all([
             fetch(globaldataBlob.url).then(response => response.json()), // globaldata
             fetch(obbiesBlob.url).then(response => response.json()),     // obbies
             fetch(playerstatBlob.url).then(response => response.json())  // playerstat
-        ]);
-    })
-    .then(([globaldata, obbies, playerstat]) => {
-        const currentPlayerName = 'itsmycrafted'; // make dynamic later
-        const currentPlayerData = playerstat.find(player => player.name === currentPlayerName);
-        if (!currentPlayerData) return;
-
-        // Calculate points from globaldata
-        let points = 300;
-        globaldata.forEach(entry => {
-            entry.points = points.toFixed(2);
-            points -= 2.77;
-        });
-
-        // Player stats
-        let totalPoints = 0;
-        let highestTier = 0;
-        let hardestObby = 'None';
-        let obbiesVerified = 0;
-
-        // 1. Sum points from beaten obbies (found in globaldata)
-        currentPlayerData.beaten.forEach(obbyName => {
-            const globalObby = globaldata.find(entry => entry.title === obbyName);
-            const obbyInfo = obbies.find(entry => entry.title === obbyName);
-
-            if (globalObby) totalPoints += parseFloat(globalObby.points);
-            if (obbyInfo && obbyInfo.tier > highestTier) {
-                highestTier = obbyInfo.tier;
-                hardestObby = obbyInfo.title;
-            }
-        });
-
-        // 2. Count obbies verified by player in globaldata
-        obbiesVerified = globaldata.filter(entry => entry.verifier === currentPlayerName).length;
-
-        // Update UI
-        const statCards = document.querySelectorAll('.dashboard-stat-card');
-        statCards.forEach(card => {
-            const title = card.querySelector('.dashboard-stat-title').textContent.trim();
-            const valueElement = card.querySelector('.dashboard-stat-value') || card.querySelector('.dashboard-stat-text');
-
-            switch (title) {
-                case 'Your Tier':
+            ]);
+        })
+        .then(([globaldata, obbies, playerstat]) => {
+            const currentPlayerName = 'itsmycrafted'; // make dynamic later
+            const currentPlayerData = playerstat.find(player => player.name === currentPlayerName);
+            if (!currentPlayerData) return;
+            
+            // Calculate points from globaldata
+            let points = 300;
+            globaldata.forEach(entry => {
+                entry.points = points.toFixed(2);
+                points -= 2.77;
+            });
+            
+            // Player stats
+            let totalPoints = 0;
+            let highestTier = 0;
+            let hardestObby = 'None';
+            let obbiesVerified = 0;
+            
+            // 1. Sum points from beaten obbies (found in globaldata)
+            currentPlayerData.beaten.forEach(obbyName => {
+                const globalObby = globaldata.find(entry => entry.title === obbyName);
+                const obbyInfo = obbies.find(entry => entry.title === obbyName);
+                
+                if (globalObby) totalPoints += parseFloat(globalObby.points);
+                if (obbyInfo && obbyInfo.tier > highestTier) {
+                    highestTier = obbyInfo.tier;
+                    hardestObby = obbyInfo.title;
+                }
+            });
+            
+            // 2. Count obbies verified by player in globaldata
+            obbiesVerified = globaldata.filter(entry => entry.verifier === currentPlayerName).length;
+            
+            // Update UI
+            const statCards = document.querySelectorAll('.dashboard-stat-card');
+            statCards.forEach(card => {
+                const title = card.querySelector('.dashboard-stat-title').textContent.trim();
+                const valueElement = card.querySelector('.dashboard-stat-value') || card.querySelector('.dashboard-stat-text');
+                
+                switch (title) {
+                    case 'Your Tier':
                     valueElement.textContent = highestTier > 0 ? `Tier ${highestTier}` : 'None';
                     break;
-                case 'Obbies Completed':
+                    case 'Obbies Completed':
                     valueElement.textContent = currentPlayerData.beaten.length;
                     break;
-                case 'Obbies Verified':
+                    case 'Obbies Verified':
                     valueElement.textContent = obbiesVerified;
                     break;
-                case 'Global Ranking':
+                    case 'Global Ranking':
                     valueElement.textContent = '#0'; // Placeholder
                     break;
-                case 'Country Ranking':
+                    case 'Country Ranking':
                     valueElement.textContent = '#0'; // Placeholder
                     break;
-                case 'Hardest Obby':
+                    case 'Hardest Obby':
                     valueElement.textContent = hardestObby;
                     break;
-                case 'List Point':
+                    case 'List Point':
                     valueElement.textContent = totalPoints.toFixed(2);
                     break;
-            }
+                }
+            });
         });
-    });
-
+        
     </script>
     <script src="script/animation.js"></script>
     <script src=""></script>
