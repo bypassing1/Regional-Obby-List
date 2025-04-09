@@ -327,12 +327,60 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const loggedInUser = localStorage.getItem('loggedInUser');
-    if (!loggedInUser) {
-
-        window.location.href = '/account';
-    }
+            if (!loggedInUser) {
+                window.location.href = '/account';
+            } else {
+                fetch('https://users.roblox.com/v1/usernames/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        usernames: [loggedInUser],
+                        excludeBannedUsers: false
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const userData = data.data[0];
+                    if (!userData) {
+                        console.log('User not found.');
+                        return;
+                    }
+        
+                    const userId = userData.id;
+        
+                    return fetch(`https://thumbnails.roblox.com/v1/users/avatar?userIds=${userId}&size=420x420&format=Png&isCircular=true`);
+                })
+                .then(response => response?.json())
+                .then(data => {
+                    if (!data || !data.data || !data.data[0]) return;
+        
+                    const avatarUrl = data.data[0].imageUrl;
+                    console.log('Avatar URL:', avatarUrl);
+        
+                    // Update <img> avatar
+                    const avatarImg = document.getElementById('avatarImage');
+                    if (avatarImg) {
+                        avatarImg.src = avatarUrl;
+                    }
+        
+                    // Update dashboard banner background
+                    const banner = document.querySelector('.dashboard-banner');
+                    if (banner) {
+                        banner.style.background = `
+                            linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)),
+                            url('${avatarUrl}') center/cover
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
         });
-    </script>
+        </script>
+        
     <script src="script/animation.js"></script>
     <script src=""></script>
 </body>

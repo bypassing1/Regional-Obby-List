@@ -737,7 +737,6 @@ header .info-text .scroll::before {
 
 /* Header Banner */
 .dashboard-banner {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('https://via.placeholder.com/1200x300') center/cover;
     border-radius: 12px;
     padding: 40px;
     margin-bottom: 24px;
