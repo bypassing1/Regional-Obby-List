@@ -1,8 +1,5 @@
-import { NextResponse } from 'next/server';
-
-export async function GET(req) {
-    const { searchParams } = new URL(req.url);
-    const placeId = searchParams.get('placeId');
+export default async function handler(req, res) {
+    const { placeId } = req.query;
 
     console.log('[API] placeId:', placeId);
 
@@ -16,7 +13,7 @@ export async function GET(req) {
 
         if (!universeId) {
             console.error('[API] Universe ID not found');
-            return NextResponse.json({ error: 'Universe ID not found' }, { status: 404 });
+            return res.status(404).json({ error: 'Universe ID not found' });
         }
 
         const thumbnailResponse = await fetch(`https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=${universeId}&size=512x512&format=Png&isCircular=false`);
@@ -28,12 +25,12 @@ export async function GET(req) {
 
         if (!imageUrl) {
             console.error('[API] Thumbnail URL not found');
-            return NextResponse.json({ error: 'Thumbnail URL not found' }, { status: 404 });
+            return res.status(404).json({ error: 'Thumbnail URL not found' });
         }
 
-        return NextResponse.json({ imageUrl });
+        return res.status(200).json({ imageUrl });
     } catch (error) {
         console.error('[API] Error:', error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return res.status(500).json({ error: error.message });
     }
 }
