@@ -316,6 +316,12 @@
     }
 }
 
+
+
+    function extractPlaceId(gamelink) {
+        const match = gamelink.match(/games\/(\d+)/);
+        return match ? match[1] : null;
+    }
         fetch('/api/listBlobs')
         .then(response => response.json())
         .then(data => {
