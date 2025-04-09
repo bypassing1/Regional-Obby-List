@@ -1,50 +1,43 @@
 export default async function handler(req, res) {
     const { placeId } = req.query;
 
-    console.log('[API] Received placeId:', placeId);
+    console.log('[API] Incoming placeId:', placeId);
+
+    if (!placeId) {
+        console.log('[API] No placeId provided.');
+        return res.status(400).json({ error: 'placeId is required' });
+    }
 
     try {
-        // Step 1: Get universeId from placeId
-        const placeDetailsURL = `https://games.roblox.com/v1/games/multiget-place-details?placeIds=${placeId}`;
-        console.log('[API] Fetching Place Details:', placeDetailsURL);
+        // Step 1: Get Universe ID
+        const universeResponse = await fetch(`https://apis.roblox.com/universes/v1/places/${placeId}/universe`);
+        const universeData = await universeResponse.json();
 
-        const placeDetailsResponse = await fetch(placeDetailsURL);
-        console.log('[API] Place Details Response Status:', placeDetailsResponse.status);
+        console.log('[API] Universe Data:', universeData);
 
-        const placeDetailsData = await placeDetailsResponse.json();
-        console.log('[API] Place Details Data:', JSON.stringify(placeDetailsData, null, 2));
-
-        if (!placeDetailsResponse.ok || !Array.isArray(placeDetailsData) || !placeDetailsData[0]?.universeId) {
-            console.error('[API] Failed to retrieve universeId.');
-            return res.status(500).json({ error: 'Failed to retrieve universeId', details: placeDetailsData });
+        if (!universeData.universeId) {
+            console.log('[API] Failed to retrieve universeId.');
+            return res.status(404).json({ error: 'Universe ID not found' });
         }
 
-        const universeId = placeDetailsData[0].universeId;
-        console.log('[API] Extracted UniverseID:', universeId);
+        const universeId = universeData.universeId;
 
-        // Step 2: Get thumbnails using universeId
-        const thumbnailsURL = `https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=${universeId}&size=512x512&format=Png&isCircular=false`;
-        console.log('[API] Fetching Thumbnails:', thumbnailsURL);
+        // Step 2: Get Thumbnail
+        const thumbnailResponse = await fetch(`https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=${universeId}`);
+        const thumbnailData = await thumbnailResponse.json();
 
-        const thumbnailsResponse = await fetch(thumbnailsURL);
-        console.log('[API] Thumbnails Response Status:', thumbnailsResponse.status);
+        console.log('[API] Thumbnail Data:', thumbnailData);
 
-        const thumbnailsData = await thumbnailsResponse.json();
-        console.log('[API] Thumbnails Data:', JSON.stringify(thumbnailsData, null, 2));
-
-        if (!thumbnailsResponse.ok || !thumbnailsData.data || !thumbnailsData.data.length) {
-            console.error('[API] Failed to retrieve thumbnails.');
-            return res.status(500).json({ error: 'Failed to retrieve thumbnails', details: thumbnailsData });
+        if (!thumbnailData.data || thumbnailData.data.length === 0) {
+            console.log('[API] No thumbnail found.');
+            return res.status(404).json({ error: 'Thumbnail not found' });
         }
 
-        const imageUrl = thumbnailsData.data[0].imageUrl;
-        console.log('[API] Extracted Image URL:', imageUrl);
+        const thumbnails = thumbnailData.data;
 
-        // Success response
-        return res.status(200).json({ imageUrl });
-
+        return res.status(200).json({ thumbnails });
     } catch (error) {
-        console.error('[API] Unexpected error:', error);
-        return res.status(500).json({ error: 'Internal Server Error', details: error.message });
+        console.error('[API] Error fetching data:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 }
