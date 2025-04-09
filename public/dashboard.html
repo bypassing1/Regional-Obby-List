@@ -13,7 +13,7 @@
         <div class="dashboard-banner">
             <h1>Welcome back, Username!</h1>
         </div>
-
+        
         <!-- Stats Section -->
         <div class="dashboard-stats-container">
             <div class="dashboard-stat-card">
@@ -45,25 +45,25 @@
                 <div class="dashboard-stat-value">0</div>
             </div>
         </div>
-
+        
         <!-- Action Buttons -->
         <div class="dashboard-action-buttons">
             <button class="dashboard-action-button primary" id="dashboard-submit-obby-btn">Submit Your Obby</button>
             <button class="dashboard-action-button" id="dashboard-submit-completion-btn">Submit Completion</button>
         </div>
-
+        
         <!-- Search Bar -->
         <div class="dashboard-search-container">
             <input type="text" class="dashboard-search-bar" placeholder="Search for obbies...">
         </div>
-
+        
         <!-- Games Grid -->
         <h2 class="dashboard-section-title">Obbies</h2>
         <div class="dashboard-games-grid" id="dashboard-games-grid">
             <!-- Games will be added here by JavaScript -->
         </div>
     </div>
-
+    
     <!-- Game Details Modal Popup -->
     <div class="dashboard-modal-overlay" id="dashboard-game-modal-overlay">
         <div class="dashboard-modal">
@@ -81,7 +81,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Submit Obby Modal Popup -->
     <div class="dashboard-modal-overlay" id="dashboard-submit-obby-modal">
         <div class="dashboard-modal">
@@ -104,7 +104,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Submit Completion Modal Popup -->
     <div class="dashboard-modal-overlay" id="dashboard-submit-completion-modal">
         <div class="dashboard-modal">
@@ -127,7 +127,7 @@
             </div>
         </div>
     </div>
-
+    
     <script>
         // Sample player data (reused for all games)
         const samplePlayers = [
@@ -137,21 +137,21 @@
         { name: "Skibidi", avatar: "https://fakeimg.pl/40x40" },
         { name: "Skibidi", avatar: "https://fakeimg.pl/40x40" },
         ];
-
+        
         // Sample game data
         const games = [
-            { title: "Skibidi", tier: 20, image: "https://fakeimg.pl/200x120" },
-            { title: "Skibidi", tier: 20, image: "https://fakeimg.pl/200x120" },
-            { title: "Skibidi", tier: 20, image: "https://fakeimg.pl/200x120" },
-            { title: "Skibidi", tier: 20, image: "https://fakeimg.pl/200x120" },
-            { title: "Skibidi", tier: 20, image: "https://fakeimg.pl/200x120" },
+        { title: "Skibidi", tier: 20, image: "https://fakeimg.pl/200x120" },
+        { title: "Skibidi", tier: 20, image: "https://fakeimg.pl/200x120" },
+        { title: "Skibidi", tier: 20, image: "https://fakeimg.pl/200x120" },
+        { title: "Skibidi", tier: 20, image: "https://fakeimg.pl/200x120" },
+        { title: "Skibidi", tier: 20, image: "https://fakeimg.pl/200x120" },
         ];
-
+        
         // Function to render games
         function renderGames(gamesList) {
             const gamesGrid = document.getElementById('dashboard-games-grid');
             gamesGrid.innerHTML = '';
-
+            
             gamesList.forEach(game => {
                 const gameCard = document.createElement('div');
                 gameCard.className = 'dashboard-game-card';
@@ -169,7 +169,7 @@
                 gamesGrid.appendChild(gameCard);
             });
         }
-
+        
         // Function to open game details modal
         function openGameModal(game) {
             const modalOverlay = document.getElementById('dashboard-game-modal-overlay');
@@ -177,16 +177,16 @@
             const modalTitle = document.getElementById('dashboard-modal-title');
             const modalTier = document.getElementById('dashboard-modal-tier');
             const playersList = document.getElementById('dashboard-players-list');
-
+            
             // Set modal content
             modalImage.src = game.image;
             modalImage.alt = game.title;
             modalTitle.textContent = game.title;
             modalTier.textContent = game.tier;
-
+            
             // Clear previous players
             playersList.innerHTML = '';
-
+            
             // Add players - use a random subset of sample players based on game tier
             const numPlayers = Math.max(1, Math.min(5, 10 - game.tier)); // Higher tier = fewer players
             const shuffledPlayers = [...samplePlayers].sort(() => 0.5 - Math.random());
@@ -201,30 +201,30 @@
                 `;
                 playersList.appendChild(playerItem);
             });
-
+            
             // Show modal
             modalOverlay.classList.add('active');
             document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
         }
-
+        
         // Function to open submit obby modal
         function openSubmitObbyModal() {
             document.getElementById('dashboard-submit-obby-modal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-
+        
         // Function to open submit completion modal
         function openSubmitCompletionModal() {
             document.getElementById('dashboard-submit-completion-modal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-
+        
         // Function to close any modal
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
             document.body.style.overflow = ''; // Restore scrolling
         }
-
+        
         // Initialize the page
         document.addEventListener('DOMContentLoaded', () => {
             renderGames(games);
@@ -234,31 +234,31 @@
             searchBar.addEventListener('input', (e) => {
                 const searchTerm = e.target.value.toLowerCase();
                 const filteredGames = games.filter(game => 
-                    game.title.toLowerCase().includes(searchTerm)
+                game.title.toLowerCase().includes(searchTerm)
                 );
                 renderGames(filteredGames);
             });
-
+            
             // Update username with a random one for demo
             const loggedInUser = localStorage.getItem('loggedInUser');
             document.querySelector('.dashboard-banner h1').textContent = `Welcome back, ${loggedInUser}!`;
-
+            
             // Game modal close button
             document.getElementById('dashboard-modal-close').addEventListener('click', () => closeModal('dashboard-game-modal-overlay'));
-
+            
             // Game modal outside click
             document.getElementById('dashboard-game-modal-overlay').addEventListener('click', (e) => {
                 if (e.target === document.getElementById('dashboard-game-modal-overlay')) {
                     closeModal('dashboard-game-modal-overlay');
                 }
             });
-
+            
             // Submit obby button
             document.getElementById('dashboard-submit-obby-btn').addEventListener('click', openSubmitObbyModal);
-
+            
             // Submit completion button
             document.getElementById('dashboard-submit-completion-btn').addEventListener('click', openSubmitCompletionModal);
-
+            
             // Close buttons for submit modals
             document.querySelectorAll('.dashboard-submit-modal-close').forEach(button => {
                 button.addEventListener('click', function() {
@@ -266,20 +266,20 @@
                     closeModal(modalId);
                 });
             });
-
+            
             // Close submit modals when clicking outside
             document.getElementById('dashboard-submit-obby-modal').addEventListener('click', (e) => {
                 if (e.target === document.getElementById('dashboard-submit-obby-modal')) {
                     closeModal('dashboard-submit-obby-modal');
                 }
             });
-
+            
             document.getElementById('dashboard-submit-completion-modal').addEventListener('click', (e) => {
                 if (e.target === document.getElementById('dashboard-submit-completion-modal')) {
                     closeModal('dashboard-submit-completion-modal');
                 }
             });
-
+            
             // Form submissions
             document.getElementById('dashboard-submit-obby-form').addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -287,11 +287,11 @@
                 const gameLink = document.getElementById('dashboard-game-link').value;
                 
                 checkmark('Obby submitted!' )
-
+                
                 this.reset();
                 closeModal('dashboard-submit-obby-modal');
             });
-
+            
             document.getElementById('dashboard-submit-completion-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                 const title = document.getElementById('dashboard-completion-title').value;
@@ -307,7 +307,7 @@
                 this.reset();
                 closeModal('dashboard-submit-completion-modal');
             });
-
+            
             // Close modals with Escape key
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
@@ -330,15 +330,10 @@
             if (!loggedInUser) {
                 window.location.href = '/account';
             } else {
-                fetch('https://users.roblox.com/v1/usernames/users', {
+                fetch('/api/get-roblox-user', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        usernames: [loggedInUser],
-                        excludeBannedUsers: false
-                    })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: loggedInUser })
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -347,24 +342,24 @@
                         console.log('User not found.');
                         return;
                     }
-        
+                    
                     const userId = userData.id;
-        
+                    
                     return fetch(`https://thumbnails.roblox.com/v1/users/avatar?userIds=${userId}&size=420x420&format=Png&isCircular=true`);
                 })
                 .then(response => response?.json())
                 .then(data => {
                     if (!data || !data.data || !data.data[0]) return;
-        
+                    
                     const avatarUrl = data.data[0].imageUrl;
                     console.log('Avatar URL:', avatarUrl);
-        
+                    
                     // Update <img> avatar
                     const avatarImg = document.getElementById('avatarImage');
                     if (avatarImg) {
                         avatarImg.src = avatarUrl;
                     }
-        
+                    
                     // Update dashboard banner background
                     const banner = document.querySelector('.dashboard-banner');
                     if (banner) {
@@ -379,8 +374,8 @@
                 });
             }
         });
-        </script>
-        
+    </script>
+    
     <script src="script/animation.js"></script>
     <script src=""></script>
 </body>
