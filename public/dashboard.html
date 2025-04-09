@@ -354,6 +354,63 @@
             renderGames(games);
         })
         .catch(error => console.error('Error loading data:', error));
+
+        // Render games to the grid
+        function renderGames(gamesList) {
+            const gamesGrid = document.getElementById('dashboard-games-grid');
+            gamesGrid.innerHTML = '';
+            
+            gamesList.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'dashboard-game-card';
+                gameCard.dataset.title = game.title;
+                
+                gameCard.innerHTML = `
+            <img src="${game.image}" alt="${game.title}" class="dashboard-game-image">
+            <div class="dashboard-game-info">
+                <div class="dashboard-game-title">${game.title}</div>
+                <div class="dashboard-game-tier">Tier: <span>${game.tier}</span></div>
+            </div>
+        `;
+                
+        gameCard.addEventListener('click', () => {
+    console.log('Game card clicked:', game.title);
+    openGameModal(game);
+});
+                gamesGrid.appendChild(gameCard);
+            });
+        }
+        
+        // Open the modal and show details
+        function openGameModal(game) {
+            const modalOverlay = document.getElementById('dashboard-game-modal-overlay');
+            const modalImage = document.getElementById('dashboard-modal-image');
+            const modalTitle = document.getElementById('dashboard-modal-title');
+            const modalTier = document.getElementById('dashboard-modal-tier');
+            const playersList = document.getElementById('dashboard-players-list');
+            
+            modalImage.src = game.image;
+            modalTitle.textContent = game.title;
+            modalTier.textContent = game.tier;
+            playersList.innerHTML = '';
+            
+            if (game.players.length > 0) {
+                game.players.forEach(player => {
+                    const playerItem = document.createElement('div');
+                    playerItem.textContent = player;
+                    playersList.appendChild(playerItem);
+                });
+            } else {
+                playersList.innerHTML = '<div>No players have beaten this obby yet.</div>';
+            }
+            
+            modalOverlay.style.display = 'flex';
+        }
+        
+        // Close modal
+        document.getElementById('dashboard-modal-close').addEventListener('click', () => {
+            document.getElementById('dashboard-game-modal-overlay').style.display = 'none';
+        });
         
         document.getElementById('dashboard-modal-close').addEventListener('click', () => closeModal('dashboard-game-modal-overlay'));
 
@@ -428,59 +485,6 @@
             }
         });
         
-        // Render games to the grid
-        function renderGames(gamesList) {
-            const gamesGrid = document.getElementById('dashboard-games-grid');
-            gamesGrid.innerHTML = '';
-            
-            gamesList.forEach(game => {
-                const gameCard = document.createElement('div');
-                gameCard.className = 'dashboard-game-card';
-                gameCard.dataset.title = game.title;
-                
-                gameCard.innerHTML = `
-            <img src="${game.image}" alt="${game.title}" class="dashboard-game-image">
-            <div class="dashboard-game-info">
-                <div class="dashboard-game-title">${game.title}</div>
-                <div class="dashboard-game-tier">Tier: <span>${game.tier}</span></div>
-            </div>
-        `;
-                
-                gameCard.addEventListener('click', () => openGameModal(game));
-                gamesGrid.appendChild(gameCard);
-            });
-        }
-        
-        // Open the modal and show details
-        function openGameModal(game) {
-            const modalOverlay = document.getElementById('dashboard-game-modal-overlay');
-            const modalImage = document.getElementById('dashboard-modal-image');
-            const modalTitle = document.getElementById('dashboard-modal-title');
-            const modalTier = document.getElementById('dashboard-modal-tier');
-            const playersList = document.getElementById('dashboard-players-list');
-            
-            modalImage.src = game.image;
-            modalTitle.textContent = game.title;
-            modalTier.textContent = game.tier;
-            playersList.innerHTML = '';
-            
-            if (game.players.length > 0) {
-                game.players.forEach(player => {
-                    const playerItem = document.createElement('div');
-                    playerItem.textContent = player;
-                    playersList.appendChild(playerItem);
-                });
-            } else {
-                playersList.innerHTML = '<div>No players have beaten this obby yet.</div>';
-            }
-            
-            modalOverlay.style.display = 'flex';
-        }
-        
-        // Close modal
-        document.getElementById('dashboard-modal-close').addEventListener('click', () => {
-            document.getElementById('dashboard-game-modal-overlay').style.display = 'none';
-        });
         
     </script>
     <script src="script/animation.js"></script>
