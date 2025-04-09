@@ -374,26 +374,43 @@
             fetch(playerstatBlob.url).then(response => response.json())  // playerstat
             ]);
         })
-        .then(([globaldata, obbies, playerstat]) => {
-            const currentPlayerName = 'itsmycrafted'; // make dynamic later
-            const currentPlayerData = playerstat.find(player => player.name === currentPlayerName);
-            if (!currentPlayerData) return;
+        .then(([globaldata, obbies, playerstats]) => {
+            const currentPlayerName = localStorage.getItem('loggedInUser');
+            const currentPlayer = playerstats.find(p => p.name === currentPlayerName);
+            if (!currentPlayer) return;
             
-            // Calculate points from globaldata
+            // Assign points to globaldata obbies
             let points = 300;
             globaldata.forEach(entry => {
                 entry.points = points.toFixed(2);
                 points -= 2.77;
             });
             
-            // Player stats
+            // Calculate total points for each player
+            const playerPointsMap = playerstats.map(player => {
+                let totalPoints = 0;
+                player.beaten.forEach(obbyName => {
+                    const globalObby = globaldata.find(entry => entry.title === obbyName);
+                    if (globalObby) totalPoints += parseFloat(globalObby.points);
+                });
+                return { name: player.name, region: player.region, points: totalPoints };
+            });
+            
+            // Sort players globally
+            const globalRanking = [...playerPointsMap].sort((a, b) => b.points - a.points);
+            const playerGlobalRank = globalRanking.findIndex(p => p.name === currentPlayerName) + 1;
+            
+            // Sort players by country
+            const countryRanking = globalRanking.filter(p => p.region === currentPlayer.region);
+            const playerCountryRank = countryRanking.findIndex(p => p.name === currentPlayerName) + 1;
+            
+            // Calculate individual stats
             let totalPoints = 0;
             let highestTier = 0;
             let hardestObby = 'None';
-            let obbiesVerified = 0;
+            let obbiesVerified = globaldata.filter(entry => entry.verifier === currentPlayerName).length;
             
-            // 1. Sum points from beaten obbies (found in globaldata)
-            currentPlayerData.beaten.forEach(obbyName => {
+            currentPlayer.beaten.forEach(obbyName => {
                 const globalObby = globaldata.find(entry => entry.title === obbyName);
                 const obbyInfo = obbies.find(entry => entry.title === obbyName);
                 
@@ -404,9 +421,6 @@
                 }
             });
             
-            // 2. Count obbies verified by player in globaldata
-            obbiesVerified = globaldata.filter(entry => entry.verifier === currentPlayerName).length;
-            
             // Update UI
             const statCards = document.querySelectorAll('.dashboard-stat-card');
             statCards.forEach(card => {
@@ -415,19 +429,19 @@
                 
                 switch (title) {
                     case 'Your Tier':
-                    valueElement.textContent = highestTier > 0 ? `Tier ${highestTier}` : 'None';
+                    valueElement.textContent = highestTier;
                     break;
                     case 'Obbies Completed':
-                    valueElement.textContent = currentPlayerData.beaten.length;
+                    valueElement.textContent = currentPlayer.beaten.length;
                     break;
                     case 'Obbies Verified':
                     valueElement.textContent = obbiesVerified;
                     break;
                     case 'Global Ranking':
-                    valueElement.textContent = '#0'; // Placeholder
+                    valueElement.textContent = `#${playerGlobalRank}`;
                     break;
                     case 'Country Ranking':
-                    valueElement.textContent = '#0'; // Placeholder
+                    valueElement.textContent = `#${playerCountryRank}`;
                     break;
                     case 'Hardest Obby':
                     valueElement.textContent = hardestObby;
@@ -437,6 +451,9 @@
                     break;
                 }
             });
+        })
+        .catch(error => {
+            console.error('Error loading data:', error);
         });
         
     </script>
