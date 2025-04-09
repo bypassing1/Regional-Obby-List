@@ -337,36 +337,17 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    const userData = data.data[0];
-                    if (!userData) {
-                        console.log('User not found.');
+                    if (!data || data.error) {
+                        console.error(data.error || 'Unknown error');
                         return;
                     }
                     
-                    const userId = userData.id;
-                    
-                    return fetch(`https://thumbnails.roblox.com/v1/users/avatar?userIds=${userId}&size=420x420&format=Png&isCircular=true`);
-                })
-                .then(response => response?.json())
-                .then(data => {
-                    if (!data || !data.data || !data.data[0]) return;
-                    
-                    const avatarUrl = data.data[0].imageUrl;
+                    const avatarUrl = data.avatarUrl;
                     console.log('Avatar URL:', avatarUrl);
                     
-                    // Update <img> avatar
-                    const avatarImg = document.getElementById('avatarImage');
-                    if (avatarImg) {
-                        avatarImg.src = avatarUrl;
-                    }
-                    
-                    // Update dashboard banner background
                     const banner = document.querySelector('.dashboard-banner');
-                    if (banner) {
-                        banner.style.background = `
-                            linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)),
-                            url('${avatarUrl}') center/cover
-                        `;
+                    if (banner && avatarUrl) {
+                        banner.style.background = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('${avatarUrl}') center/cover`;
                     }
                 })
                 .catch(error => {
