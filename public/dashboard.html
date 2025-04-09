@@ -285,54 +285,33 @@
         
     </script>
     <script>
+const thumbnailCache = {};
 
-const universeIdCache = {};
-    const thumbnailCache = {};
+async function getThumbnailUrl(placeId) {
+    if (thumbnailCache[placeId]) {
+        return thumbnailCache[placeId];
+    }
 
-    async function getUniverseId(placeId) {
-        if (universeIdCache[placeId]) {
-            return universeIdCache[placeId];
-        }
-
-        const response = await fetch(`https://games.roblox.com/v1/games/multiget-place-details?placeIds=${placeId}`);
+    try {
+        const response = await fetch(`/api/thumbnail?placeId=${placeId}`);
         const data = await response.json();
-        const universeId = data[0]?.universeId;
 
-        if (universeId) {
-            universeIdCache[placeId] = universeId;
-            return universeId;
+        if (data.imageUrl) {
+            thumbnailCache[placeId] = data.imageUrl;
+            return data.imageUrl;
         } else {
-            throw new Error('Universe ID not found');
+            throw new Error('Thumbnail URL not found');
         }
+    } catch (error) {
+        console.error(error);
+        return 'https://via.placeholder.com/512'; // fallback image
     }
+}
 
-    async function getThumbnailUrl(placeId) {
-        if (thumbnailCache[placeId]) {
-            return thumbnailCache[placeId];
-        }
-
-        try {
-            const universeId = await getUniverseId(placeId);
-            const response = await fetch(`https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=${universeId}&size=512x512&format=Png&isCircular=false`);
-            const data = await response.json();
-            const url = data?.data[0]?.thumbnails[0]?.imageUrl;
-
-            if (url) {
-                thumbnailCache[placeId] = url;
-                return url;
-            } else {
-                throw new Error('Thumbnail URL not found');
-            }
-        } catch (error) {
-            console.error(error);
-            return 'https://via.placeholder.com/512'; // fallback image
-        }
-    }
-
-    function extractPlaceId(gamelink) {
-        const match = gamelink.match(/games\/(\d+)/);
-        return match ? match[1] : null;
-    }
+function extractPlaceId(gamelink) {
+    const match = gamelink.match(/games\/(\d+)/);
+    return match ? match[1] : null;
+}
         fetch('/api/listBlobs')
         .then(response => response.json())
         .then(data => {
@@ -365,7 +344,7 @@ const universeIdCache = {};
             renderGames(games);
         })
         .catch(error => console.error('Error loading data:', error));
-        
+
         document.getElementById('dashboard-modal-close').addEventListener('click', () => closeModal('dashboard-game-modal-overlay'));
 
         document.getElementById('dashboard-game-modal-overlay').addEventListener('click', (e) => {
