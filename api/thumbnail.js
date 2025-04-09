@@ -23,7 +23,7 @@ export default async function handler(req, res) {
         const universeId = universeData.universeId;
 
         // Step 2: Get Thumbnail
-        const thumbnailResponse = await fetch(`https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=${universeID}&size=768x432&format=Png&isCircular=false`);
+        const thumbnailResponse = await fetch(`https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=${universeId}&size=768x432&format=Png&isCircular=false`);
         const thumbnailData = await thumbnailResponse.json();
 
         console.log('[API] Thumbnail Data:', thumbnailData);
