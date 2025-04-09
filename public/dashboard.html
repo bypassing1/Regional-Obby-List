@@ -59,7 +59,7 @@
         </div>
         
         <!-- Games Grid -->
-        <h2 class="dashboard-section-title">Obbies</h2>
+        <h2 class="dashboard-section-title">Obby Library</h2>
         <div class="dashboard-games-grid" id="dashboard-games-grid">
             <!-- Games will be added here by JavaScript -->
         </div>
@@ -285,7 +285,54 @@
         
     </script>
     <script>
-        // First, fetch all the needed blobs
+
+const universeIdCache = {};
+    const thumbnailCache = {};
+
+    async function getUniverseId(placeId) {
+        if (universeIdCache[placeId]) {
+            return universeIdCache[placeId];
+        }
+
+        const response = await fetch(`https://games.roblox.com/v1/games/multiget-place-details?placeIds=${placeId}`);
+        const data = await response.json();
+        const universeId = data[0]?.universeId;
+
+        if (universeId) {
+            universeIdCache[placeId] = universeId;
+            return universeId;
+        } else {
+            throw new Error('Universe ID not found');
+        }
+    }
+
+    async function getThumbnailUrl(placeId) {
+        if (thumbnailCache[placeId]) {
+            return thumbnailCache[placeId];
+        }
+
+        try {
+            const universeId = await getUniverseId(placeId);
+            const response = await fetch(`https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=${universeId}&size=512x512&format=Png&isCircular=false`);
+            const data = await response.json();
+            const url = data?.data[0]?.thumbnails[0]?.imageUrl;
+
+            if (url) {
+                thumbnailCache[placeId] = url;
+                return url;
+            } else {
+                throw new Error('Thumbnail URL not found');
+            }
+        } catch (error) {
+            console.error(error);
+            return 'https://via.placeholder.com/512'; // fallback image
+        }
+    }
+
+    function extractPlaceId(gamelink) {
+        const match = gamelink.match(/games\/(\d+)/);
+        return match ? match[1] : null;
+    }
         fetch('/api/listBlobs')
         .then(response => response.json())
         .then(data => {
@@ -301,45 +348,35 @@
             fetch(playerstatBlob.url).then(response => response.json())
             ]);
         })
-        .then(([obbies, playerstats]) => {
-            // Prepare game list from obbies
-            const games = obbies.map(obby => ({
-                title: obby.title,
-                tier: obby.tier,
-                image: `https://tr.rbxcdn.com/${extractPlaceId(obby.gamelink)}-512-512.png`,
-                players: playerstats
-                .filter(player => player.beaten.includes(obby.title))
-                .map(player => player.name)
+        .then(async ([obbies, playerstats]) => {
+            const games = await Promise.all(obbies.map(async obby => {
+                const placeId = extractPlaceId(obby.gamelink);
+                const image = placeId ? await getThumbnailUrl(placeId) : 'https://via.placeholder.com/512';
+                return {
+                    title: obby.title,
+                    tier: obby.tier,
+                    image: image,
+                    players: playerstats
+                        .filter(player => player.beaten.includes(obby.title))
+                        .map(player => player.name)
+                };
             }));
-            
-            // Render the games in the dashboard
+
             renderGames(games);
         })
         .catch(error => console.error('Error loading data:', error));
-        
-        // Helper: Extract Roblox placeId from gamelink
-        function extractPlaceId(gamelink) {
-            const match = gamelink.match(/games\/(\d+)/);
-            return match ? match[1] : 'placeholder';
-        }
-        
-        // Game modal close button
         document.getElementById('dashboard-modal-close').addEventListener('click', () => closeModal('dashboard-game-modal-overlay'));
-        
-        // Game modal outside click
+
         document.getElementById('dashboard-game-modal-overlay').addEventListener('click', (e) => {
             if (e.target === document.getElementById('dashboard-game-modal-overlay')) {
                 closeModal('dashboard-game-modal-overlay');
             }
         });
         
-        // Submit obby button
         document.getElementById('dashboard-submit-obby-btn').addEventListener('click', openSubmitObbyModal);
         
-        // Submit completion button
         document.getElementById('dashboard-submit-completion-btn').addEventListener('click', openSubmitCompletionModal);
         
-        // Close buttons for submit modals
         document.querySelectorAll('.dashboard-submit-modal-close').forEach(button => {
             button.addEventListener('click', function() {
                 const modalId = this.closest('.dashboard-modal-overlay').id;
@@ -347,7 +384,6 @@
             });
         });
         
-        // Close submit modals when clicking outside
         document.getElementById('dashboard-submit-obby-modal').addEventListener('click', (e) => {
             if (e.target === document.getElementById('dashboard-submit-obby-modal')) {
                 closeModal('dashboard-submit-obby-modal');
@@ -360,7 +396,6 @@
             }
         });
         
-        // Form submissions
         document.getElementById('dashboard-submit-obby-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const title = document.getElementById('dashboard-obby-title').value;
