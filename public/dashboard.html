@@ -345,6 +345,7 @@
                 return {
                     title: obby.title,
                     tier: obby.tier,
+                    link: obby.gamelink,
                     image: image,
                     players: playerstats
                         .filter(player => player.beaten.includes(obby.title))
@@ -395,7 +396,7 @@
             modalImage.src = game.image;
             modalTitle.textContent = game.title;
             modalTier.textContent = game.tier;
-            modalLink.href = game.gamelink
+            modalLink.href = game.link;
             playersList.innerHTML = '';
             
             if (game.players.length > 0) {
