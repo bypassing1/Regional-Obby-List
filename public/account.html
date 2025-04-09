@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
-    <title>Login & Register</title>
+    <title>Obbylist - Login & Register</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2277894072143897"
         crossorigin="anonymous"></script>
     <meta name="author" content="bypassing1" />
-    <meta property="og:title" content="Elite Indonesian Obbyist List" />
+    <meta property="og:title" content="Login % Register" />
     <meta property="og:description"
         content="You can login or register your account on obbylist here!" />
-    <meta property="og:url" content="https://bypassing1.github.io/The-Obbyist-List/eio-list.html" />
+    <meta property="og:url" content="https://obbylist.vercel.app" />
     <meta property="og:image" id="og-image"
         content="https://cdn.discordapp.com/attachments/1246327728588849162/1251096040204140596/image.png?ex=666d557c&is=666c03fc&hm=a8381dedaf892f4986a3aaf37147c81cb90227077ce3f5dd5ea650d0f64787b2&" />
     <meta property="og:type" content="website" />
@@ -22,13 +22,13 @@
     <header>
         <div class="nav-container">
             <div class="info-text">
-                <a href="index">The <span>Obbyists</span> List</a>
+                <a href="index">The <span>Obby</span> List</a>
             </div>
             <div class="nav-group">
                 <div class="nav" id="home">
-                    <a href="index">
-                        <img src="assets/home.svg" class="flag-icon">
-                        <h3 class="nav-title">Home</h3>
+                    <a href="dashboard">
+                        <img src="assets/dashboard.svg" class="flag-icon">
+                        <h3 class="nav-title">Dashboard</h3>
                     </a>
                 </div>
                 <div class="dropdown">
@@ -194,8 +194,8 @@
 
     if (response.ok) {
         checkmark('Logged in!')
+        localStorage.setItem('loggedInUser', username);
         setTimeout(() => {
-            localStorage.setItem('loggedInUser', username);
             window.location.href = '/dashboard';
                 }, 1000);
     } else {

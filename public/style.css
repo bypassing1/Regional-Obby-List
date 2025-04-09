@@ -836,6 +836,56 @@ header .info-text .scroll::before {
     border-color: #ffffff;
 }
 
+.dashboard-action-button.danger {
+    background-color: #dc2626;
+    border-color: #dc2626;
+}
+
+.dashboard-action-button.danger:hover {
+    background-color: #b91c1c;
+    border-color: #ffffff;
+}
+
+.dashboard-confirmation-message {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.dashboard-confirmation-buttons {
+    display: flex;
+    gap: 16px;
+}
+
+.dashboard-confirmation-button {
+    flex: 1;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border: none;
+}
+
+.dashboard-confirmation-button.cancel {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+.dashboard-confirmation-button.cancel:hover {
+    background-color: #444444;
+}
+
+.dashboard-confirmation-button.confirm {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+
+.dashboard-confirmation-button.confirm:hover {
+    background-color: #b91c1c;
+}
+
 /* Search Bar */
 .dashboard-search-container {
     margin-bottom: 32px;
@@ -2108,6 +2158,12 @@ header .info-text .scroll::before {
     width: 100%;
 }
 
+@media screen and (max-width: 1600px) {
+    .img {
+        display: none;
+    }
+}
+
 @media screen and (max-width: 768px) {
     header .info-text h1 {
         font-size: 2rem;
@@ -2220,6 +2276,10 @@ header .info-text .scroll::before {
 @media (max-width: 480px) {
     .dashboard-stats-container {
         grid-template-columns: 1fr;
+    }
+
+    .img {
+        display: none;
     }
 
     .dashboard-games-grid {

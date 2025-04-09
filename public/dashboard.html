@@ -3,12 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Obby Dashboard</title>
+    <title>Obbylist - Obby Dashboard</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="style.css" />
 </head>
 <body style="background-color: #121212; background-image: none;">
-    <div id="img"></div>
+    <header>
+        <div class="nav-container">
+            <div class="info-text">
+                <a href="index">The<span> Obby</span> List</a>
+            </div>
+            <div class="nav-group">
+                <div class="nav" id="home">
+                    <a href="dashboard">
+                        <img src="assets/dashboard.svg" class="flag-icon">
+                        <h3 class="nav-title">Dashboard</h3>
+                    </a>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn" onclick="toggleDropdown()">
+                        <img src="assets/country.svg" class="flag-icon" />
+                        <h3 class="nav-title">Universal List</h3>
+                    </button>
+                    <div class="dropdown-content" id="dropdownContent">
+                        <a href="universal-list">Universal List</a>
+                        <a href="eio-list">Indonesian List</a>
+                        <a href="voc-list">Vietnamese List</a>
+                        <a href="ukr-list">Ukraine List</a>
+                        <a href="koc-list">Korean List</a>
+                        <a href="mys-list">Malaysian List</a>
+                    </div>
+                </div>
+                <div class="nav">
+                    <a href="dashboard">
+                        <img src="assets/stats.svg" class="flag-icon" />
+                        <h3 class="nav-title">Player Stats</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="top-block"></div>
+    <div class="img"></div>
     <div class="dashboard-container">
         <!-- Banner with welcome message -->
         <div class="dashboard-banner">
@@ -26,7 +62,7 @@
                 <div class="dashboard-stat-value">0</div>
             </div>
             <div class="dashboard-stat-card">
-                <div class="dashboard-stat-title">Obbies Verified</div>
+                <div class="dashboard-stat-title">Obbies Verified in global list</div>
                 <div class="dashboard-stat-value">0</div>
             </div>
             <div class="dashboard-stat-card">
@@ -51,6 +87,7 @@
         <div class="dashboard-action-buttons">
             <button class="dashboard-action-button primary" id="dashboard-submit-obby-btn">Submit Your Obby</button>
             <button class="dashboard-action-button" id="dashboard-submit-completion-btn">Submit Completion</button>
+            <button class="dashboard-action-button danger" id="dashboard-logout-btn">Logout</button>
         </div>
         
         <!-- Search Bar -->
@@ -76,9 +113,28 @@
                 <button class="dashboard-modal-close" id="dashboard-modal-close">×</button>
             </div>
             <div class="dashboard-modal-content">
-                <div class="dashboard-players-list-title">Players who have beaten this obby</div>
+                <div class="dashboard-players-list-title">Victors</div>
                 <div class="dashboard-players-list" id="dashboard-players-list">
                     <!-- Players will be added here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Logout Confirmation Modal -->
+    <div class="dashboard-modal-overlay" id="dashboard-logout-modal">
+        <div class="dashboard-modal">
+            <div class="dashboard-modal-header">
+                <h2 class="dashboard-modal-title">Confirm Logout</h2>
+                <button class="dashboard-modal-close" id="dashboard-logout-modal-close">×</button>
+            </div>
+            <div class="dashboard-modal-content">
+                <div class="dashboard-confirmation-message">
+                    Are you sure you want to logout?
+                </div>
+                <div class="dashboard-confirmation-buttons">
+                    <button class="dashboard-confirmation-button cancel" id="dashboard-logout-cancel">Cancel</button>
+                    <button class="dashboard-confirmation-button confirm" id="dashboard-logout-confirm">Logout</button>
                 </div>
             </div>
         </div>
@@ -142,6 +198,21 @@
             document.getElementById('dashboard-submit-completion-modal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
+
+        function openLogoutModal() {
+            document.getElementById('dashboard-logout-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Function to handle logout
+        function handleLogout() {
+            localStorage.removeItem('loggedInUser');
+            closeModal('dashboard-logout-modal');
+            checkmark('You have been logged out successfully!')
+            setTimeout(() => {
+            window.location.href = '/account';
+                }, 1000);
+        }
         
         // Function to close any modal
         function closeModal(modalId) {
@@ -152,7 +223,7 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const loggedInUser = localStorage.getItem('loggedInUser');
+            // const loggedInUser = localStorage.getItem('loggedInUser');
             if (!loggedInUser) {
                 window.location.href = '/account';
             } else {
@@ -286,43 +357,43 @@
         
     </script>
     <script>
-    const thumbnailCache = {};
-    async function getThumbnailUrl(placeId) {
-    if (thumbnailCache[placeId]) {
-        console.log(`[Frontend] Cache hit for placeId: ${placeId}`);
-        return thumbnailCache[placeId];
-    }
-
-    try {
-        console.log(`[Frontend] Fetching thumbnail for placeId: ${placeId}`);
-        const response = await fetch(`/api/thumbnail?placeId=${placeId}`);
-        console.log('[Frontend] Response:', response);
-
-        const data = await response.json();
-        console.log('[Frontend] Response JSON:', data);
-
-        const url = data?.thumbnails?.[0]?.thumbnails?.[0]?.imageUrl;
-
-        if (url) {
-            console.log(`[Frontend] Thumbnail URL found: ${url}`);
-            thumbnailCache[placeId] = url;
-            return url;
-        } else {
-            console.error('[Frontend] Thumbnail URL not found in response');
-            return 'https://via.placeholder.com/512';
+        const thumbnailCache = {};
+        async function getThumbnailUrl(placeId) {
+            if (thumbnailCache[placeId]) {
+                console.log(`[Frontend] Cache hit for placeId: ${placeId}`);
+                return thumbnailCache[placeId];
+            }
+            
+            try {
+                console.log(`[Frontend] Fetching thumbnail for placeId: ${placeId}`);
+                const response = await fetch(`/api/thumbnail?placeId=${placeId}`);
+                console.log('[Frontend] Response:', response);
+                
+                const data = await response.json();
+                console.log('[Frontend] Response JSON:', data);
+                
+                const url = data?.thumbnails?.[0]?.thumbnails?.[0]?.imageUrl;
+                
+                if (url) {
+                    console.log(`[Frontend] Thumbnail URL found: ${url}`);
+                    thumbnailCache[placeId] = url;
+                    return url;
+                } else {
+                    console.error('[Frontend] Thumbnail URL not found in response');
+                    return 'https://via.placeholder.com/512';
+                }
+            } catch (error) {
+                console.error('[Frontend] Error fetching thumbnail:', error);
+                return 'https://via.placeholder.com/512';
+            }
         }
-    } catch (error) {
-        console.error('[Frontend] Error fetching thumbnail:', error);
-        return 'https://via.placeholder.com/512';
-    }
-}
-
-
-
-    function extractPlaceId(gamelink) {
-        const match = gamelink.match(/games\/(\d+)/);
-        return match ? match[1] : null;
-    }
+        
+        
+        
+        function extractPlaceId(gamelink) {
+            const match = gamelink.match(/games\/(\d+)/);
+            return match ? match[1] : null;
+        }
         fetch('/api/listBlobs')
         .then(response => response.json())
         .then(data => {
@@ -348,15 +419,15 @@
                     link: obby.gamelink,
                     image: image,
                     players: playerstats
-                        .filter(player => player.beaten.includes(obby.title))
-                        .map(player => player.name)
+                    .filter(player => player.beaten.includes(obby.title))
+                    .map(player => player.name)
                 };
             }));
-
+            
             renderGames(games);
         })
         .catch(error => console.error('Error loading data:', error));
-
+        
         // Render games to the grid
         function renderGames(gamesList) {
             const gamesGrid = document.getElementById('dashboard-games-grid');
@@ -375,10 +446,10 @@
             </div>
         `;
                 
-        gameCard.addEventListener('click', () => {
-    console.log('Game card clicked:', game.title);
-    openGameModal(game);
-});
+                gameCard.addEventListener('click', () => {
+                    console.log('Game card clicked:', game.title);
+                    openGameModal(game);
+                });
                 gamesGrid.appendChild(gameCard);
             });
         }
@@ -406,7 +477,7 @@
                     playersList.appendChild(playerItem);
                 });
             } else {
-                playersList.innerHTML = '<div>No players have beaten this obby yet.</div>';
+                playersList.innerHTML = '<div>No players that have signed in beaten this obby yet.</div>';
             }
             
             modalOverlay.classList.add('active');
@@ -419,7 +490,7 @@
         });
         
         document.getElementById('dashboard-modal-close').addEventListener('click', () => closeModal('dashboard-game-modal-overlay'));
-
+        
         document.getElementById('dashboard-game-modal-overlay').addEventListener('click', (e) => {
             if (e.target === document.getElementById('dashboard-game-modal-overlay')) {
                 closeModal('dashboard-game-modal-overlay');
@@ -458,6 +529,29 @@
             
             this.reset();
             closeModal('dashboard-submit-obby-modal');
+        });
+        
+        // Logout button - now opens confirmation modal instead of direct logout
+        document.getElementById('dashboard-logout-btn').addEventListener('click', openLogoutModal);
+        
+        // Logout confirmation buttons
+        document.getElementById('dashboard-logout-confirm').addEventListener('click', handleLogout);
+        document.getElementById('dashboard-logout-cancel').addEventListener('click', () => closeModal('dashboard-logout-modal'));
+        document.getElementById('dashboard-logout-modal-close').addEventListener('click', () => closeModal('dashboard-logout-modal'));
+        
+        // Logout modal outside click
+        document.getElementById('dashboard-logout-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('dashboard-logout-modal')) {
+                closeModal('dashboard-logout-modal');
+            }
+        });
+        
+        // Close buttons for submit modals
+        document.querySelectorAll('.dashboard-submit-modal-close').forEach(button => {
+            button.addEventListener('click', function() {
+                const modalId = this.closest('.dashboard-modal-overlay').id;
+                closeModal(modalId);
+            });
         });
         
         document.getElementById('dashboard-submit-completion-form').addEventListener('submit', function(e) {
