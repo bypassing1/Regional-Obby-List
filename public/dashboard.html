@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 <body style="background-color: #121212; background-image: none;">
+    <div id="img"></div>
     <div class="dashboard-container">
         <!-- Banner with welcome message -->
         <div class="dashboard-banner">
@@ -129,84 +130,6 @@
     </div>
     
     <script>
-        // Sample player data (reused for all games)
-        const samplePlayers = [
-        { name: "Skibidi", avatar: "https://fakeimg.pl/40x40" },
-        { name: "Skibidi", avatar: "https://fakeimg.pl/40x40" },
-        { name: "Skibidi", avatar: "https://fakeimg.pl/40x40" },
-        { name: "Skibidi", avatar: "https://fakeimg.pl/40x40" },
-        { name: "Skibidi", avatar: "https://fakeimg.pl/40x40" },
-        ];
-        
-        // Sample game data
-        const games = [
-        { title: "Skibidi", tier: 20, image: "https://fakeimg.pl/200x120" },
-        { title: "Skibidi", tier: 20, image: "https://fakeimg.pl/200x120" },
-        { title: "Skibidi", tier: 20, image: "https://fakeimg.pl/200x120" },
-        { title: "Skibidi", tier: 20, image: "https://fakeimg.pl/200x120" },
-        { title: "Skibidi", tier: 20, image: "https://fakeimg.pl/200x120" },
-        ];
-        
-        // Function to render games
-        function renderGames(gamesList) {
-            const gamesGrid = document.getElementById('dashboard-games-grid');
-            gamesGrid.innerHTML = '';
-            
-            gamesList.forEach(game => {
-                const gameCard = document.createElement('div');
-                gameCard.className = 'dashboard-game-card';
-                gameCard.dataset.title = game.title;
-                
-                gameCard.innerHTML = `
-                    <img src="${game.image}" alt="${game.title}" class="dashboard-game-image">
-                    <div class="dashboard-game-info">
-                        <div class="dashboard-game-title">${game.title}</div>
-                        <div class="dashboard-game-tier">Tier: <span>${game.tier}</span></div>
-                    </div>
-                `;
-                
-                gameCard.addEventListener('click', () => openGameModal(game));
-                gamesGrid.appendChild(gameCard);
-            });
-        }
-        
-        // Function to open game details modal
-        function openGameModal(game) {
-            const modalOverlay = document.getElementById('dashboard-game-modal-overlay');
-            const modalImage = document.getElementById('dashboard-modal-image');
-            const modalTitle = document.getElementById('dashboard-modal-title');
-            const modalTier = document.getElementById('dashboard-modal-tier');
-            const playersList = document.getElementById('dashboard-players-list');
-            
-            // Set modal content
-            modalImage.src = game.image;
-            modalImage.alt = game.title;
-            modalTitle.textContent = game.title;
-            modalTier.textContent = game.tier;
-            
-            // Clear previous players
-            playersList.innerHTML = '';
-            
-            // Add players - use a random subset of sample players based on game tier
-            const numPlayers = Math.max(1, Math.min(5, 10 - game.tier)); // Higher tier = fewer players
-            const shuffledPlayers = [...samplePlayers].sort(() => 0.5 - Math.random());
-            const gamePlayers = shuffledPlayers.slice(0, numPlayers);
-            
-            gamePlayers.forEach(player => {
-                const playerItem = document.createElement('div');
-                playerItem.className = 'dashboard-player-item';
-                playerItem.innerHTML = `
-                    <img src="${player.avatar}" alt="${player.name}" class="dashboard-player-avatar">
-                    <div class="dashboard-player-name">${player.name}</div>
-                `;
-                playersList.appendChild(playerItem);
-            });
-            
-            // Show modal
-            modalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
-        }
-        
         // Function to open submit obby modal
         function openSubmitObbyModal() {
             document.getElementById('dashboard-submit-obby-modal').classList.add('active');
@@ -456,6 +379,100 @@
             console.error('Error loading data:', error);
         });
         
+    </script>
+    <script>
+        // First, fetch all the needed blobs
+fetch('/api/listBlobs')
+    .then(response => response.json())
+    .then(data => {
+        const obbiesBlob = data.blobs.find(blob => blob.pathname.startsWith('obbies'));
+        const playerstatBlob = data.blobs.find(blob => blob.pathname.startsWith('playerstat'));
+
+        if (!obbiesBlob || !playerstatBlob) {
+            throw new Error('Required blobs not found.');
+        }
+
+        return Promise.all([
+            fetch(obbiesBlob.url).then(response => response.json()),
+            fetch(playerstatBlob.url).then(response => response.json())
+        ]);
+    })
+    .then(([obbies, playerstats]) => {
+        // Prepare game list from obbies
+        const games = obbies.map(obby => ({
+            title: obby.title,
+            tier: obby.tier,
+            image: `https://tr.rbxcdn.com/${extractPlaceId(obby.gamelink)}-512-512.png`,
+            players: playerstats
+                .filter(player => player.beaten.includes(obby.title))
+                .map(player => player.name)
+        }));
+
+        // Render the games in the dashboard
+        renderGames(games);
+    })
+    .catch(error => console.error('Error loading data:', error));
+
+// Helper: Extract Roblox placeId from gamelink
+function extractPlaceId(gamelink) {
+    const match = gamelink.match(/games\/(\d+)/);
+    return match ? match[1] : 'placeholder';
+}
+
+// Render games to the grid
+function renderGames(gamesList) {
+    const gamesGrid = document.getElementById('dashboard-games-grid');
+    gamesGrid.innerHTML = '';
+
+    gamesList.forEach(game => {
+        const gameCard = document.createElement('div');
+        gameCard.className = 'dashboard-game-card';
+        gameCard.dataset.title = game.title;
+
+        gameCard.innerHTML = `
+            <img src="${game.image}" alt="${game.title}" class="dashboard-game-image">
+            <div class="dashboard-game-info">
+                <div class="dashboard-game-title">${game.title}</div>
+                <div class="dashboard-game-tier">Tier: <span>${game.tier}</span></div>
+            </div>
+        `;
+
+        gameCard.addEventListener('click', () => openGameModal(game));
+        gamesGrid.appendChild(gameCard);
+    });
+}
+
+// Open the modal and show details
+function openGameModal(game) {
+    const modalOverlay = document.getElementById('dashboard-game-modal-overlay');
+    const modalImage = document.getElementById('dashboard-modal-image');
+    const modalTitle = document.getElementById('dashboard-modal-title');
+    const modalTier = document.getElementById('dashboard-modal-tier');
+    const playersList = document.getElementById('dashboard-players-list');
+
+    modalImage.src = game.image;
+    modalTitle.textContent = game.title;
+    modalTier.textContent = game.tier;
+    playersList.innerHTML = '';
+
+    if (game.players.length > 0) {
+        game.players.forEach(player => {
+            const playerItem = document.createElement('div');
+            playerItem.textContent = player;
+            playersList.appendChild(playerItem);
+        });
+    } else {
+        playersList.innerHTML = '<div>No players have beaten this obby yet.</div>';
+    }
+
+    modalOverlay.style.display = 'flex';
+}
+
+// Close modal
+document.getElementById('dashboard-modal-close').addEventListener('click', () => {
+    document.getElementById('dashboard-game-modal-overlay').style.display = 'none';
+});
+
     </script>
     <script src="script/animation.js"></script>
     <script src=""></script>
