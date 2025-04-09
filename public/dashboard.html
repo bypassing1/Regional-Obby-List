@@ -148,104 +148,6 @@
             document.body.style.overflow = ''; // Restore scrolling
         }
         
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', () => {
-            renderGames(games);
-            
-            // Search functionality
-            const searchBar = document.querySelector('.dashboard-search-bar');
-            searchBar.addEventListener('input', (e) => {
-                const searchTerm = e.target.value.toLowerCase();
-                const filteredGames = games.filter(game => 
-                game.title.toLowerCase().includes(searchTerm)
-                );
-                renderGames(filteredGames);
-            });
-            
-            // Update username with a random one for demo
-            const loggedInUser = localStorage.getItem('loggedInUser');
-            document.querySelector('.dashboard-banner h1').textContent = `Welcome back, ${loggedInUser}!`;
-            
-            // Game modal close button
-            document.getElementById('dashboard-modal-close').addEventListener('click', () => closeModal('dashboard-game-modal-overlay'));
-            
-            // Game modal outside click
-            document.getElementById('dashboard-game-modal-overlay').addEventListener('click', (e) => {
-                if (e.target === document.getElementById('dashboard-game-modal-overlay')) {
-                    closeModal('dashboard-game-modal-overlay');
-                }
-            });
-            
-            // Submit obby button
-            document.getElementById('dashboard-submit-obby-btn').addEventListener('click', openSubmitObbyModal);
-            
-            // Submit completion button
-            document.getElementById('dashboard-submit-completion-btn').addEventListener('click', openSubmitCompletionModal);
-            
-            // Close buttons for submit modals
-            document.querySelectorAll('.dashboard-submit-modal-close').forEach(button => {
-                button.addEventListener('click', function() {
-                    const modalId = this.closest('.dashboard-modal-overlay').id;
-                    closeModal(modalId);
-                });
-            });
-            
-            // Close submit modals when clicking outside
-            document.getElementById('dashboard-submit-obby-modal').addEventListener('click', (e) => {
-                if (e.target === document.getElementById('dashboard-submit-obby-modal')) {
-                    closeModal('dashboard-submit-obby-modal');
-                }
-            });
-            
-            document.getElementById('dashboard-submit-completion-modal').addEventListener('click', (e) => {
-                if (e.target === document.getElementById('dashboard-submit-completion-modal')) {
-                    closeModal('dashboard-submit-completion-modal');
-                }
-            });
-            
-            // Form submissions
-            document.getElementById('dashboard-submit-obby-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const title = document.getElementById('dashboard-obby-title').value;
-                const gameLink = document.getElementById('dashboard-game-link').value;
-                
-                checkmark('Obby submitted!' )
-                
-                this.reset();
-                closeModal('dashboard-submit-obby-modal');
-            });
-            
-            document.getElementById('dashboard-submit-completion-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const title = document.getElementById('dashboard-completion-title').value;
-                const videoLink = document.getElementById('dashboard-video-link').value;
-                
-                // Here you would normally send this data to your server
-                console.log('Completion submitted:', { title, videoLink });
-                
-                // Show success message (in a real app)
-                alert(`Your completion of "${title}" has been submitted for verification!`);
-                
-                // Reset form and close modal
-                this.reset();
-                closeModal('dashboard-submit-completion-modal');
-            });
-            
-            // Close modals with Escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    if (document.getElementById('dashboard-game-modal-overlay').classList.contains('active')) {
-                        closeModal('dashboard-game-modal-overlay');
-                    }
-                    if (document.getElementById('dashboard-submit-obby-modal').classList.contains('active')) {
-                        closeModal('dashboard-submit-obby-modal');
-                    }
-                    if (document.getElementById('dashboard-submit-completion-modal').classList.contains('active')) {
-                        closeModal('dashboard-submit-completion-modal');
-                    }
-                }
-            });
-        });
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -253,6 +155,8 @@
             if (!loggedInUser) {
                 window.location.href = '/account';
             } else {
+                const loggedInUser = localStorage.getItem('loggedInUser');
+                document.querySelector('.dashboard-banner h1').textContent = `Welcome back, ${loggedInUser}!`;
                 fetch('/api/get-roblox-user', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -382,97 +286,177 @@
     </script>
     <script>
         // First, fetch all the needed blobs
-fetch('/api/listBlobs')
-    .then(response => response.json())
-    .then(data => {
-        const obbiesBlob = data.blobs.find(blob => blob.pathname.startsWith('obbies'));
-        const playerstatBlob = data.blobs.find(blob => blob.pathname.startsWith('playerstat'));
-
-        if (!obbiesBlob || !playerstatBlob) {
-            throw new Error('Required blobs not found.');
-        }
-
-        return Promise.all([
+        fetch('/api/listBlobs')
+        .then(response => response.json())
+        .then(data => {
+            const obbiesBlob = data.blobs.find(blob => blob.pathname.startsWith('obbies'));
+            const playerstatBlob = data.blobs.find(blob => blob.pathname.startsWith('playerstat'));
+            
+            if (!obbiesBlob || !playerstatBlob) {
+                throw new Error('Required blobs not found.');
+            }
+            
+            return Promise.all([
             fetch(obbiesBlob.url).then(response => response.json()),
             fetch(playerstatBlob.url).then(response => response.json())
-        ]);
-    })
-    .then(([obbies, playerstats]) => {
-        // Prepare game list from obbies
-        const games = obbies.map(obby => ({
-            title: obby.title,
-            tier: obby.tier,
-            image: `https://tr.rbxcdn.com/${extractPlaceId(obby.gamelink)}-512-512.png`,
-            players: playerstats
+            ]);
+        })
+        .then(([obbies, playerstats]) => {
+            // Prepare game list from obbies
+            const games = obbies.map(obby => ({
+                title: obby.title,
+                tier: obby.tier,
+                image: `https://tr.rbxcdn.com/${extractPlaceId(obby.gamelink)}-512-512.png`,
+                players: playerstats
                 .filter(player => player.beaten.includes(obby.title))
                 .map(player => player.name)
-        }));
-
-        // Render the games in the dashboard
-        renderGames(games);
-    })
-    .catch(error => console.error('Error loading data:', error));
-
-// Helper: Extract Roblox placeId from gamelink
-function extractPlaceId(gamelink) {
-    const match = gamelink.match(/games\/(\d+)/);
-    return match ? match[1] : 'placeholder';
-}
-
-// Render games to the grid
-function renderGames(gamesList) {
-    const gamesGrid = document.getElementById('dashboard-games-grid');
-    gamesGrid.innerHTML = '';
-
-    gamesList.forEach(game => {
-        const gameCard = document.createElement('div');
-        gameCard.className = 'dashboard-game-card';
-        gameCard.dataset.title = game.title;
-
-        gameCard.innerHTML = `
+            }));
+            
+            // Render the games in the dashboard
+            renderGames(games);
+        })
+        .catch(error => console.error('Error loading data:', error));
+        
+        // Helper: Extract Roblox placeId from gamelink
+        function extractPlaceId(gamelink) {
+            const match = gamelink.match(/games\/(\d+)/);
+            return match ? match[1] : 'placeholder';
+        }
+        
+        // Game modal close button
+        document.getElementById('dashboard-modal-close').addEventListener('click', () => closeModal('dashboard-game-modal-overlay'));
+        
+        // Game modal outside click
+        document.getElementById('dashboard-game-modal-overlay').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('dashboard-game-modal-overlay')) {
+                closeModal('dashboard-game-modal-overlay');
+            }
+        });
+        
+        // Submit obby button
+        document.getElementById('dashboard-submit-obby-btn').addEventListener('click', openSubmitObbyModal);
+        
+        // Submit completion button
+        document.getElementById('dashboard-submit-completion-btn').addEventListener('click', openSubmitCompletionModal);
+        
+        // Close buttons for submit modals
+        document.querySelectorAll('.dashboard-submit-modal-close').forEach(button => {
+            button.addEventListener('click', function() {
+                const modalId = this.closest('.dashboard-modal-overlay').id;
+                closeModal(modalId);
+            });
+        });
+        
+        // Close submit modals when clicking outside
+        document.getElementById('dashboard-submit-obby-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('dashboard-submit-obby-modal')) {
+                closeModal('dashboard-submit-obby-modal');
+            }
+        });
+        
+        document.getElementById('dashboard-submit-completion-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('dashboard-submit-completion-modal')) {
+                closeModal('dashboard-submit-completion-modal');
+            }
+        });
+        
+        // Form submissions
+        document.getElementById('dashboard-submit-obby-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = document.getElementById('dashboard-obby-title').value;
+            const gameLink = document.getElementById('dashboard-game-link').value;
+            
+            checkmark('Obby submitted!' )
+            
+            this.reset();
+            closeModal('dashboard-submit-obby-modal');
+        });
+        
+        document.getElementById('dashboard-submit-completion-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = document.getElementById('dashboard-completion-title').value;
+            const videoLink = document.getElementById('dashboard-video-link').value;
+            
+            // Here you would normally send this data to your server
+            console.log('Completion submitted:', { title, videoLink });
+            
+            // Show success message (in a real app)
+            alert(`Your completion of "${title}" has been submitted for verification!`);
+            
+            // Reset form and close modal
+            this.reset();
+            closeModal('dashboard-submit-completion-modal');
+        });
+        
+        // Close modals with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (document.getElementById('dashboard-game-modal-overlay').classList.contains('active')) {
+                    closeModal('dashboard-game-modal-overlay');
+                }
+                if (document.getElementById('dashboard-submit-obby-modal').classList.contains('active')) {
+                    closeModal('dashboard-submit-obby-modal');
+                }
+                if (document.getElementById('dashboard-submit-completion-modal').classList.contains('active')) {
+                    closeModal('dashboard-submit-completion-modal');
+                }
+            }
+        });
+        
+        // Render games to the grid
+        function renderGames(gamesList) {
+            const gamesGrid = document.getElementById('dashboard-games-grid');
+            gamesGrid.innerHTML = '';
+            
+            gamesList.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'dashboard-game-card';
+                gameCard.dataset.title = game.title;
+                
+                gameCard.innerHTML = `
             <img src="${game.image}" alt="${game.title}" class="dashboard-game-image">
             <div class="dashboard-game-info">
                 <div class="dashboard-game-title">${game.title}</div>
                 <div class="dashboard-game-tier">Tier: <span>${game.tier}</span></div>
             </div>
         `;
-
-        gameCard.addEventListener('click', () => openGameModal(game));
-        gamesGrid.appendChild(gameCard);
-    });
-}
-
-// Open the modal and show details
-function openGameModal(game) {
-    const modalOverlay = document.getElementById('dashboard-game-modal-overlay');
-    const modalImage = document.getElementById('dashboard-modal-image');
-    const modalTitle = document.getElementById('dashboard-modal-title');
-    const modalTier = document.getElementById('dashboard-modal-tier');
-    const playersList = document.getElementById('dashboard-players-list');
-
-    modalImage.src = game.image;
-    modalTitle.textContent = game.title;
-    modalTier.textContent = game.tier;
-    playersList.innerHTML = '';
-
-    if (game.players.length > 0) {
-        game.players.forEach(player => {
-            const playerItem = document.createElement('div');
-            playerItem.textContent = player;
-            playersList.appendChild(playerItem);
+                
+                gameCard.addEventListener('click', () => openGameModal(game));
+                gamesGrid.appendChild(gameCard);
+            });
+        }
+        
+        // Open the modal and show details
+        function openGameModal(game) {
+            const modalOverlay = document.getElementById('dashboard-game-modal-overlay');
+            const modalImage = document.getElementById('dashboard-modal-image');
+            const modalTitle = document.getElementById('dashboard-modal-title');
+            const modalTier = document.getElementById('dashboard-modal-tier');
+            const playersList = document.getElementById('dashboard-players-list');
+            
+            modalImage.src = game.image;
+            modalTitle.textContent = game.title;
+            modalTier.textContent = game.tier;
+            playersList.innerHTML = '';
+            
+            if (game.players.length > 0) {
+                game.players.forEach(player => {
+                    const playerItem = document.createElement('div');
+                    playerItem.textContent = player;
+                    playersList.appendChild(playerItem);
+                });
+            } else {
+                playersList.innerHTML = '<div>No players have beaten this obby yet.</div>';
+            }
+            
+            modalOverlay.style.display = 'flex';
+        }
+        
+        // Close modal
+        document.getElementById('dashboard-modal-close').addEventListener('click', () => {
+            document.getElementById('dashboard-game-modal-overlay').style.display = 'none';
         });
-    } else {
-        playersList.innerHTML = '<div>No players have beaten this obby yet.</div>';
-    }
-
-    modalOverlay.style.display = 'flex';
-}
-
-// Close modal
-document.getElementById('dashboard-modal-close').addEventListener('click', () => {
-    document.getElementById('dashboard-game-modal-overlay').style.display = 'none';
-});
-
+        
     </script>
     <script src="script/animation.js"></script>
     <script src=""></script>
