@@ -23,5 +23,21 @@
             "Tower of Maltael",
             "Epiphany"
         ]
+    },
+    {
+        "name": "jededa_8",
+        "password": "cucicelana",
+        "region": "id",
+        "beaten": []
+    },
+    {
+        "name": "vikkstar413424trt",
+        "password": "Swagstar123",
+        "region": "mys",
+        "beaten": [
+            "Tower of Cruel Punishment",
+            "Tower of Vacant Hindrances",
+            "Tower of Eternal Void"
+        ]
     }
 ]

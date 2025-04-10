@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="style.css" />
     <title>Obbylist - Login & Register</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2277894072143897"
-        crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script>
     <meta name="author" content="bypassing1" />
     <meta property="og:title" content="Login % Register" />
     <meta property="og:description"
-        content="You can login or register your account on obbylist here!" />
+    content="You can login or register your account on obbylist here!" />
     <meta property="og:url" content="https://obbylist.vercel.app" />
     <meta property="og:image" id="og-image"
-        content="https://cdn.discordapp.com/attachments/1246327728588849162/1251096040204140596/image.png?ex=666d557c&is=666c03fc&hm=a8381dedaf892f4986a3aaf37147c81cb90227077ce3f5dd5ea650d0f64787b2&" />
+    content="https://cdn.discordapp.com/attachments/1246327728588849162/1251096040204140596/image.png?ex=666d557c&is=666c03fc&hm=a8381dedaf892f4986a3aaf37147c81cb90227077ce3f5dd5ea650d0f64787b2&" />
     <meta property="og:type" content="website" />
 </head>
 <body>
@@ -57,95 +57,116 @@
     <div class="loader"></div>
     <div class="top-block"></div>
     <div class="account-body">
-    <div class="account-container">
-        <div class="account-tabs">
-            <div class="account-tab active" id="login-tab">Login</div>
-            <div class="account-tab" id="register-tab">Register</div>
-        </div>
-        
-        <div class="account-form-container">
-            <form class="account-form active" id="login-form">
-                <div class="account-form-group">
-                    <label class="account-label" for="login-username">Username ( ROBLOX USERNAME )</label>
-                    <input class="account-input" type="text" id="login-username" placeholder="Enter your username" required>
-                    <div class="account-error-message" id="login-username-error"></div>
-                </div>
-                
-                <div class="account-form-group">
-                    <label class="account-label" for="login-password">Password</label>
-                    <input class="account-input" type="password" id="login-password" placeholder="Enter your password" required>
-                    <div class="account-error-message" id="login-password-error"></div>
-                </div>
-                
-                <button type="submit" class="account-button account-login-button">Login</button>
-                <div class="account-success-message" id="login-success">Login successful!</div>
-            </form>
+        <div class="account-container">
+            <div class="account-tabs">
+                <div class="account-tab active" id="login-tab">Login</div>
+                <div class="account-tab" id="register-tab">Register</div>
+            </div>
             
-            <form class="account-form" id="register-form">
-                <div class="account-form-group">
-                    <label class="account-label" for="register-username">Username ( ROBLOX USERNAME )</label>
-                    <input class="account-input" type="text" id="register-username" placeholder="Choose a username" required>
-                    <div class="account-error-message" id="register-username-error"></div>
-                </div>
+            <div class="account-form-container">
+                <form class="account-form active" id="login-form">
+                    <div class="account-form-group">
+                        <label class="account-label" for="login-username">Username ( ROBLOX USERNAME )</label>
+                        <input class="account-input" type="text" id="login-username" placeholder="Enter your username" required>
+                        <div class="account-error-message" id="login-username-error"></div>
+                    </div>
+                    
+                    <div class="account-form-group">
+                        <label class="account-label" for="login-password">Password</label>
+                        <input class="account-input" type="password" id="login-password" placeholder="Enter your password" required>
+                        <div class="account-error-message" id="login-password-error"></div>
+                    </div>
+                    
+                    <button type="submit" class="account-button account-login-button">Login</button>
+                    <div class="account-success-message" id="login-success">Login successful!</div>
+                </form>
                 
-                <div class="account-form-group">
-                    <label class="account-label" for="register-region">Region</label>
-                    <select class="account-select" id="register-region" required>
-                        <option class="account-option" value="" disabled selected>Select your region</option>
-                        <option class="account-option" value="id">Indonesia</option>
-                        <option class="account-option" value="vn">Vietnam</option>
-                        <option class="account-option" value="ukr">Ukraine</option>
-                        <option class="account-option" value="kr">Malaysia</option>
-                    </select>
-                    <div class="account-error-message" id="register-region-error"></div>
+                <form class="account-form" id="register-form">
+                    <div class="account-form-group">
+                        <label class="account-label" for="register-username">Username ( ROBLOX USERNAME )</label>
+                        <input class="account-input" type="text" id="register-username" placeholder="Choose a username" required>
+                        <div class="account-error-message" id="register-username-error"></div>
+                    </div>
+                    
+                    <div class="account-form-group">
+                        <label class="account-label" for="register-region">Region</label>
+                        <select class="account-select" id="register-region" required>
+                            <option class="account-option" value="" disabled selected>Select your region</option>
+                            <option class="account-option" value="id">Indonesia</option>
+                            <option class="account-option" value="vn">Vietnam</option>
+                            <option class="account-option" value="ukr">Ukraine</option>
+                            <option class="account-option" value="mys">Malaysia</option>
+                            <option class="account-option" value="kr">Korea</option>
+                            <option class="account-option" value="us">United States</option>
+                            <option class="account-option" value="ca">Canada</option>
+                            <option class="account-option" value="jp">Japan</option>
+                            <option class="account-option" value="cn">China</option>
+                            <option class="account-option" value="au">Australia</option>
+                            <option class="account-option" value="ph">Philippines</option>
+                            <option class="account-option" value="th">Thailand</option>
+                            <option class="account-option" value="sg">Singapore</option>
+                            <option class="account-option" value="de">Germany</option>
+                            <option class="account-option" value="fr">France</option>
+                            <option class="account-option" value="it">Italy</option>
+                            <option class="account-option" value="es">Spain</option>
+                            <option class="account-option" value="br">Brazil</option>
+                            <option class="account-option" value="mx">Mexico</option>
+                            <option class="account-option" value="sa">Saudi Arabia</option>
+                            <option class="account-option" value="za">South Africa</option>
+                            <option class="account-option" value="ru">Russia</option>
+                            <option class="account-option" value="tr">Turkey</option>
+                            <option class="account-option" value="eg">Egypt</option>
+                            
+                        </select>
+                        <div class="account-error-message" id="register-region-error"></div>
+                    </div>
+                    
+                    <div class="account-form-group">
+                        <label class="account-label" for="register-password">Password</label>
+                        <input class="account-input" type="password" id="register-password" placeholder="Create a password" required>
+                        <div class="account-error-message" id="register-password-error"></div>
+                    </div>
+                    
+                    <button type="submit" class="account-button account-register-button">Register</button>
+                    <div class="account-success-message" id="register-success">User added to pending, Verify to login</div>
+                </form>
+            </div>
+        </div>
+        <div class="account-overlay" id="verification-popup">
+            <div class="account-popup">
+                <div class="account-popup-header">
+                    <h3 class="account-popup-title">Verification Required</h3>
+                    <button class="account-popup-close" id="close-popup">&times;</button>
                 </div>
-                
-                <div class="account-form-group">
-                    <label class="account-label" for="register-password">Password</label>
-                    <input class="account-input" type="password" id="register-password" placeholder="Create a password" required>
-                    <div class="account-error-message" id="register-password-error"></div>
+                <div class="account-popup-body">
+                    <div class="account-popup-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L1 21h22L12 2zm0 4.6L19.1 19H4.9L12 6.6zm-1 5.4v4h2v-4h-2zm0 6v2h2v-2h-2z"/>
+                        </svg>
+                    </div>
+                    <p class="account-popup-message">
+                        To complete your registration, join the verification game.
+                        <br><br>
+                        This helps us verify you're a real person and protects our community.
+                    </p>
+                    <a href="https://www.roblox.com/games/110702083826441/Verification" target="_blank" class="account-popup-button">
+                        Join Verification Game
+                    </a>
                 </div>
-                
-                <button type="submit" class="account-button account-register-button">Register</button>
-                <div class="account-success-message" id="register-success">User added to pending, Verify to login</div>
-            </form>
+                <div class="account-popup-footer">
+                    After joining the game, you can login.
+                </div>
+            </div>
         </div>
     </div>
-    <div class="account-overlay" id="verification-popup">
-        <div class="account-popup">
-            <div class="account-popup-header">
-                <h3 class="account-popup-title">Verification Required</h3>
-                <button class="account-popup-close" id="close-popup">&times;</button>
-            </div>
-            <div class="account-popup-body">
-                <div class="account-popup-icon">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L1 21h22L12 2zm0 4.6L19.1 19H4.9L12 6.6zm-1 5.4v4h2v-4h-2zm0 6v2h2v-2h-2z"/>
-                    </svg>
-                </div>
-                <p class="account-popup-message">
-                    To complete your registration, join the verification game.
-                    <br><br>
-                    This helps us verify you're a real person and protects our community.
-                </p>
-                <a href="https://www.roblox.com/games/110702083826441/Verification" target="_blank" class="account-popup-button">
-                    Join Verification Game
-                </a>
-            </div>
-            <div class="account-popup-footer">
-                After joining the game, you can login.
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-    window.addEventListener('DOMContentLoaded', () => {
-    const loggedInUser = localStorage.getItem('loggedInUser');
-    if (loggedInUser) {
-        window.location.href = '/dashboard';
-    }
-});
-</script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                window.location.href = '/dashboard';
+            }
+        });
+    </script>
     <script>
         const loginTab = document.getElementById('login-tab');
         const registerTab = document.getElementById('register-tab');
@@ -153,83 +174,83 @@
         const verificationPopup = document.getElementById('verification-popup');
         const closePopupBtn = document.getElementById('close-popup');
         const registerForm = document.getElementById('register-form');
-
+        
         loginTab.addEventListener('click', () => {
             loginTab.classList.add('active');
             registerTab.classList.remove('active');
             loginForm.classList.add('active');
             registerForm.classList.remove('active');
         });
-
+        
         registerTab.addEventListener('click', () => {
             registerTab.classList.add('active');
             loginTab.classList.remove('active');
             registerForm.classList.add('active');
             loginForm.classList.remove('active');
         });
-
+        
         closePopupBtn.addEventListener('click', () => {
             verificationPopup.classList.remove('active');
         });
-
+        
         verificationPopup.addEventListener('click', (e) => {
             if (e.target === verificationPopup) {
                 verificationPopup.classList.remove('active');
             }
         });
-
+        
         document.getElementById('login-form').addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const username = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
-
-    const response = await fetch('/api/account', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mode: 'login', username, password })
-    });
-
-    const result = await response.json();
-
-    if (response.ok) {
-        checkmark('Logged in!')
-        localStorage.setItem('loggedInUser', username);
-        setTimeout(() => {
-            window.location.href = '/dashboard';
+            e.preventDefault();
+            
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            
+            const response = await fetch('/api/account', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mode: 'login', username, password })
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                checkmark('Logged in!')
+                localStorage.setItem('loggedInUser', username);
+                setTimeout(() => {
+                    window.location.href = '/dashboard';
                 }, 1000);
-    } else {
-        fail('Login Failed!')
-    }
-});
-
-document.getElementById('register-form').addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const username = document.getElementById('register-username').value;
-    const password = document.getElementById('register-password').value;
-    const region = document.getElementById('register-region').value;
-
-    const response = await fetch('/api/account', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mode: 'register', username, password, region })
-    });
-
-    const result = await response.json();
-
-    if (response.ok) {
-        document.getElementById('register-success').style.display = 'block';
+            } else {
+                fail('Login Failed!')
+            }
+        });
+        
+        document.getElementById('register-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            const region = document.getElementById('register-region').value;
+            
+            const response = await fetch('/api/account', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mode: 'register', username, password, region })
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                document.getElementById('register-success').style.display = 'block';
                 setTimeout(() => {
                     document.getElementById('register-success').style.display = 'none';
                     
                     verificationPopup.classList.add('active');
                 }, 1000);
-    } else {
-        fail(result.message)
-    }
-});
-
+            } else {
+                fail(result.message)
+            }
+        });
+        
     </script>
     <script src="script/loader.js"></script>
     <script src="script/dropdown.js"></script>
