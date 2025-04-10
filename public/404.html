@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obbylist - 404</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <div class="info-text">
+                <a href="index">The<span> Obby</span> List</a>
+            </div>
+            <div class="nav-group">
+                <div class="nav" id="home">
+                    <a href="dashboard">
+                        <img src="assets/dashboard.svg" class="flag-icon">
+                        <h3 class="nav-title">Dashboard</h3>
+                    </a>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn" onclick="toggleDropdown()">
+                        <img src="assets/country.svg" class="flag-icon" />
+                        <h3 class="nav-title">Universal List</h3>
+                    </button>
+                    <div class="dropdown-content" id="dropdownContent">
+                        <a href="universal-list">Universal List</a>
+                        <a href="eio-list">Indonesian List</a>
+                        <a href="voc-list">Vietnamese List</a>
+                        <a href="ukr-list">Ukraine List</a>
+                        <a href="koc-list">Korean List</a>
+                        <a href="mys-list">Malaysian List</a>
+                    </div>
+                </div>
+                <div class="nav">
+                    <a href="leaderboard">
+                        <img src="assets/stats.svg" class="flag-icon" />
+                        <h3 class="nav-title">Leaderboard</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="top-block"></div>
+    <div class="img"></div>
+    <div class="error-body">
+        <canvas id="error-particles" class="error-particles"></canvas>
+        <div class="error-container">
+            <h1 class="error-code">404</h1>
+            <p class="error-message">Oops! The page you're looking for seems to have vanished into the digital void.</p>
+            <a href="/" class="error-home-button">Return Home</a>
+        </div>
+    </div>
+    <footer>
+        <p>© Copyright 2024-2024 Elite Indonesian Obbyist</p>
+        <br>
+        <p class="shoutout">Shoutout to :</p>
+        <p>galih_funfan lcknt Zayenzoo D4RAWET proprpod ReaIBear</p>
+    </footer>
+    
+    <script>
+        // Particle animation
+        const canvas = document.getElementById('error-particles');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size
+        function setCanvasSize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        setCanvasSize();
+        window.addEventListener('resize', setCanvasSize);
+        
+        // Particle class
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.color = `rgba(${Math.floor(Math.random() * 100 + 155)}, ${Math.floor(Math.random() * 100 + 155)}, ${Math.floor(Math.random() * 100 + 155)}, ${Math.random() * 0.5 + 0.1})`;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                // Reset if out of bounds
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+            
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        // Create particles
+        const particles = [];
+        const particleCount = 100;
+        
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+        
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (const particle of particles) {
+                particle.update();
+                particle.draw();
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        // Add glitch effect to 404 text
+        const errorCode = document.querySelector('.error-code');
+        
+        function glitchEffect() {
+            const glitchDuration = 100;
+            const normalDuration = Math.random() * 5000 + 2000;
+            
+            errorCode.style.textShadow = `
+                ${Math.random() * 10 - 5}px ${Math.random() * 10 - 5}px rgba(255, 255, 255, 0.7),
+                ${Math.random() * 10 - 5}px ${Math.random() * 10 - 5}px rgba(200, 200, 200, 0.7)
+            `;
+            
+            setTimeout(() => {
+                errorCode.style.textShadow = '0 10px 20px rgba(255, 255, 255, 0.2)';
+                setTimeout(glitchEffect, normalDuration);
+            }, glitchDuration);
+        }
+        
+        setTimeout(glitchEffect, 2000);
+    </script>
+</body>
+</html>
