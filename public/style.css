@@ -30,6 +30,7 @@ body {
     background-image: url(assets/bg.svg);
     font-size: 14px;
     color: white;
+    overflow-x: hidden;
 }
 
 .img {
