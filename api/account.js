@@ -1,4 +1,43 @@
-import { list, put, del } from '@vercel/blob';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+const bucketName = 'blob'; // replace with your Supabase bucket name
+
+async function getFile(fileName) {
+    const { data, error } = await supabase
+        .storage
+        .from(bucketName)
+        .download(fileName);
+
+    if (error) return null;
+
+    const text = await data.text();
+    return JSON.parse(text);
+}
+
+async function uploadFile(fileName, jsonData) {
+    const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
+
+    const { error } = await supabase
+        .storage
+        .from(bucketName)
+        .upload(fileName, blob, {
+            upsert: true,
+            contentType: 'application/json',
+        });
+
+    if (error) throw new Error(error.message);
+}
+
+async function deleteFile(fileName) {
+    await supabase
+        .storage
+        .from(bucketName)
+        .remove([fileName]);
+}
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -6,23 +45,16 @@ export default async function handler(req, res) {
     }
 
     const { mode, username, password, region } = req.body;
-    const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
 
     if (!mode || !username) {
         return res.status(400).json({ message: 'Missing fields' });
     }
 
     try {
-        const listResult = await list({
-            headers: { 'Authorization': `Bearer ${blobToken}` }
-        });
+        // Get playerstat.json
+        const playerData = await getFile('playerstat.json');
+        if (!playerData) return res.status(404).json({ message: 'playerstat.json not found' });
 
-        const playerstatBlob = listResult.blobs.find(blob => blob.pathname.endsWith('playerstat.json'));
-        const pendingBlob = listResult.blobs.find(blob => blob.pathname.endsWith('pending.json'));
-
-        if (!playerstatBlob) return res.status(404).json({ message: 'playerstat.json not found' });
-
-        const playerData = await fetch(playerstatBlob.url).then(res => res.json());
         let players = Array.isArray(playerData) ? playerData : [];
 
         if (mode === 'login') {
@@ -37,91 +69,38 @@ export default async function handler(req, res) {
             const userExists = players.some(p => p.name.toLowerCase() === username.toLowerCase());
             if (userExists) return res.status(409).json({ message: 'Username already exists' });
 
-            let pending = [];
-            if (pendingBlob) {
-                const pendingData = await fetch(pendingBlob.url).then(res => res.json());
-                pending = Array.isArray(pendingData) ? pendingData : [];
-            }
+            let pending = await getFile('pending.json') || [];
 
+            // Add to pending list
             pending.push({ name: username, password, region });
 
-            // ⛔ DELETE old pending.json first
-            const matchingPendingBlobs = listResult.blobs.filter(blob => blob.pathname.startsWith('pending'));
-            for (const blob of matchingPendingBlobs) {
-                await del(blob.url, {
-                    headers: { 'Authorization': `Bearer ${blobToken}` }
-                });
-            }
+            // Overwrite pending.json
+            await uploadFile('pending.json', pending);
 
-            // ✅ Upload fresh pending.json
-            await put('pending.json', JSON.stringify(pending, null, 2), {
-                headers: {
-                    'Authorization': `Bearer ${blobToken}`,
-                    'Content-Type': 'application/json',
-                },
-                access: 'public',
-            });
-
-            return res.status(202).json({ message: 'Pending verification. Please join the game to verify!' });
+            return res.status(200).json({ message: 'Registration pending verification' });
         }
 
         if (mode === 'verify') {
-            if (!pendingBlob) return res.status(404).json({ message: 'pending.json not found' });
-        
-            const pendingData = await fetch(pendingBlob.url).then(res => res.json());
-            const pending = Array.isArray(pendingData) ? pendingData : [];
-        
-            const pendingUser = pending.find(p => p.name === username);
-            if (!pendingUser) return res.status(404).json({ message: 'No pending registration for this username' });
-        
-            // Add to playerstat
-            players.push({ ...pendingUser, beaten: [] });
-        
-            // Remove verified player from pending list
-            const updatedPending = pending.filter(p => p.name !== username);
-        
-            // Delete old pending.json
-            const matchingPendingBlobs = listResult.blobs.filter(blob => blob.pathname.startsWith('pending'));
-            for (const blob of matchingPendingBlobs) {
-                await del(blob.url, {
-                    headers: { 'Authorization': `Bearer ${blobToken}` }
-                });
-            }
-        
-            // Upload updated pending.json (if there are still pending users)
-            if (updatedPending.length > 0) {
-                await put('pending.json', JSON.stringify(updatedPending, null, 2), {
-                    headers: {
-                        'Authorization': `Bearer ${blobToken}`,
-                        'Content-Type': 'application/json',
-                    },
-                    access: 'public',
-                });
-            }
-        
-            // Delete old playerstat.json
-            const matchingPlayerstatBlobs = listResult.blobs.filter(blob => blob.pathname.startsWith('playerstat'));
-            for (const blob of matchingPlayerstatBlobs) {
-                await del(blob.url, {
-                    headers: { 'Authorization': `Bearer ${blobToken}` }
-                });
-            }
-        
-            // Upload fresh playerstat.json
-            await put('playerstat.json', JSON.stringify(players, null, 2), {
-                headers: {
-                    'Authorization': `Bearer ${blobToken}`,
-                    'Content-Type': 'application/json',
-                },
-                access: 'public',
-            });
-        
-            return res.status(200).json({ message: 'Verification successful! Player added.' });
+            let pending = await getFile('pending.json') || [];
+
+            const index = pending.findIndex(p => p.name === username && p.password === password);
+            if (index === -1) return res.status(404).json({ message: 'Pending account not found' });
+
+            // Move from pending to players
+            const newUser = pending[index];
+            players.push(newUser);
+
+            // Remove from pending
+            pending.splice(index, 1);
+
+            // Update both files
+            await uploadFile('playerstat.json', players);
+            await uploadFile('pending.json', pending);
+
+            return res.status(200).json({ message: 'Account verified successfully' });
         }
-        
 
         return res.status(400).json({ message: 'Invalid mode' });
-
     } catch (error) {
         console.error('Server error:', error);
         return res.status(500).json({ message: 'Server error', error: error.message });
