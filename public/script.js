@@ -235,16 +235,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const container = document.getElementById('cards-container')
         const legacycontainer = document.getElementById('legacy-container')
         const flagSrc = prefix.replace('data', '');
-        fetch(listBlobsApiUrl)
-        .then(response => response.json())
-        .then(data => {
-            const dataBlob = data.blobs.find(blob => blob.pathname.startsWith(prefix))
-            if (!dataBlob) {
-                throw new Error(`Blob with the prefix ${prefix} not found.`);
-            }
-            return fetch(dataBlob.url)
-        })
-        .then(response => response.json())
+        fetchData(prefix)
         .then(dataList => {
             dataList.forEach(item => {
                 total += 1;
