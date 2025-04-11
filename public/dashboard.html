@@ -260,7 +260,6 @@
         function fetchData(prefix) {
             return fetch(`/api/getData?prefix=${prefix}`).then(response => response.json());
         }
-        
         Promise.all([
         fetchData('globaldata'), // globaldata
         fetchData('obbies'),     // obbies
@@ -387,21 +386,14 @@
             const match = gamelink.match(/games\/(\d+)/);
             return match ? match[1] : null;
         }
-        fetch('/api/listBlobs')
-        .then(response => response.json())
-        .then(data => {
-            const obbiesBlob = data.blobs.find(blob => blob.pathname.startsWith('obbies'));
-            const playerstatBlob = data.blobs.find(blob => blob.pathname.startsWith('playerstat'));
-            
-            if (!obbiesBlob || !playerstatBlob) {
-                throw new Error('Required blobs not found.');
-            }
-            
-            return Promise.all([
-            fetch(obbiesBlob.url).then(response => response.json()),
-            fetch(playerstatBlob.url).then(response => response.json())
-            ]);
-        })
+        function fetchData(prefix) {
+            return fetch(`/api/getData?prefix=${prefix}`).then(response => response.json());
+        }
+        
+        Promise.all([
+        fetchData('obbies'),     // obbies
+        fetchData('playerstat')  // playerstat
+        ])
         .then(async ([obbies, playerstats]) => {
             const games = await Promise.all(obbies.map(async obby => {
                 const placeId = extractPlaceId(obby.gamelink);
