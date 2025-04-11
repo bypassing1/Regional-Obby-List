@@ -199,20 +199,20 @@
             document.getElementById('dashboard-submit-completion-modal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-
+        
         function openLogoutModal() {
             document.getElementById('dashboard-logout-modal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-
+        
         // Function to handle logout
         function handleLogout() {
             localStorage.removeItem('loggedInUser');
             closeModal('dashboard-logout-modal');
             checkmark('You have been logged out successfully!')
             setTimeout(() => {
-            window.location.href = '/account';
-                }, 1000);
+                window.location.href = '/account';
+            }, 1000);
         }
         
         // Function to close any modal
@@ -257,23 +257,15 @@
         });
     </script>
     <script>
-        fetch('/api/listBlobs')
-        .then(response => response.json())
-        .then(data => {
-            const globaldataBlob = data.blobs.find(blob => blob.pathname.startsWith('globaldata'));
-            const obbiesBlob = data.blobs.find(blob => blob.pathname.startsWith('obbies'));
-            const playerstatBlob = data.blobs.find(blob => blob.pathname.startsWith('playerstat'));
-            
-            if (!globaldataBlob || !obbiesBlob || !playerstatBlob) {
-                throw new Error('Required blobs not found.');
-            }
-            
-            return Promise.all([
-            fetch(globaldataBlob.url).then(response => response.json()), // globaldata
-            fetch(obbiesBlob.url).then(response => response.json()),     // obbies
-            fetch(playerstatBlob.url).then(response => response.json())  // playerstat
-            ]);
-        })
+        function fetchData(prefix) {
+            return fetch(`/api/getData?prefix=${prefix}`).then(response => response.json());
+        }
+        
+        Promise.all([
+        fetchData('globaldata'), // globaldata
+        fetchData('obbies'),     // obbies
+        fetchData('playerstat')  // playerstat
+        ])
         .then(([globaldata, obbies, playerstats]) => {
             const currentPlayerName = localStorage.getItem('loggedInUser');
             const currentPlayer = playerstats.find(p => p.name === currentPlayerName);
