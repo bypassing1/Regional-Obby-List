@@ -2,8 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const prefixElement = document.getElementById('prefix-container');
     const prefix = prefixElement.getAttribute('data-prefix') || 'defaultPrefix';
     
-    const listBlobsApiUrl = '/api/listBlobs';
-    let blobUrl = '';
     let originalData = [];
     let editedData = [];
     let currentItemIndex = null;

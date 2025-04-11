@@ -2,8 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const prefixElement = document.getElementById('prefix-container');
     const prefix = prefixElement.getAttribute('data-prefix') || 'defaultPrefix';
 
-    const listBlobsApiUrl = '/api/listBlobs';
-    let blobUrl = '';
     let originalData = [];
     let editedData = [];
     let currentItemIndex = null;
@@ -13,26 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const beatenContainer = document.getElementById('beaten-container');
     const addBeatenBtn = document.getElementById('add-beaten-btn');
 
-    fetch(listBlobsApiUrl)
-        .then(response => response.json())
-        .then(data => {
-            const files = data.blobs || [];
-            const matchedFile = files.find(file => file.pathname && file.pathname.startsWith(prefix));
-            if (matchedFile) {
-                blobUrl = matchedFile.url;
-                return fetch(blobUrl);
-            } else {
-                throw new Error('No file found with the specified prefix.');
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            originalData = JSON.parse(JSON.stringify(data));
-            editedData = JSON.parse(JSON.stringify(data));
-            loadList(editedData);
-            addDragEvents();
-        })
-        .catch(error => console.error('Error fetching JSON:', error));
+    fetch(`/api/getData?prefix=${prefix}`)
+    .then(response => response.json())
+    .then(data => {
+        originalData = JSON.parse(JSON.stringify(data));
+        editedData = JSON.parse(JSON.stringify(data));
+        loadList(editedData);
+        addDragEvents();
+    })
+    .catch(error => console.error('Error fetching JSON:', error));
 
     function loadList(data) {
         draggableList.innerHTML = '';
@@ -104,12 +91,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const updatedData = JSON.stringify(editedData, null, 2);
+        
         fetch('/api/saveJson', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ blobUrl, prefix, updatedData }),
+            body: JSON.stringify({ prefix, updatedData }),
         })
         .then(response => response.json())
         .then(result => {
@@ -118,5 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
             originalData = JSON.parse(JSON.stringify(editedData));
         })
         .catch(error => console.error('Error updating JSON:', error));
+        
     });
 });
