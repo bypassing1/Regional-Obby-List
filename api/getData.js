@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     try {
         // List all files in the bucket
         const { data: files, error: listError } = await supabase.storage
-            .from('your-bucket-name')
+            .from('blob')
             .list('', { limit: 100 });
 
         if (listError) throw listError;
@@ -30,7 +30,7 @@ export default async function handler(req, res) {
 
         // Download the file
         const { data: fileData, error: downloadError } = await supabase.storage
-            .from('your-bucket-name')
+            .from('blob')
             .download(matchedFile.name);
 
         if (downloadError) throw downloadError;
