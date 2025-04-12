@@ -83,7 +83,7 @@ export default async function handler(req, res) {
         if (mode === 'verify') {
             let pending = await getFile('pending.json') || [];
 
-            const index = pending.findIndex(p => p.name === username && p.password === password);
+            const index = pending.findIndex(p => p.name === username);
             if (index === -1) return res.status(404).json({ message: 'Pending account not found' });
 
             // Move from pending to players
