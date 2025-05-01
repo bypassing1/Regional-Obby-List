@@ -83,29 +83,31 @@ export default async function handler(req, res) {
         if (mode === 'verify') {
             let pending = await getFile('pending.json') || [];
             let players = await getFile('playerstat.json') || [];
-            
-            const index = pending.findIndex(p => p.name === username);
-            if (index === -1) return res.status(404).json({ message: 'Pending account not found' });
-            
-            // Copy the user and add the "beaten" property
+        
+            // Find all entries with the username
+            const matchingEntries = pending.filter(p => p.name === username);
+            if (matchingEntries.length === 0) {
+                return res.status(404).json({ message: 'Pending account not found' });
+            }
+        
+            // Get the latest entry (last one in list)
             const newUser = {
-                ...pending[index],
+                ...matchingEntries[matchingEntries.length - 1],
                 beaten: []
             };
-            
-            // Push to players
+        
+            // Remove all pending entries with that username
+            pending = pending.filter(p => p.name !== username);
+        
+            // Add to player list
             players.push(newUser);
-            
-            // Remove from pending
-            pending.splice(index, 1);
-            
-            // Update both files
+        
+            // Update files
             await uploadFile('playerstat.json', players);
             await uploadFile('pending.json', pending);
-            
+        
             return res.status(200).json({ message: 'Account verified successfully' });
         }
-        
         return res.status(400).json({ message: 'Invalid mode' });
     } catch (error) {
         console.error('Server error:', error);
